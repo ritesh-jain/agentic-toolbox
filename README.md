@@ -14,37 +14,42 @@ Different AI coding tools expect configuration files in different locations:
 | **Claude Code** | `.claude/` |
 | **Standard** | `.agents/` |
 
-This repository acts as a **single source of truth** that syncs your agents and skills to whatever tool each project uses. No broken symlinks, no cross-platform issues.
+This package acts as a **single source of truth** that syncs your agents and skills to whatever tool each project uses. No broken symlinks, no cross-platform issues.
 
 ---
 
-## Quick Start
+## Quick Start (npm Package)
 
-### 1. Add to Your Project
+### 1. Install from GitHub
 
 ```bash
-git submodule add https://github.com/ritesh-jain/agentic-toolkit.git scripts/agentic-toolkit
+# HTTPS (public)
+npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git
+
+# Or SSH
+npm install --save-dev git+ssh://git@github.com/ritesh-jain/agentic-toolkit.git
 ```
 
-### 2. Create Config File
+### 2. Add npm Scripts
+
+Add to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "agent:sync": "agentic-toolkit",
+    "agent:save": "agentic-toolkit --save"
+  }
+}
+```
+
+### 3. Create Config File
 
 Create `agentic-toolkit.json` in your project root:
 
 ```json
 {
-  "targets": ["opencode"]
-}
-```
-
-### 3. Add npm Scripts
-
-Add to your `package.json`:
-
-```json
-"scripts": {
-  "agentic-toolkit": "npx ./scripts/agentic-toolkit agentic-toolkit --config ./agentic-toolkit.json",
-  "agent:sync": "npm run agentic-toolkit",
-  "agent:save": "npm run agentic-toolkit -- --save"
+  "targets": ["opencode", "claude"]
 }
 ```
 
@@ -56,12 +61,25 @@ npm run agent:sync
 
 ---
 
+## Alternative: Git Submodule
+
+If you prefer the submodule approach (for contributing back to the toolkit):
+
+```bash
+git submodule add https://github.com/ritesh-jain/agentic-toolkit.git scripts/agentic-toolkit
+```
+
+Then use `npx ./scripts/agentic-toolkit agentic-toolkit --config ./agentic-toolkit.json` instead of the binary.
+
+---
+
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `npm run agent:sync` | Sync agents/skills from submodule to target directory |
-| `npm run agent:save` | Save changes FROM target directory BACK to submodule |
+| `agentic-toolkit` | Sync agents/skills from package to target directories |
+| `agentic-toolkit --save` | Save changes FROM target directories BACK to package (submodule only) |
+| `agentic-toolkit --config <path>` | Use custom config file |
 
 ---
 
@@ -77,23 +95,17 @@ npm run agent:sync
 
 Sync to OpenCode only:
 ```json
-{
-  "targets": ["opencode"]
-}
+{ "targets": ["opencode"] }
 ```
 
 Sync to both OpenCode and Claude:
 ```json
-{
-  "targets": ["opencode", "claude"]
-}
+{ "targets": ["opencode", "claude"] }
 ```
 
 Sync to all platforms:
 ```json
-{
-  "targets": ["opencode", "claude", "agents"]
-}
+{ "targets": ["opencode", "claude", "agents"] }
 ```
 
 ### Auto-Discovery
@@ -106,7 +118,7 @@ If `agentic-toolkit.json` is missing, the engine auto-detects:
 ### Custom Config Path
 
 ```bash
-npm run agentic-toolkit -- --config ./my-custom-config.json
+agentic-toolkit --config ./my-custom-config.json
 ```
 
 ---
@@ -114,24 +126,38 @@ npm run agentic-toolkit -- --config ./my-custom-config.json
 ## Repository Structure
 
 ```
-scripts/agentic-toolkit/
+node_modules/@riteshjain/agentic-toolkit/
 ├── package.json         # CLI binary definition
 ├── start.js             # Sync engine
 ├── AGENTS.md            # Instructions for AI models
 ├── README.md            # This file
 ├── agents/              # Agent definitions
-│   └── Agent.md.sample  # Template for new agents
+│   ├── Agent.md.sample  # Template for new agents
+│   └── *.md             # Your agent files
 └── skills/              # Skill definitions
-    └── SKILL.md.sample  # Template for new skills
+    ├── SKILL.md.sample  # Template for new skills
+    └── */               # Skill directories with SKILL.md
 ```
 
 ---
 
 ## Creating New Agents
 
+### Option A: Use the Creation Pipeline (Recommended)
+
+The toolkit includes an orchestration agent `agentic-tools-creator` that uses three skills to create agents:
+
+1. **agentic-resource-gatherer** — Searches public repos for similar agents
+2. **agent-creator** — Generates the agent file
+3. **agentic-tools-creator** — Orchestrates the workflow
+
+Invoke via your AI assistant (Claude/OpenCode) with the agentic-tools-creator agent.
+
+### Option B: Manual Creation
+
 1. Copy the template:
    ```bash
-   cp agents/Agent.md.sample agents/MyAgent.md
+   cp node_modules/@riteshjain/agentic-toolkit/agents/Agent.md.sample agents/MyAgent.md
    ```
 
 2. Edit the new file with your agent's configuration
@@ -153,6 +179,12 @@ Every agent description MUST be a free-flowing paragraph that includes:
 
 ## Creating New Skills
 
+### Option A: Use the Creation Pipeline
+
+Same as agents — use the `agentic-tools-creator` agent with type="skill".
+
+### Option B: Manual Creation
+
 1. Create a directory for the skill:
    ```bash
    mkdir -p skills/my-skill
@@ -160,7 +192,7 @@ Every agent description MUST be a free-flowing paragraph that includes:
 
 2. Copy the template:
    ```bash
-   cp skills/SKILL.md.sample skills/my-skill/SKILL.md
+   cp node_modules/@riteshjain/agentic-toolkit/skills/SKILL.md.sample skills/my-skill/SKILL.md
    ```
 
 3. Edit the new file with your skill's configuration
@@ -225,22 +257,38 @@ For detailed field documentation, see `agents/Agent.md.sample`.
 
 ---
 
+## How It Works
+
+The sync engine (`start.js`) reads your master agent/skill files (which contain a **superset** of all platform fields), then **transforms** them per target:
+
+- **For OpenCode**: Strips Claude-only fields (`tools`, `permissionMode`, `maxTurns`, `skills`, `mcpServers`, `hooks`, `memory`, `background`, `effort`, `isolation`, `initialPrompt`)
+- **For Claude**: Strips OpenCode-only fields (`permission`, `mode`, `temperature`, `steps`, `disable`, `prompt`, `hidden`, `top_p`, `reasoningEffort`, `textVerbosity`)
+- **For Standard**: No transformation (keeps all fields)
+
+This means you maintain **one master file** per agent/skill, and get platform-optimized configs automatically.
+
+---
+
 ## Troubleshooting
 
 ### Sync not working
 
 1. Verify `agentic-toolkit.json` exists in project root
-2. Check that the submodule is initialized: `git submodule update --init`
-3. Run with verbose output: `npx ./scripts/agentic-toolkit agentic-toolkit --config ./agentic-toolkit.json`
+2. Run with explicit config: `agentic-toolkit --config ./agentic-toolkit.json`
 
-### Changes not persisting
+### Changes not persisting (npm package)
 
-Use `--save` to sync changes back to the submodule:
-
-```bash
-npm run agent:save
-```
+The `--save` flag writes to `node_modules/` which doesn't persist across installs. For npm usage:
+- Treat the package as read-only source of truth
+- Maintain custom agents/skills in your project's `agents/` and `skills/` folders
+- Or fork the repo and publish your own version to npm
 
 ### Wrong target directory
 
 Check your `agentic-toolkit.json` `targets` value, or let auto-discovery work by removing the config file.
+
+---
+
+## License
+
+MIT — See LICENSE for details.

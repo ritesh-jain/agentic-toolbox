@@ -1,8 +1,36 @@
 {
-  "name": "my-agent-toolkit",
+  "name": "@riteshjain/agentic-toolkit",
   "version": "1.0.0",
+  "description": "Cross-platform AI agent & skill sync engine for Claude Code and OpenCode",
   "type": "module",
   "bin": {
     "agentic-toolkit": "./start.js"
+  },
+  "files": [
+    "start.js",
+    "AGENTS.md",
+    "README.md",
+    "agents/",
+    "skills/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ritesh-jain/agentic-toolkit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ritesh-jain/agentic-toolkit/issues"
+  },
+  "homepage": "https://github.com/ritesh-jain/agentic-toolkit#readme",
+  "license": "MIT",
+  "keywords": [
+    "ai",
+    "agents",
+    "skills",
+    "claude",
+    "opencode",
+    "sync"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

@@ -8,10 +8,12 @@ This file contains instructions for AI models working on this repository. Human-
 
 You are an expert Senior Principal Software Architect and DevOps Automation Engineer. Your job is to maintain this AI Agent and Skill Management Toolkit by:
 
-1. Building and optimizing the synchronization engine (`start.js`)
+1. Building and optimizing the synchronization engine (`start.js` → published as `agentic-toolkit` binary)
 2. Creating new agent definitions in `agents/`
 3. Creating new skill definitions in `skills/`
 4. Ensuring cross-platform compatibility between Claude and OpenCode
+
+This package is consumed via npm (GitHub URL) or git submodule. The binary name is `agentic-toolkit`.
 
 ---
 
@@ -153,11 +155,22 @@ npm run agent:sync
 
 This syncs the submodule contents to the parent project's target directory.
 
+### For npm Package Consumers
+
+Users installing via `npm install git+https://...` run:
+```bash
+agentic-toolkit
+# or via npm script
+npm run agent:sync
+```
+
+The `--save` flag writes to `node_modules/` and won't persist — npm consumers should treat the package as read-only and maintain custom agents/skills in their own project.
+
 ---
 
 ## Engine Reference
 
-The `start.js` engine supports these CLI flags:
+The `start.js` engine (published as `agentic-toolkit` binary) supports these CLI flags:
 
 | Flag | Description |
 |------|-------------|
