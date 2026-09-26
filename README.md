@@ -18,21 +18,46 @@ This package acts as a **single source of truth** that syncs your agents and ski
 
 ---
 
-## Quick Start (npm Package)
+## Installation
 
-### 1. Install from GitHub
+Choose the method that matches your project stack. **80–90% of Node.js/TypeScript projects should use Option A.** Non-Node.js projects (Java, Go, Python, etc.) use Option B.
+
+| Method | Best For | Install | Run |
+|--------|----------|---------|-----|
+| **A. npm Package** | Node.js / TypeScript / JS | `npm install --save-dev git+https://...` | `agentic-toolkit` |
+| **B. Git Submodule** | Java, Go, Python, any non-Node stack | `git submodule add ...` | `node ./scripts/agentic-toolkit/start.js` |
+
+> **Prerequisite:** Node.js `>=18` is required for **both** methods — the sync engine is Node-based even when the parent project is Java/Go/Python.
+
+### Option A: npm Package (Recommended — Node.js / TypeScript / JS)
+
+Use this for all Node.js-based hobby projects. The toolkit is consumed as a normal dev dependency directly from GitHub — no registry publish needed.
+
+#### 1. Install from GitHub
 
 ```bash
-# HTTPS (public)
+# HTTPS (public repo — works everywhere, no SSH keys needed)
 npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git
 
-# Or SSH
+# Or SSH (if you have GitHub SSH keys set up)
 npm install --save-dev git+ssh://git@github.com/ritesh-jain/agentic-toolkit.git
+
+# Pin to a branch/tag/commit if needed
+npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git#main
+npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git#v1.0.0
 ```
 
-### 2. Add npm Scripts
+This adds to your `package.json`:
 
-Add to your `package.json`:
+```json
+{
+  "devDependencies": {
+    "@riteshjain/agentic-toolkit": "git+https://github.com/ritesh-jain/agentic-toolkit.git"
+  }
+}
+```
+
+#### 2. Add npm Scripts
 
 ```json
 {
@@ -43,7 +68,9 @@ Add to your `package.json`:
 }
 ```
 
-### 3. Create Config File
+The binary `agentic-toolkit` is exposed via `package.json:bin` → `start.js` and is available automatically through `npx` / npm scripts.
+
+#### 3. Create Config File
 
 Create `agentic-toolkit.json` in your project root:
 
@@ -53,39 +80,126 @@ Create `agentic-toolkit.json` in your project root:
 }
 ```
 
-### 4. Run Sync
+#### 4. Run Sync
 
 ```bash
 npm run agent:sync
+# or directly
+npx agentic-toolkit
+npx agentic-toolkit --config ./agentic-toolkit.json
+```
+
+#### Updating
+
+```bash
+npm update @riteshjain/agentic-toolkit
+# or reinstall to pull latest main
+npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git#main
 ```
 
 ---
 
-## Alternative: Git Submodule
+### Option B: Git Submodule (Java, Go, Python & Other Non-Node.js Projects)
 
-If you prefer the submodule approach (for contributing back to the toolkit):
+Use this when the parent project has **no `package.json`** and you cannot run `npm install` — e.g., a Java/Maven/Gradle project. The toolkit lives as a tracked submodule and is invoked with `node` directly.
+
+#### 1. Add as Submodule
 
 ```bash
+# Pick a path that won't collide — `scripts/agentic-toolkit` is recommended
 git submodule add https://github.com/ritesh-jain/agentic-toolkit.git scripts/agentic-toolkit
+
+# Or via SSH
+git submodule add git@github.com:ritesh-jain/agentic-toolkit.git scripts/agentic-toolkit
 ```
 
-Then use `npx ./scripts/agentic-toolkit agentic-toolkit --config ./agentic-toolkit.json` instead of the binary.
+Add to your parent `.gitmodules` (auto-created). Commit it:
+
+```bash
+git add .gitmodules scripts/agentic-toolkit
+git commit -m "chore: add agentic-toolkit submodule"
+```
+
+#### 2. Create Config File
+
+Same as npm method — create `agentic-toolkit.json` in the **parent project root** (not inside the submodule):
+
+```json
+{
+  "targets": ["opencode"]
+}
+```
+
+#### 3. Run Sync
+
+No `package.json` scripts needed — invoke the engine directly:
+
+```bash
+# From parent project root — any of these work:
+node ./scripts/agentic-toolkit/start.js
+node ./scripts/agentic-toolkit/start.js --config ./agentic-toolkit.json
+npx ./scripts/agentic-toolkit
+
+# Reverse sync (save edits back into the submodule for committing):
+node ./scripts/agentic-toolkit/start.js --save
+```
+
+For convenience, add a Makefile / shell alias / Gradle task:
+
+```makefile
+# Makefile
+agent-sync:
+	node ./scripts/agentic-toolkit/start.js
+
+agent-save:
+	node ./scripts/agentic-toolkit/start.js --save
+```
+
+```bash
+# .bashrc / .zshrc alias
+alias agent-sync="node ./scripts/agentic-toolkit/start.js"
+```
+
+#### 4. Cloning & Updating
+
+```bash
+# First clone of a project that already has the submodule
+git clone --recurse-submodules <parent-repo-url>
+# or if already cloned
+git submodule update --init --recursive
+
+# Pull latest toolkit changes
+git -C scripts/agentic-toolkit pull origin main
+git add scripts/agentic-toolkit
+git commit -m "chore: bump agentic-toolkit"
+```
 
 ---
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `agentic-toolkit` | Sync agents/skills from package to target directories |
-| `agentic-toolkit --save` | Save changes FROM target directories BACK to package (submodule only) |
-| `agentic-toolkit --config <path>` | Use custom config file |
+Both methods expose the same CLI. Only the invocation prefix differs.
+
+| Command | npm Package | Git Submodule | Description |
+|---------|-------------|---------------|-------------|
+| Sync | `agentic-toolkit` | `node ./scripts/agentic-toolkit/start.js` | Sync agents/skills from toolkit to target dirs |
+| Save | `agentic-toolkit --save` | `node ./scripts/agentic-toolkit/start.js --save` | Save changes FROM target dirs BACK to toolkit |
+| Custom config | `agentic-toolkit --config <path>` | `node ./scripts/agentic-toolkit/start.js --config <path>` | Use a non-default config file |
+
+Via npm scripts these become:
+
+```bash
+npm run agent:sync        # → agentic-toolkit
+npm run agent:save        # → agentic-toolkit --save
+```
 
 ---
 
 ## Configuration
 
 ### `agentic-toolkit.json`
+
+Located in the **parent project root** (alongside `package.json` for Node projects, alongside `pom.xml`/`build.gradle` for Java projects).
 
 | Field | Description |
 |-------|-------------|
@@ -118,25 +232,54 @@ If `agentic-toolkit.json` is missing, the engine auto-detects:
 ### Custom Config Path
 
 ```bash
+# npm
 agentic-toolkit --config ./my-custom-config.json
+# submodule
+node ./scripts/agentic-toolkit/start.js --config ./my-custom-config.json
 ```
 
 ---
 
 ## Repository Structure
 
+### When installed via npm
+
 ```
-node_modules/@riteshjain/agentic-toolkit/
-├── package.json         # CLI binary definition
-├── start.js             # Sync engine
-├── AGENTS.md            # Instructions for AI models
-├── README.md            # This file
-├── agents/              # Agent definitions
-│   ├── Agent.md.sample  # Template for new agents
-│   └── *.md             # Your agent files
-└── skills/              # Skill definitions
-    ├── SKILL.md.sample  # Template for new skills
-    └── */               # Skill directories with SKILL.md
+parent-project/
+├── package.json
+├── agentic-toolkit.json
+├── node_modules/@riteshjain/agentic-toolkit/
+│   ├── package.json         # CLI binary: agentic-toolkit → start.js
+│   ├── start.js             # Sync engine
+│   ├── AGENTS.md            # Instructions for AI models
+│   ├── README.md            # This file
+│   ├── agents/              # Agent definitions
+│   │   ├── Agent.md.sample
+│   │   └── *.md
+│   └── skills/              # Skill definitions
+│       ├── SKILL.md.sample
+│       └── */               # Skill dirs with SKILL.md
+├── .opencode/               # Generated (gitignored)
+├── .claude/                 # Generated (gitignored)
+└── .agents/                 # Generated (gitignored)
+```
+
+### When added as git submodule
+
+```
+parent-project/                          # e.g., Java/Maven project
+├── pom.xml / build.gradle
+├── agentic-toolkit.json
+├── scripts/agentic-toolkit/             # ← submodule
+│   ├── package.json
+│   ├── start.js
+│   ├── AGENTS.md
+│   ├── README.md
+│   ├── agents/
+│   └── skills/
+├── .opencode/                           # Generated (gitignored)
+├── .claude/                             # Generated (gitignored)
+└── .agents/                             # Generated (gitignored)
 ```
 
 ---
@@ -156,15 +299,23 @@ Invoke via your AI assistant (Claude/OpenCode) with the agentic-tools-creator ag
 ### Option B: Manual Creation
 
 1. Copy the template:
+
    ```bash
+   # npm package
    cp node_modules/@riteshjain/agentic-toolkit/agents/Agent.md.sample agents/MyAgent.md
+   # submodule
+   cp scripts/agentic-toolkit/agents/Agent.md.sample agents/MyAgent.md
    ```
 
 2. Edit the new file with your agent's configuration
 
 3. Run sync:
+
    ```bash
+   # npm
    npm run agent:sync
+   # submodule (Java etc.)
+   node ./scripts/agentic-toolkit/start.js
    ```
 
 ### Agent Description Format
@@ -191,15 +342,22 @@ Same as agents — use the `agentic-tools-creator` agent with type="skill".
    ```
 
 2. Copy the template:
+
    ```bash
+   # npm package
    cp node_modules/@riteshjain/agentic-toolkit/skills/SKILL.md.sample skills/my-skill/SKILL.md
+   # submodule
+   cp scripts/agentic-toolkit/skills/SKILL.md.sample skills/my-skill/SKILL.md
    ```
 
 3. Edit the new file with your skill's configuration
 
 4. Run sync:
+
    ```bash
    npm run agent:sync
+   # or
+   node ./scripts/agentic-toolkit/start.js
    ```
 
 ### Skill File Structure
@@ -229,13 +387,20 @@ Every skill description MUST be a free-flowing paragraph that includes:
 
 ## Gitignore
 
-Add these to your project's `.gitignore`:
+Add these to your parent project's `.gitignore` (both Node.js and Java projects):
 
 ```gitignore
 # AI Agent Toolkit - Generated directories
 .opencode/
 .claude/
 .agents/
+```
+
+For submodule projects, do **not** ignore the submodule path:
+
+```gitignore
+# Keep the submodule itself tracked
+!scripts/agentic-toolkit/
 ```
 
 ---
@@ -259,7 +424,7 @@ For detailed field documentation, see `agents/Agent.md.sample`.
 
 ## How It Works
 
-The sync engine (`start.js`) reads your master agent/skill files (which contain a **superset** of all platform fields), then **transforms** them per target:
+The sync engine (`start.js`, published as `agentic-toolkit` binary) reads your master agent/skill files (which contain a **superset** of all platform fields), then **transforms** them per target:
 
 - **For OpenCode**: Strips Claude-only fields (`tools`, `permissionMode`, `maxTurns`, `skills`, `mcpServers`, `hooks`, `memory`, `background`, `effort`, `isolation`, `initialPrompt`)
 - **For Claude**: Strips OpenCode-only fields (`permission`, `mode`, `temperature`, `steps`, `disable`, `prompt`, `hidden`, `top_p`, `reasoningEffort`, `textVerbosity`)
@@ -274,14 +439,31 @@ This means you maintain **one master file** per agent/skill, and get platform-op
 ### Sync not working
 
 1. Verify `agentic-toolkit.json` exists in project root
-2. Run with explicit config: `agentic-toolkit --config ./agentic-toolkit.json`
+2. Check the toolkit is installed:
+   ```bash
+   # npm
+   ls node_modules/@riteshjain/agentic-toolkit/start.js
+   npx agentic-toolkit --config ./agentic-toolkit.json
 
-### Changes not persisting (npm package)
+   # submodule
+   ls scripts/agentic-toolkit/start.js
+   node ./scripts/agentic-toolkit/start.js --config ./agentic-toolkit.json
+   git submodule update --init --recursive
+   ```
 
-The `--save` flag writes to `node_modules/` which doesn't persist across installs. For npm usage:
-- Treat the package as read-only source of truth
-- Maintain custom agents/skills in your project's `agents/` and `skills/` folders
-- Or fork the repo and publish your own version to npm
+### Changes not persisting
+
+- **npm package:** The `--save` flag writes to `node_modules/` which doesn't persist across installs. For npm usage:
+  - Treat the package as read-only source of truth
+  - Maintain custom agents/skills in your project's own `agents/` and `skills/` folders
+  - Or fork the repo and publish your own version
+- **Git submodule:** `--save` writes back into `scripts/agentic-toolkit/` — commit and push the submodule:
+  ```bash
+  node ./scripts/agentic-toolkit/start.js --save
+  git -C scripts/agentic-toolkit status
+  git -C scripts/agentic-toolkit add -A && git -C scripts/agentic-toolkit commit -m "feat: update agents"
+  git add scripts/agentic-toolkit && git commit -m "chore: bump toolkit"
+  ```
 
 ### Wrong target directory
 
