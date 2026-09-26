@@ -4,15 +4,22 @@
   "description": "Cross-platform AI agent & skill sync engine for Claude Code and OpenCode",
   "type": "module",
   "bin": {
-    "agentic-toolkit": "./start.js"
+    "agentic-toolkit": "./dist/index.js"
   },
   "files": [
-    "start.js",
+    "dist/",
     "AGENTS.md",
     "README.md",
     "agents/",
     "skills/"
   ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ritesh-jain/agentic-toolkit.git"
@@ -32,5 +39,9 @@
   ],
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.11.0"
   }
 }
