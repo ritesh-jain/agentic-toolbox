@@ -15,7 +15,6 @@ export interface AgenticToolkitConfig {
 
 export interface CliOptions {
   configPath?: string;
-  save: boolean;
   dryRun: boolean;
   verbose: boolean;
   help: boolean;

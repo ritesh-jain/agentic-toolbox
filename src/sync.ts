@@ -90,37 +90,3 @@ export function syncToTarget(target: 'opencode' | 'claude' | 'agents', options: 
     return { success: false, error: error as Error, message: `Failed to sync to ${TOOL_MAP[target]}` };
   }
 }
-
-export function saveFromTarget(target: 'opencode' | 'claude' | 'agents', options: { dryRun?: boolean; verbose?: boolean } = {}): { success: boolean; count: number; message?: string; error?: Error } {
-  const parentProjectRoot = getParentProjectRoot();
-  const submoduleDir = getSubmoduleDir();
-  const targetDir = path.join(parentProjectRoot, TOOL_MAP[target]);
-
-  log(`  Saving from ${TOOL_MAP[target]}...`, options.verbose);
-
-  if (!fs.existsSync(targetDir)) {
-    return { success: true, count: 0, message: `Skipping ${target} - directory not found` };
-  }
-
-  const scanDirs = ['agents', 'skills'];
-  let copied = 0;
-
-  try {
-    for (const dir of scanDirs) {
-      const source = path.join(targetDir, dir);
-      const destination = path.join(submoduleDir, '..', dir);
-
-      if (!fs.existsSync(source)) continue;
-
-      if (!options.dryRun) {
-        fs.cpSync(source, destination, { recursive: true });
-      }
-      copied++;
-      log(`    Saved ${dir}`, options.verbose);
-    }
-
-    return { success: true, count: copied, message: `Saved ${copied} director${copied === 1 ? 'y' : 'ies'}` };
-  } catch (error) {
-    return { success: false, count: copied, error: error as Error, message: `Failed to save from ${TOOL_MAP[target]}` };
-  }
-}
