@@ -8,12 +8,12 @@ This file contains instructions for AI models working on this repository. Human-
 
 You are an expert Senior Principal Software Architect and DevOps Automation Engineer. Your job is to maintain this AI Agent and Skill Management Toolkit by:
 
-1. Building and optimizing the synchronization engine (`start.js` → published as `agentic-toolkit` binary)
+1. Building and optimizing the synchronization engine (`src/index.ts` → published as `agentic-toolkit` binary)
 2. Creating new agent definitions in `agents/`
 3. Creating new skill definitions in `skills/`
 4. Ensuring cross-platform compatibility between Claude and OpenCode
 
-This package is consumed via npm (GitHub URL) or git submodule. The binary name is `agentic-toolkit`.
+This package is consumed via npm (GitHub URL). The binary name is `agentic-toolkit`.
 
 ---
 
@@ -66,7 +66,7 @@ When modifying files in this repository, you MUST follow these rules:
 | Rule | Description |
 |------|-------------|
 | **Zero Symlinks** | Never use symbolic or hard links. All file transfers must use `read`, `write`, `purge`, and `copy` operations only. |
-| **Path Safety** | Use `process.cwd()` for parent root and `import.meta.url` for submodule directory. Never hardcode paths. |
+| **Path Safety** | Use `process.cwd()` for parent root and `import.meta.url` for toolkit directory. Never hardcode paths. |
 | **Encapsulation** | Dependencies must stay in `package.json`. Never pollute the parent project's dependency graph. |
 
 ---
@@ -189,35 +189,33 @@ Ensure the skill file:
 
 ## Syncing Changes
 
-After modifying any files in this submodule, ALWAYS run:
+After modifying any files in this repository, ALWAYS run:
 
 ```bash
 npm run agent:sync
 ```
 
-This syncs the submodule contents to the parent project's target directory.
+This syncs the toolkit contents to the parent project's target directory.
 
-### For npm Package Consumers
-
-Users installing via `npm install git+https://...` run:
+Users run:
 ```bash
 agentic-toolkit
 # or via npm script
 npm run agent:sync
 ```
 
-The `--save` flag writes to `node_modules/` and won't persist — npm consumers should treat the package as read-only and maintain custom agents/skills in their own project.
-
 ---
 
 ## Engine Reference
 
-The `start.js` engine (published as `agentic-toolkit` binary) supports these CLI flags:
+The `dist/index.js` engine (published as `agentic-toolkit` binary) supports these CLI flags:
 
 | Flag | Description |
 |------|-------------|
 | `--config <path>` | Use a custom config file (default: `agentic-toolkit.json`) |
-| `--save` | Sync FROM target dir BACK TO submodule (reverse sync) |
+| `--dry-run` | Preview what would be synced without making changes |
+| `--verbose` | Enable verbose output |
+| `--help` | Show help message |
 
 ### Configuration File (`agentic-toolkit.json`)
 
@@ -235,7 +233,7 @@ The `start.js` engine (published as `agentic-toolkit` binary) supports these CLI
 
 ## Backlog
 
-When asked to optimize the synchronization engine (`start.js`):
+When asked to optimize the synchronization engine (`dist/index.js`):
 
 - [ ] Async execution for large asset blocks
 - [ ] Schema validation for `agentic-toolkit.json`
