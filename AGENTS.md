@@ -17,6 +17,48 @@ This package is consumed via npm (GitHub URL) or git submodule. The binary name 
 
 ---
 
+## Quick Reference
+
+| Resource | Purpose |
+| -------- | ------- |
+| `README.md` | Project overview, features, setup |
+| `docs/index.md` | Master documentation index & status tracker |
+| `docs/architecture.md` | System design |
+| `docs/roadmap.md` | Task tracking, completed work |
+| `docs/changelog.md` | Recent changes and release history |
+| `docs/tracker.md` | Sprint-level task management |
+
+---
+
+## Documentation References
+
+**Start here for full project context:**
+
+| File | Purpose | When to Read |
+|------|---------|--------------|
+| `docs/index.md` | **Master documentation index** — complete map of all docs, status, and navigation | **First** — gives you the full map of all documentation |
+| `docs/architecture.md` | System design: sync engine, transform logic, CLI, project-level merge, data flow, distribution models | When working on sync engine, transform logic, or data flow |
+| `docs/roadmap.md` | Development phases, prioritized task lists (Up Next, Backlog, Deferred, Completed) | Before starting any task — check current goal and priorities |
+| `docs/tracker.md` | Sprint-level task management: current epic, tasks in progress, finished, pending | During active development — track current sprint state |
+| `docs/changelog.md` | Curated chronological log of notable changes per release (Keep a Changelog format) | When reviewing history or preparing releases |
+| `docs/project.md` | Product vision, target users, core use cases, domain concepts, success criteria | When needing product context or domain understanding |
+| `docs/roadmap.md` | Development phases, prioritized task lists (Up Next, Backlog, Deferred, Completed) | When planning or prioritizing work |
+| `README.md` | Project overview, features, tech stack, quick start, installation, usage | For quick project overview and setup instructions |
+| `CONTRIBUTING.md` | Human contributor guide: PR workflow, branch naming, commit conventions, dev setup | Before making contributions or PRs |
+| `CONTRIBUTING.md` (dev section) | Local development setup: prerequisites, npm install, build, dev commands, project structure | When setting up local dev environment |
+
+**Template & Reference Files:**
+
+| File | Purpose |
+|------|---------|
+| `agents/Agent.md.sample` | Complete agent template with all cross-platform fields (Claude + OpenCode) |
+| `skills/SKILL.md.sample` | Complete skill template with all fields and examples |
+| `skills/agent-creator/references/` | Agent creation references: AGENT_TEMPLATE.md, frontmatter.md, prompt.md, validation.md |
+| `skills/skill-creator/references/` | Skill creation references: SKILL_TEMPLATE.md, frontmatter.md, prompt.md, validation.md |
+| `skills/agentic-resource-gatherer/references/` | Research references: agent-repos.md, skill-repos.md |
+
+---
+
 ## Architecture Constraints
 
 When modifying files in this repository, you MUST follow these rules:
@@ -188,71 +230,6 @@ The `start.js` engine (published as `agentic-toolkit` binary) supports these CLI
 | Field | Description | Values |
 |-------|-------------|--------|
 | `targets` | Array of target platforms | `opencode`, `claude`, `agents` |
-
----
-
-## Frontmatter Field Reference
-
-### Cross-Platform Fields
-
-| Field | Description | Values |
-|-------|-------------|--------|
-| `name` | Agent identifier | Lowercase letters and hyphens |
-| `description` | When to delegate | Free-flowing paragraph with what, when, dont, returns |
-| `model` | Model to use | `inherit`, `sonnet`, `opus`, `haiku`, `provider/model-id` |
-| `color` | Display color | Platform-specific values |
-
-### Claude-Only Fields
-
-| Field | Description | Values |
-|-------|-------------|--------|
-| `tools` | Tool allowlist | Comma-separated: `Read, Write, Edit, Glob, Grep, Bash, ...` |
-| `disallowedTools` | Tool denylist | Comma-separated, supports MCP patterns |
-| `permissionMode` | Permission mode | `default`, `acceptEdits`, `auto`, `dontAsk`, `bypassPermissions`, `plan` |
-| `maxTurns` | Turn limit | Integer |
-| `skills` | Preloaded skills | Array of skill names |
-| `mcpServers` | MCP servers | Array of server configs or references |
-| `hooks` | Lifecycle hooks | Object with hook definitions |
-| `memory` | Memory scope | `user`, `project`, `local` |
-| `background` | Background mode | `true`, `false` |
-| `effort` | Effort level | `low`, `medium`, `high`, `xhigh`, `max` |
-| `isolation` | Worktree isolation | `worktree` |
-| `initialPrompt` | First user turn | String |
-
-### OpenCode-Only Fields
-
-| Field | Description | Values |
-|-------|-------------|--------|
-| `mode` | Agent type | `primary`, `subagent`, `all` |
-| `temperature` | Randomness | `0.0` - `1.0` |
-| `steps` | Iteration limit | Integer |
-| `disable` | Disable agent | `true`, `false` |
-| `prompt` | External prompt file | `{file:./path/to/prompt.txt}` |
-| `hidden` | Hide from autocomplete | `true`, `false` |
-| `top_p` | Diversity control | `0.0` - `1.0` |
-| `permission` | Tool permissions | Object with permission keys |
-| `reasoningEffort` | Provider parameter | Provider-specific |
-| `textVerbosity` | Provider parameter | Provider-specific |
-
-### OpenCode Permission Keys
-
-| Key | Controls |
-|-----|----------|
-| `read` | File reading |
-| `edit` | File writes, edits, patches |
-| `bash` | Shell commands (supports glob patterns) |
-| `glob` | File pattern matching |
-| `grep` | Content search |
-| `list` | Directory listing |
-| `task` | Subagent invocation |
-| `external_directory` | Tools outside worktree |
-| `todowrite` | Todo list management |
-| `webfetch` | Web content fetching |
-| `websearch` | Web searching |
-| `lsp` | Language Server Protocol |
-| `skill` | Skill invocation |
-| `question` | User questions |
-| `doom_loop` | Recovery when stuck |
 
 ---
 
