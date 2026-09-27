@@ -4,86 +4,57 @@
 
 ---
 
-## Current Sprint: v1.0.0 Release — Core Engine Hardening
+## Current Sprint: v0.1.0 Release — npm Publishing
 
-**Sprint Goal**: Replace regex frontmatter parser with YAML, add config validation, implement structured errors, achieve 80%+ test coverage.
+**Sprint Goal**: Publish `agentic-toolbox@0.1.0` to npm registry with proper CI/CD, provenance, and release automation.
 
 **Sprint Dates**: [Start Date] → [End Date]
 
 ---
 
-### 🔴 In Progress
+### 📋 Sprint Tasks
 
-| Task | Owner | Started | Notes |
-|------|-------|---------|-------|
-| 1.1 Replace regex frontmatter parser with `yaml` package | | | `src/transform.ts` — handle arrays, multiline, comments |
-| 1.2 Add JSON Schema validation for `agentic-toolkit.json` | | | Zod or native — validate targets array |
-
-### 🟡 Ready / Next Up
-
-| Task | Priority | Dependencies | Est. Effort |
-|------|----------|--------------|-------------|
-| 1.3 Structured error classes (`SyncError`, `ConfigError`, `TransformError`, `ParseError`) | High | 1.1, 1.2 | Low |
-| 2.1 Vitest setup + config | High | — | Medium |
-| 2.2 Transform unit tests | High | 1.1 | Medium |
-| 2.3 Config unit tests | High | 1.2 | Low |
-| 2.4 Sync unit tests | High | 1.3 | High |
-| 2.5 Integration test | High | 2.1-2.4 | Medium |
-
-### ✅ Completed This Sprint
-
-| Task | Completed | Notes |
-|------|-----------|-------|
-| Modular TypeScript architecture | ✅ | 7 modules |
-| Project-level merge | ✅ | `./agents/`, `./skills/` override |
-| CLI flags (`--config`, `--save`, `--dry-run`, `--verbose`, `--help`) | ✅ | |
-| Auto-discovery fallback | ✅ | |
-| Agent/skill templates | ✅ | |
-| Creation pipeline skills | ✅ | |
-| Build system + `prepublishOnly` | ✅ | |
-| Git submodule + npm local path support | ✅ | |
+| # | Task | Owner | Status | Started | Dependencies | Est. Effort | Notes |
+|---|------|-------|--------|---------|--------------|-------------|-------|
+| 1 | Create npm account & enable 2FA | | Done | | — | Low | Required for publishing |
+| 2 | `npm login` & verify | | Done | | npm account | Low | `npm whoami` should return username |
+| 3 | Generate granular npm access token (publish scope) | | Pending | | npm account | Low | |
+| 4 | Add `NPM_TOKEN` to GitHub repo secrets | | Pending | | npm token | Low | |
+| 5 | Create GitHub Actions publish workflow (`.github/workflows/publish.yml`) | | Pending | | — | Medium | |
+| 6 | Verify `npm pack` output locally | | Pending | | — | Low | |
+| 7 | Tag `v0.1.0` and push | | Pending | 3, 4, 5, 6 | Low | |
+| 8 | Create GitHub Release from tag | | Pending | 7 | Low | |
+| 9 | Verify published package install (`npm install agentic-toolbox`) | | Pending | 8 | Low | |
+| 10 | Update README with npm install instructions | | Pending | 9 | Low | |
+| 11 | Package renamed to `agentic-toolbox` | | Done | | — | Low | Bare name, available on npm |
+| 12 | Version set to `0.1.0` | | Done | | — | Low | Pre-1.0 release |
+| 13 | `prepublishOnly` script added | | Done | | — | Low | Runs build on publish |
+| 14 | `bin` field exposes `agentic-toolkit` command | | Done | | — | Low | |
+| 15 | `files` array configured correctly | | Done | | — | Low | Includes dist/, agents/, skills/ |
+| 16 | Local build verified | | Done | | — | Low | `npm run build` passes |
 
 ---
 
-## Backlog (Groomed)
-
-| Task | Priority | Epic | Est. Effort |
-|------|----------|------|-------------|
-| 3.1 Colorized terminal output | Medium | CLI Polish | Low |
-| 3.2 Verbose logging levels | Medium | CLI Polish | Low |
-| 3.3 `--diff` flag for `--save` | Medium | CLI Polish | Medium |
-| 4.1 GitHub Actions CI | Medium | CI/CD | Medium |
-| 4.2 GitHub Actions Release | Medium | CI/CD | Low |
-| 4.3 v1.0.0 tag + release | Medium | Release | Low |
-| Plugin System | Low | Future | High |
-| Additional Targets (Cursor, Zed, etc.) | Low | Future | Medium |
-| Manifest-based incremental sync | High | Performance | High |
-| Conflict detection on merge | Medium | Reliability | Medium |
-| Watch mode (`--watch`) | Low | UX | Medium |
-
----
-
-## Sprint Retrospective Notes
-
-### Sprint N (v1.0.0 Prep)
-**What went well**: Modular architecture clean, project merge working, templates comprehensive.
-**What needs improvement**: Regex parser fragile, no tests, no CI.
-**Action items**: Prioritize YAML parser + tests + CI for next sprint.
-
----
-
-## Velocity Tracking
-
-| Sprint | Planned | Completed | Carryover | Notes |
-|--------|---------|-----------|-----------|-------|
-| v1.0.0 Prep | 8 | 0 | 8 | Just starting |
-
----
-
-## Blockers
+### 🚫 Blockers
 
 | Blocker | Impact | Resolution |
 |---------|--------|------------|
-| Regex parser fragility | High — corrupts frontmatter on edge cases | Replace with `yaml` package (Task 1.1) |
-| No test coverage | High — cannot refactor safely | Vitest setup (Task 2.1) |
-| No CI | Medium — manual verification only | GitHub Actions (Task 4.1) |
+| No npm account / token | Blocks publish | Create account, generate granular token |
+| No GitHub Actions workflow | Blocks automated release | Create `.github/workflows/publish.yml` |
+
+---
+
+### 📊 Velocity Tracking
+
+| Sprint | Planned | Completed | Carryover | Notes |
+|--------|---------|-----------|-----------|-------|
+| v0.1.0 npm Publish | 16 | 8 | 8 | Focus: publish only |
+
+---
+
+## Notes
+
+- **Scope**: This tracker covers ONLY the npm publishing sprint.
+- **All other work** (YAML parser, tests, CI, CLI polish, plugin system, additional targets, etc.) lives in `docs/ROADMAP.md` for future sprints.
+- After v0.1.0 publish, next sprint will be "Core Engine Hardening" per Roadmap Phase 1.
+- Status values: `Done`, `In Progress`, `Pending`, `Blocked`
