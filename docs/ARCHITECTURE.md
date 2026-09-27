@@ -15,7 +15,7 @@ src/
 ├── config.ts           # Config loading + auto-discovery
 ├── constants.ts        # TOOL_MAP, STRIP_FIELDS, regexes
 ├── transform.ts        # Frontmatter transformation per platform
-├── sync.ts             # syncToTarget, saveFromTarget (with project merge)
+├── sync.ts             # syncToTarget (with project merge)
 └── types.ts            # TypeScript interfaces
 ```
 
@@ -24,7 +24,7 @@ src/
 | Concept | Resolution |
 |---------|------------|
 | Parent Project Root | `process.cwd()` |
-| Submodule/Toolkit Dir | `import.meta.url` → `__dirname` |
+| Toolkit Dir | `import.meta.url` → `__dirname` |
 | Config File | `agentic-toolkit.json` in parent root |
 
 ---
@@ -116,27 +116,6 @@ Project files **override** package files with the same name. This enables custom
 └─────────────────────┘
 ```
 
-### Reverse Sync (`--save`)
-
-```
-┌─────────────────────┐
-│  For Each Target    │
-└─────────┬───────────┘
-          │
-          ▼
-┌─────────────────────┐
-│  Scan agents/,      │
-│  skills/ in Target  │
-└─────────┬───────────┘
-          │
-          ▼
-┌─────────────────────┐
-│  Copy to Toolkit    │
-│  Source (agents/,   │
-│  skills/)           │
-└─────────────────────┘
-```
-
 ---
 
 ## 🛠️ Module Responsibilities
@@ -148,7 +127,7 @@ Project files **override** package files with the same name. This enables custom
 | `config.ts` | Config loading + auto-discovery | `loadConfig()`, `getParentProjectRoot()`, `getSubmoduleDir()` |
 | `constants.ts` | Shared constants | `TOOL_MAP`, `STRIP_FIELDS`, `FRONTMATTER_REGEX` |
 | `transform.ts` | Frontmatter transformation | `transformAgentContent()` |
-| `sync.ts` | Sync logic (forward + reverse) | `syncToTarget()`, `saveFromTarget()` |
+| `sync.ts` | Sync logic (forward) | `syncToTarget()` |
 | `types.ts` | TypeScript interfaces | `ToolMap`, `StripFields`, `AgenticToolkitConfig`, `CliOptions`, `SyncResult` |
 
 ---
@@ -208,29 +187,6 @@ return { targets: ['agents'] }
 
 ---
 
-## 📦 Distribution Models
-
-### 1. Git Submodule (Tool Development)
-```
-parent/
-├── tools/agentic-toolkit/     # Submodule
-│   ├── src/                   # TypeScript source
-│   ├── dist/                  # Compiled (generated)
-│   ├── agents/, skills/       # Templates
-│   └── package.json           # bin: dist/index.js
-```
-Consuming project links: `npm link` from toolkit, `npm link @riteshjain/agentic-toolkit` in parent.
-
-### 2. npm Dependency (Consumption)
-```json
-"devDependencies": {
-  "@riteshjain/agentic-toolkit": "git+https://github.com/ritesh-jain/agentic-toolkit.git#main"
-}
-```
-Binary available as `npx agentic-toolkit` or via npm scripts.
-
----
-
 ## 🔒 Security & Safety
 
 - **No symlinks** — eliminates link-based attacks
@@ -267,6 +223,5 @@ Binary available as `npx agentic-toolkit` or via npm scripts.
 ## 🚀 Deployment Pipeline
 
 1. **Local**: `npm run build` → `dist/`
-2. **Publish**: `npm version patch/minor/major` → `npm publish` (triggers `prepublishOnly`)
-3. **Consume**: `npm install git+https://...#v1.0.0`
-4. **Run**: `npx agentic-toolkit` or `npm run agent:sync`
+2. **Consume**: `npm install git+https://github.com/ritesh-jain/agentic-toolkit.git#main`
+3. **Run**: `npx agentic-toolkit` or `npm run agent:sync`
