@@ -30,12 +30,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ritesh-jain/agentic-toolkit.git"
+    "url": "git+https://github.com/ritesh-jain/agentic-toolbox.git"
   },
   "bugs": {
-    "url": "https://github.com/ritesh-jain/agentic-toolkit/issues"
+    "url": "https://github.com/ritesh-jain/agentic-toolbox/issues"
   },
-  "homepage": "https://github.com/ritesh-jain/agentic-toolkit#readme",
+  "homepage": "https://github.com/ritesh-jain/agentic-toolbox#readme",
   "license": "MIT",
   "keywords": [
     "ai",
