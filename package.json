@@ -1,8 +1,55 @@
 {
-  "name": "my-agent-toolkit",
-  "version": "0.0.1",
+  "name": "agentic-toolbox",
+  "version": "0.1.5",
+  "description": "Cross-platform AI agent & skill sync engine for Claude Code and OpenCode",
   "type": "module",
   "bin": {
-    "agent-sync": "./agent-sync.js"
+    "agentic-toolkit": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/",
+    "AGENTS.md",
+    "README.md",
+    "agents/",
+    "skills/"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ritesh-jain/agentic-toolbox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ritesh-jain/agentic-toolbox/issues"
+  },
+  "homepage": "https://github.com/ritesh-jain/agentic-toolbox#readme",
+  "license": "MIT",
+  "keywords": [
+    "ai",
+    "agents",
+    "skills",
+    "claude",
+    "opencode",
+    "sync"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.11.0"
   }
 }

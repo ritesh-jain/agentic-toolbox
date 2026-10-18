@@ -1,102 +1,326 @@
 # 🚀 Cross-Platform AI Agent & Skill Sync Engine
 
-A tool-agnostic, FOSS-aligned configuration pipeline built to manage custom AI coding personas (`agents`) and utility capabilities (`skills`) across diverse project stacks. 
-
-By functioning as a standalone local Node.js binary, this engine abstracts away platform fragmentation—allowing you to maintain a single, pristine repository of prompt engineering assets that deploy dynamically into environments like **OpenCode**, **Claude Code**, or standard configuration runtimes.
+A tool-agnostic configuration pipeline that manages your AI coding personas (`agents`) and automated utility capabilities (`skills`) across multiple projects and platforms.
 
 ---
 
-## 🏛️ Architectural Overview
+## What This Does
 
-This repository is designed to live as a **Git Submodule** within various parent project repositories (Node.js, Java, Go, Python, etc.). 
+Different AI coding tools expect configuration files in different locations:
 
-It operates on a strict **Deterministic Copy-on-Demand** paradigm. It eliminates cross-platform file system vulnerabilities (such as broken symlinks or OS path mutations) by physically purging and layering configuration profiles into transient directories ignored by the parent project.
+| Tool | Expected Location |
+|------|-------------------|
+| **OpenCode** | `.opencode/` |
+| **Claude Code** | `.claude/` |
+| **Standard** | `.agents/` |
 
-### System File Topology
-```text
-[Parent Project Root] (Any Language Stack)
-├── agent-config.json         <-- Superset/Explicit orchestration manifest
-├── [Target Tool Dir]/        <-- Generated transient runtime folder (e.g., .opencode, .claude)
-└── agents/                    <-- This Submodule (Centralized Tracking Repo)
-    ├── package.json          <-- Declares the binary orchestration hook
-    ├── agent-sync.js         <-- Core JS Engine (Self-contained, Zero-dependency)
-    ├── agents/               <-- Global reusable agent definitions (.json)
-    └── skills/               <-- Global reusable utility scripts (.js / .md)
+This package acts as a **single source of truth** that syncs your agents and skills to whatever tool each project uses. No broken symlinks, no cross-platform issues.
+
+---
+
+## Installation
+
+Install as an npm package from GitHub. Requires Node.js `>=18`.
+
+```bash
+# HTTPS (public repo — works everywhere, no SSH keys needed)
+npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git
+
+# Or SSH (if you have GitHub SSH keys set up)
+npm install --save-dev git+ssh://git@github.com/ritesh-jain/agentic-toolkit.git
+
+# Pin to a branch/tag/commit if needed
+npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git#main
+npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git#v0.1.0
 ```
 
----
-
-## ⚙️ Core Configuration Design
-
-The engine evaluates execution states via a layered hierarchy, prioritizing explicit intent over implicit environmental foot-printing.
-
-### 1. Explicit Superset Configuration (`agent-config.json`)
-Placed at the parent project root, this file dictates precise mapping definitions and supports **Polymorphic Schema Inheritance**:
+This adds to your `package.json`:
 
 ```json
 {
-  "extends": "opencode.json",
-  "active_tool": "opencode"
+  "devDependencies": {
+    "@riteshjain/agentic-toolkit": "git+https://github.com/ritesh-jain/agentic-toolkit.git"
+  }
 }
 ```
-*If `extends` is declared, the engine ingests the native tool parameters (e.g., model definitions or temperatures from `opencode.json`) and layers custom toolkit extensions smoothly on top.*
 
-### 2. Implicit Footprint Auto-Discovery
-If no `agent-config.json` is detected, the engine executes a zero-config fallback sequence, sniffing for native signatures:
-*   `opencode.json` → Targets `/.opencode`
-*   `claude.json` or `.clauderc` → Targets `/.claude`
-*   *Default Fallback* → Targets `/.agents`
-
----
-
-## 🚀 Usage & Workflows
-
-Because this engine acts as an encapsulated package, it execution footprints are identical across all language ecosystems.
-
-### Daily Execution Commands
-Execute directly from your parent project root using `npx`:
-
-```bash
-# Forward Sync: Wipe target folder and compile down fresh assets
-npx ./agents agent-sync
-
-# Reverse Sync (Upstream Save): Pull modified active states back to the submodule
-npx ./agents agent-sync --save
-
-# Delta Sync (Save If New): Isolate and capture only brand-new workspace assets
-npx ./agents agent-sync --saveIfNew
-```
-
-### Node.js/JS Parent Project Optimization
-For JavaScript-heavy projects, bypass direct execution paths by mapping proxies directly into your root `package.json` to safely avoid script argument swallowing:
+### 2. Add npm Scripts
 
 ```json
-"scripts": {
-  "agent": "npx ./agents agent-sync",
-  "agent:sync": "npm run agent",
-  "agent:save": "npm run agent -- --save",
-  "agent:save-new": "npm run agent -- --saveIfNew"
+{
+  "scripts": {
+    "agent:sync": "agentic-toolkit"
+  }
 }
+```
+
+The binary `agentic-toolkit` is exposed via `package.json:bin` → `dist/index.js` and is available automatically through `npx` / npm scripts.
+
+### 3. Create Config File
+
+Create `agentic-toolkit.json` in your project root:
+
+```json
+{
+  "targets": ["opencode", "claude"]
+}
+```
+
+### 4. Run Sync
+
+```bash
+npm run agent:sync
+# or directly
+npx agentic-toolkit
+npx agentic-toolkit --config ./agentic-toolkit.json
+```
+
+### Updating
+
+```bash
+npm update @riteshjain/agentic-toolkit
+# or reinstall to pull latest main
+npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git#main
 ```
 
 ---
 
-## 🛡️ DevOps & Housekeeping Practices
+## Commands
 
-To preserve pristine Git environments, always ensure the auto-generated workspace runtime folders are omitted from parent tracking. 
+| Command | Description |
+|---------|-------------|
+| `agentic-toolkit` | Sync agents/skills from toolkit to target dirs |
+| `agentic-toolkit --config <path>` | Use a non-default config file |
+| `agentic-toolkit --dry-run` | Preview what would be synced without making changes |
+| `agentic-toolkit --verbose` | Enable verbose output |
+| `agentic-toolkit --help` | Show help message |
 
-Append the following blocks to your parent project's root `.gitignore` file:
+Via npm scripts:
 
-```text
-# Ignore transient, auto-generated agent targets
+```bash
+npm run agent:sync        # → agentic-toolkit
+```
+
+---
+
+## Configuration
+
+### `agentic-toolkit.json`
+
+Located in the **parent project root** (alongside `package.json`).
+
+| Field | Description |
+|-------|-------------|
+| `targets` | Array of target platforms: `opencode`, `claude`, or `agents` |
+
+### Example Configurations
+
+Sync to OpenCode only:
+```json
+{ "targets": ["opencode"] }
+```
+
+Sync to both OpenCode and Claude:
+```json
+{ "targets": ["opencode", "claude"] }
+```
+
+Sync to all platforms:
+```json
+{ "targets": ["opencode", "claude", "agents"] }
+```
+
+### Auto-Discovery
+
+If `agentic-toolkit.json` is missing, the engine auto-detects:
+- `opencode.json` → targets `.opencode/`
+- `claude.json` or `.clauderc` → targets `.claude/`
+- Otherwise → targets `.agents/`
+
+### Custom Config Path
+
+```bash
+agentic-toolkit --config ./my-custom-config.json
+```
+
+---
+
+## Repository Structure
+
+### When installed via npm
+
+```
+parent-project/
+├── package.json
+├── agentic-toolkit.json
+├── node_modules/@riteshjain/agentic-toolkit/
+│   ├── package.json         # CLI binary: agentic-toolkit → dist/index.js
+│   ├── dist/                # Compiled output (generated)
+│   │   └── index.js         # Sync engine
+│   ├── AGENTS.md            # Instructions for AI models
+│   ├── README.md            # This file
+│   ├── agents/              # Agent definitions
+│   │   ├── Agent.md.sample
+│   │   └── *.md
+│   └── skills/              # Skill definitions
+│       ├── SKILL.md.sample
+│       └── */               # Skill dirs with SKILL.md
+├── .opencode/               # Generated (gitignored)
+├── .claude/                 # Generated (gitignored)
+└── .agents/                 # Generated (gitignored)
+```
+
+---
+
+## Creating New Agents
+
+### Option A: Use the Creation Pipeline (Recommended)
+
+The toolkit includes an orchestration agent `agentic-tools-creator` that uses three skills to create agents:
+
+1. **agentic-resource-gatherer** — Searches public repos for similar agents
+2. **agent-creator** — Generates the agent file
+3. **agentic-tools-creator** — Orchestrates the workflow
+
+Invoke via your AI assistant (Claude/OpenCode) with the agentic-tools-creator agent.
+
+### Option B: Manual Creation
+
+1. Copy the template:
+
+   ```bash
+   cp node_modules/@riteshjain/agentic-toolkit/agents/Agent.md.sample agents/MyAgent.md
+   ```
+
+2. Edit the new file with your agent's configuration
+
+3. Run sync:
+
+   ```bash
+   npm run agent:sync
+   ```
+
+### Agent Description Format
+
+Every agent description MUST be a free-flowing paragraph that includes:
+- What this agent does (its core capability)
+- When to call this agent (trigger conditions)
+- What NOT to use it for (exclusions)
+- What it returns (for subagents, omit for primary agents)
+
+---
+
+## Creating New Skills
+
+### Option A: Use the Creation Pipeline
+
+Same as agents — use the `agentic-tools-creator` agent with type="skill".
+
+### Option B: Manual Creation
+
+1. Create a directory for the skill:
+   ```bash
+   mkdir -p skills/my-skill
+   ```
+
+2. Copy the template:
+
+   ```bash
+   cp node_modules/@riteshjain/agentic-toolkit/skills/SKILL.md.sample skills/my-skill/SKILL.md
+   ```
+
+3. Edit the new file with your skill's configuration
+
+4. Run sync:
+
+   ```bash
+   npm run agent:sync
+   ```
+
+### Skill File Structure
+
+Skills must be placed in a directory with `SKILL.md` as the entrypoint:
+
+```
+skills/
+└── my-skill/
+    ├── SKILL.md           # Main instructions (required)
+    ├── template.md        # Optional template
+    ├── examples/
+    │   └── sample.md      # Optional examples
+    └── scripts/
+        └── helper.sh      # Optional scripts
+```
+
+### Skill Description Format
+
+Every skill description MUST be a free-flowing paragraph that includes:
+- What this skill does (its purpose)
+- When to invoke it (trigger conditions)
+- What NOT to use it for (exclusions)
+- What it returns (output structure)
+
+---
+
+## Gitignore
+
+Add these to your parent project's `.gitignore`:
+
+```gitignore
+# AI Agent Toolkit - Generated directories
 .opencode/
 .claude/
 .agents/
-
-# Do NOT ignore the submodule directory tracking your assets
-!agents/
 ```
 
-## 🧠 Strategic Engineering Capabilities
-*   **Encapsulated Runtime Isolation:** Dependencies required by advanced modules inside this toolkit are isolated strictly within this submodule folder, leaving parent project `node_modules` pristine.
-*   **Bi-Directional State Continuity:** The `--save` and `--saveIfNew` mechanisms allow you to organically evolve prompts and tools inside your IDE's active AI agent runtime session, then reliably commit those updates back to this central submodule codebase.
+---
+
+## Platform Compatibility
+
+This toolkit works with both Claude and OpenCode. Agent files use a superset of both platforms' configuration options:
+
+| Feature | Claude | OpenCode |
+|---------|--------|----------|
+| Tool control | `tools` field | `permission` field |
+| Model selection | `model` aliases | `provider/model-id` |
+| Permission modes | `permissionMode` | `permission` object |
+| Turn limits | `maxTurns` | `steps` |
+| Memory | `memory` field | Not supported |
+| MCP servers | `mcpServers` field | Not in agents |
+
+For detailed field documentation, see `agents/Agent.md.sample`.
+
+---
+
+## How It Works
+
+The sync engine (`dist/index.js`, published as `agentic-toolkit` binary) reads your master agent/skill files (which contain a **superset** of all platform fields), then **transforms** them per target:
+
+- **For OpenCode**: Strips Claude-only fields (`tools`, `permissionMode`, `maxTurns`, `skills`, `mcpServers`, `hooks`, `memory`, `background`, `effort`, `isolation`, `initialPrompt`)
+- **For Claude**: Strips OpenCode-only fields (`permission`, `mode`, `temperature`, `steps`, `disable`, `prompt`, `hidden`, `top_p`, `reasoningEffort`, `textVerbosity`)
+- **For Standard**: No transformation (keeps all fields)
+
+This means you maintain **one master file** per agent/skill, and get platform-optimized configs automatically.
+
+---
+
+## Troubleshooting
+
+### Sync not working
+
+1. Verify `agentic-toolkit.json` exists in project root
+2. Check the toolkit is installed:
+   ```bash
+   ls node_modules/@riteshjain/agentic-toolkit/dist/index.js
+   npx agentic-toolkit --config ./agentic-toolkit.json
+   ```
+
+### Wrong target directory
+
+Check your `agentic-toolkit.json` `targets` value, or let auto-discovery work by removing the config file.
+
+---
+
+## License
+
+MIT — See LICENSE for details.
