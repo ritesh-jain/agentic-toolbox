@@ -46,19 +46,12 @@ jobs:
           echo "PR version: $PR_VERSION"
           echo "Main version: $MAIN_VERSION"
           
-          # Use node semver to compare (gt = greater than)
-          if ! node -e "
-            const semver = require('semver');
-            const pr = '$PR_VERSION';
-            const main = '$MAIN_VERSION';
-            if (!semver.gt(pr, main)) {
-              console.error('ERROR: PR version (' + pr + ') must be strictly greater than main version (' + main + ')');
-              process.exit(1);
-            }
-            console.log('Version check passed: ' + pr + ' > ' + main);
-          "; then
+          # Use npx semver with proper range syntax
+          if ! npx semver "$PR_VERSION" -r ">$MAIN_VERSION"; then
+            echo "ERROR: PR version ($PR_VERSION) must be strictly greater than main version ($MAIN_VERSION)"
             exit 1
           fi
+          echo "Version check passed: $PR_VERSION > $MAIN_VERSION"
 
       - name: Verify package.json validity
         run: npm pkg fix --dry-run
