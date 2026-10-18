@@ -1,0 +1,57 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main-branch
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies (PR)
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+      - name: Check version increment
+        run: |
+          PR_VERSION=$(node -p "require('./package.json').version")
+          MAIN_VERSION=$(node -p "require('./main-branch/package.json').version")
+          
+          echo "PR version: $PR_VERSION"
+          echo "Main version: $MAIN_VERSION"
+          
+          # Use npx semver to compare (will install if needed)
+          if ! npx semver -r '>' "$PR_VERSION" "$MAIN_VERSION"; then
+            echo "ERROR: PR version ($PR_VERSION) must be strictly greater than main version ($MAIN_VERSION)"
+            exit 1
+          fi
+          echo "Version check passed: $PR_VERSION > $MAIN_VERSION"
+
+      - name: Verify package.json validity
+        run: npm pkg fix --dry-run
