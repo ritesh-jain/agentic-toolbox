@@ -1,6 +1,6 @@
-# Contributing to Agentic Toolkit
+# Contributing to Agentic Toolbox
 
-Thank you for your interest in contributing to Agentic Toolkit! We welcome contributions that improve the sync engine, add platform support, enhance agent/skill templates, or fix bugs.
+Thank you for your interest in contributing to Agentic Toolbox! We welcome contributions that improve the sync engine, add platform support, enhance agent/skill templates, or fix bugs.
 
 ## 🚀 Getting Started
 
@@ -14,8 +14,8 @@ Thank you for your interest in contributing to Agentic Toolkit! We welcome contr
 
 ```bash
 # Clone the repository
-git clone https://github.com/ritesh-jain/agentic-toolkit.git
-cd agentic-toolkit
+git clone https://github.com/ritesh-jain/agentic-toolbox.git
+cd agentic-toolbox
 
 # Install dependencies
 npm install

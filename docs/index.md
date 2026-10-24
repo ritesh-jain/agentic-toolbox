@@ -1,6 +1,6 @@
-# Documentation Index for Agentic Toolkit
+# Documentation Index for Agentic Toolbox
 
-This document is a living scratchpad that captures the planned documentation structure for the Agentic Toolkit project.
+This document is a living scratchpad that captures the planned documentation structure for the Agentic Toolbox project.
 
 ---
 

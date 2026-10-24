@@ -1,10 +1,10 @@
 {
   "name": "agentic-toolbox",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "Cross-platform AI agent & skill sync engine for Claude Code and OpenCode",
   "type": "module",
   "bin": {
-    "agentic-toolkit": "./dist/index.js"
+    "agentic-toolbox": "./dist/index.js"
   },
   "exports": {
     ".": {
@@ -49,6 +49,7 @@
     "node": ">=18.0.0"
   },
   "devDependencies": {
+    "agentic-toolbox": "0.1.8",
     "typescript": "^5.4.0",
     "@types/node": "^20.11.0"
   }

@@ -1,30 +1,33 @@
-## [0.1.8](https://github.com/ritesh-jain/agentic-toolbox/compare/v0.1.7...v0.1.8) (2026-10-24)
-
-
-### Bug Fixes
-
-* reorder semantic-release plugins (npm before git) and remove [skip ci] from release commit ([09c6873](https://github.com/ritesh-jain/agentic-toolbox/commit/09c6873f839ad80249f3e58c8d44f6505b86b3ac))
-
-## [0.1.7](https://github.com/ritesh-jain/agentic-toolbox/compare/v0.1.6...v0.1.7) (2026-10-24)
-
-
-### Bug Fixes
-
-* align CHANGELOG.md with v0.1.6 tag ([dba5e85](https://github.com/ritesh-jain/agentic-toolbox/commit/dba5e85c0297fb980961f2aa02fd0e56bcdc620c))
-
 # Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [0.1.6] - 2026-10-24
+## [0.1.8] - 2026-10-24
 
-### Bug Fixes
+### Added
+- **CI/CD Pipeline**: GitHub Actions workflows for validation and npm staging
+  - `validate.yml`: Runs on PR — build, test, package.json validation
+  - `publish.yml`: Runs on merge to main — stages to npm via OIDC
+- **npm OIDC Trusted Publisher**: Configured for automated staging with provenance
+- **Manual Release Flow**: Version bump via `npm version`, PR validation, merge, stage, manual promote
 
-* update repository URL to match actual repo name (agentic-toolbox) ([af11124](https://github.com/ritesh-jain/agentic-toolbox/commit/af11124520d32c6630823c7be3ff928db8815271))
-* use correct npx semver syntax for version comparison ([b6cc84f](https://github.com/ritesh-jain/agentic-toolbox/commit/b6cc84ffbd900a9046736c5a8d6f65b34d3a8fd1))
-* use semver.gt() for proper version comparison in PR validation ([f0e1c43](https://github.com/ritesh-jain/agentic-toolbox/commit/f0e1c4334344e17fcef2728457296c2730fc67c3))
+### Changed
+- **Release Process**: Reverted from semantic-release to simple manual flow
+- **Workflows**: Removed semantic-release automation; kept `validate.yml` and `publish.yml`
+
+## [0.1.5] - 2026-10-18
+
+### Added
+- **npm Publishing**: Package published to npm registry as `agentic-toolbox`
+- **GitHub Actions CI**: Automated validation on PR (build, test, package.json check)
+- **npm Staging**: Automated `npm stage publish` on merge with OIDC provenance
+- **Manual Promote**: `npm promote` for controlled public release
+
+### Changed
+- **Distribution**: npm-only (removed git submodule support)
+- **Package Name**: `@riteshjain/agentic-toolkit` → `agentic-toolbox` (bare name)
 
 ## [0.1.0] - 2026-09-27
 

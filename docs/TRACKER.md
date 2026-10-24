@@ -1,4 +1,4 @@
-# Sprint Tracker — Agentic Toolkit
+# Sprint Tracker — Agentic Toolbox
 
 > **Purpose**: Sprint-level, immediate task management. The micro-level companion to the Roadmap. Details the current epic, tasks in progress, finished steps, and pending items.
 
@@ -29,7 +29,7 @@
 | 11 | Package renamed to `agentic-toolbox` | | Done | | — | Low | Bare name, available on npm |
 | 12 | Version set to `0.1.0` | | Done | | — | Low | Pre-1.0 release |
 | 13 | `prepublishOnly` script added | | Done | | — | Low | Runs build on publish |
-| 14 | `bin` field exposes `agentic-toolkit` command | | Done | | — | Low | |
+| 14 | `bin` field exposes `agentic-toolbox` command | | Done | | — | Low | |
 | 15 | `files` array configured correctly | | Done | | — | Low | Includes dist/, agents/, skills/ |
 | 16 | Local build verified | | Done | | — | Low | `npm run build` passes |
 

@@ -35,6 +35,6 @@ export const STRIP_FIELDS: StripFields = {
   ],
 } as const;
 
-export const DEFAULT_CONFIG_NAME = 'agentic-toolkit.json';
+export const DEFAULT_CONFIG_NAME = 'agentic-toolbox.json';
 
 export const FRONTMATTER_REGEX = /^(---\n)([\s\S]*?)(\n---)/;

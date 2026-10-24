@@ -25,7 +25,7 @@
 - [ ] Preserve field stripping behavior for OpenCode/Claude
 
 **1.2 Config Schema Validation**
-- [ ] Add JSON Schema validation for `agentic-toolkit.json` (Zod or native)
+- [ ] Add JSON Schema validation for `agentic-toolbox.json` (Zod or native)
 - [ ] Validate `targets` array, reject unknown fields
 
 **1.3 Structured Error Classes**

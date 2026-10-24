@@ -14,18 +14,18 @@ export function parseArgs(args: string[]): { configPath?: string; dryRun: boolea
 
 export function printHelp(): void {
   console.log(`
-Agentic Toolkit - Cross-platform AI agent & skill sync engine
+Agentic Toolbox - Cross-platform AI agent & skill sync engine
 
 Usage:
-  agentic-toolkit [options]
+  agentic-toolbox [options]
 
 Options:
-  --config <path>     Use a custom config file (default: agentic-toolkit.json)
+  --config <path>     Use a custom config file (default: agentic-toolbox.json)
   --dry-run           Preview what would be synced without making changes
   --verbose, -v       Enable verbose output
   --help, -h          Show this help message
 
-Configuration (agentic-toolkit.json):
+Configuration (agentic-toolbox.json):
   {
     "targets": ["opencode", "claude", "agents"]
   }
@@ -42,9 +42,9 @@ Auto-discovery (when config file is missing):
   (default)        -> targets .agents/
 
 Examples:
-  agentic-toolkit                    # Sync to all configured targets
-  agentic-toolkit --dry-run --verbose # Preview with verbose output
-  agentic-toolkit --config ./custom.json # Use custom config
+  agentic-toolbox                    # Sync to all configured targets
+  agentic-toolbox --dry-run --verbose # Preview with verbose output
+  agentic-toolbox --config ./custom.json # Use custom config
 `);
 }
 
