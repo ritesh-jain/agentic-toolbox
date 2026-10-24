@@ -1,3 +1,10 @@
+## [0.1.8](https://github.com/ritesh-jain/agentic-toolbox/compare/v0.1.7...v0.1.8) (2026-10-24)
+
+
+### Bug Fixes
+
+* reorder semantic-release plugins (npm before git) and remove [skip ci] from release commit ([09c6873](https://github.com/ritesh-jain/agentic-toolbox/commit/09c6873f839ad80249f3e58c8d44f6505b86b3ac))
+
 ## [0.1.7](https://github.com/ritesh-jain/agentic-toolbox/compare/v0.1.6...v0.1.7) (2026-10-24)
 
 
