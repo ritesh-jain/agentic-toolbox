@@ -16,8 +16,10 @@
       ]
     }],
     "@semantic-release/changelog",
-    "@semantic-release/git",
-    ["@semantic-release/github", { "assets": [] }],
-    ["@semantic-release/npm", { "npmPublish": false }]
+    ["@semantic-release/npm", { "npmPublish": false }],
+    ["@semantic-release/git", {
+      "message": "chore(release): ${nextRelease.version}"
+    }],
+    ["@semantic-release/github", { "assets": [] }]
   ]
 }
