@@ -1,0 +1,40 @@
+name: Publish
+
+on:
+  push:
+    tags: [v*]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    name: Stage to npm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Install latest npm to ensure:
+      # - `npm stage publish` exists (added in npm 10.8)
+      # - `--provenance` flag works reliably (fixed in later 10.x patches)
+      # - Latest security fixes
+      # Remove this when Node's bundled npm >= 10.8 with working provenance
+      - name: Upgrade npm to latest
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Stage package to npm
+        run: npm stage publish --access public --provenance
