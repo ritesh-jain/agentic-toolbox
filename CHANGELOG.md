@@ -1,8 +1,67 @@
-## [0.1.4](https://github.com/ritesh-jain/agentic-toolbox/compare/v0.1.3...v0.1.4) (2026-10-24)
+# Changelog
 
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+
+## [0.1.6] - 2026-10-24
 
 ### Bug Fixes
 
 * update repository URL to match actual repo name (agentic-toolbox) ([af11124](https://github.com/ritesh-jain/agentic-toolbox/commit/af11124520d32c6630823c7be3ff928db8815271))
 * use correct npx semver syntax for version comparison ([b6cc84f](https://github.com/ritesh-jain/agentic-toolbox/commit/b6cc84ffbd900a9046736c5a8d6f65b34d3a8fd1))
 * use semver.gt() for proper version comparison in PR validation ([f0e1c43](https://github.com/ritesh-jain/agentic-toolbox/commit/f0e1c4334344e17fcef2728457296c2730fc67c3))
+
+## [0.1.0] - 2026-09-27
+
+### Added
+- **Modular TypeScript Architecture**: Split `start.js` into 7 modules (`index`, `cli`, `config`, `constants`, `transform`, `sync`, `types`) with strict TypeScript
+- **Project-Level Merge**: Sync now merges `./agents/` and `./skills/` from consuming project, overriding package templates
+- **CLI Flags**: `--config`, `--dry-run`, `--verbose`, `--help`
+- **Auto-Discovery**: Falls back to `opencode.json` → `.opencode/`, `claude.json`/`.clauderc` → `.claude/`, default → `.agents/`
+- **Agent Templates**: Complete cross-platform `agents/Agent.md.sample` with all Claude and OpenCode fields
+- **Skill Templates**: Complete cross-platform `skills/SKILL.md.sample` with all fields
+- **Creation Pipeline Skills**: `agent-creator`, `skill-creator`, `agentic-resource-gatherer` with references and examples
+- **Build System**: `tsc` with declaration maps, source maps
+- **npm Dependency**: Supports npm package consumption from GitHub (package name: `agentic-toolbox`)
+
+### Changed
+- **Sync Engine**: Rewritten in TypeScript with modular architecture
+- **Field Stripping**: Moved to `constants.ts` with `STRIP_FIELDS` map
+- **Config Loading**: Extracted to `config.ts` with auto-discovery
+- **CLI**: Argument parsing, help, and orchestration in `cli.ts`
+- **Package renamed**: `@riteshjain/agentic-toolkit` → `agentic-toolbox` (bare name)
+- **Distribution**: npm-only (removed git submodule support)
+
+### Removed
+- **Reverse sync**: `--save` flag and `saveFromTarget()` functionality
+- **Legacy entry point**: `start.js` removed (replaced by `src/index.ts` → `dist/index.js`)
+- **Git submodule support**: Documentation and code paths removed
+
+### Fixed
+- **Project Merge Order**: Package agents/skills copied first, then project files override
+- **Path Resolution**: Uses `process.cwd()` for parent, `import.meta.url` for toolkit dir
+
+---
+
+## Release Notes Template
+
+### [X.Y.Z] - YYYY-MM-DD
+
+#### Added
+- Feature descriptions
+
+#### Changed
+- Changes to existing functionality
+
+#### Deprecated
+- Soon-to-removed features
+
+#### Removed
+- Removed features
+
+#### Fixed
+- Bug fixes
+
+#### Security
+- Vulnerability fixes
