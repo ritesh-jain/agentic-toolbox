@@ -1,3 +1,10 @@
+## [0.1.7](https://github.com/ritesh-jain/agentic-toolbox/compare/v0.1.6...v0.1.7) (2026-10-24)
+
+
+### Bug Fixes
+
+* align CHANGELOG.md with v0.1.6 tag ([dba5e85](https://github.com/ritesh-jain/agentic-toolbox/commit/dba5e85c0297fb980961f2aa02fd0e56bcdc620c))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
