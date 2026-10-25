@@ -1,7 +1,6 @@
 {
   "targets": [
     "opencode",
-    "claude",
     "agents"
   ],
   "sync": {
