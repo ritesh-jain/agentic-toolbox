@@ -27,7 +27,7 @@ This package acts as a **single source of truth** that syncs your agents and ski
 npm install --save-dev agentic-toolbox
 
 # Or pin to a specific version
-npm install --save-dev agentic-toolbox@0.1.8
+npm install --save-dev agentic-toolbox@0.3.0
 ```
 
 This adds to your `package.json`:
@@ -35,7 +35,7 @@ This adds to your `package.json`:
 ```json
 {
   "devDependencies": {
-    "agentic-toolbox": "^0.1.8"
+    "agentic-toolbox": "^0.3.0"
   }
 }
 ```
