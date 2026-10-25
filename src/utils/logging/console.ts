@@ -1,13 +1,19 @@
 // Console logger implementation
-import { LogLevel, Logger } from './levels.js';
+import { LogLevel, Logger, LoggerOptions } from './levels.js';
 
 export class ConsoleLogger implements Logger {
   private level: LogLevel;
   private useColor: boolean;
+  private stream: NodeJS.WritableStream;
+  private errorStream: NodeJS.WritableStream;
 
-  constructor(level: LogLevel = 'info', useColor: boolean = true) {
-    this.level = level;
-    this.useColor = useColor && process.stdout.isTTY;
+  constructor(options: LoggerOptions = {}) {
+    this.level = options.level ?? 'info';
+    this.stream = options.stream ?? process.stdout;
+    this.errorStream = options.errorStream ?? process.stderr;
+
+    const isTTY = Boolean((this.stream as { isTTY?: boolean }).isTTY);
+    this.useColor = (options.useColor ?? true) && isTTY;
   }
 
   setLevel(level: LogLevel): void {
@@ -15,7 +21,26 @@ export class ConsoleLogger implements Logger {
   }
 
   setColor(enabled: boolean): void {
-    this.useColor = enabled && process.stdout.isTTY;
+    const isTTY = Boolean((this.stream as { isTTY?: boolean }).isTTY);
+    this.useColor = enabled && isTTY;
+  }
+
+  setStream(stream: NodeJS.WritableStream): void {
+    this.stream = stream;
+    const isTTY = Boolean((this.stream as { isTTY?: boolean }).isTTY);
+    this.useColor = this.useColor && isTTY;
+  }
+
+  setErrorStream(errorStream: NodeJS.WritableStream): void {
+    this.errorStream = errorStream;
+  }
+
+  getStream(): NodeJS.WritableStream {
+    return this.stream;
+  }
+
+  getErrorStream(): NodeJS.WritableStream {
+    return this.errorStream;
   }
 
   debug(message: string, ...args: unknown[]): void {
@@ -45,21 +70,17 @@ export class ConsoleLogger implements Logger {
 
     const prefix = this.getPrefix(level);
     const formattedArgs = args.length > 0 ? ' ' + args.map(String).join(' ') : '';
-    const output = `${prefix} ${message}${formattedArgs}`;
+    const output = `${prefix} ${message}${formattedArgs}\n`;
 
     switch (level) {
       case 'debug':
       case 'info':
-        console.log(output);
+      case 'success':
+        this.stream.write(output);
         break;
       case 'warn':
-        console.warn(output);
-        break;
       case 'error':
-        console.error(output);
-        break;
-      case 'success':
-        console.log(output);
+        this.errorStream.write(output);
         break;
     }
   }
@@ -100,6 +121,10 @@ export class ConsoleLogger implements Logger {
     };
     return `${colors[color]}[${text}]${colors.reset}`;
   }
+}
+
+export function createLogger(options?: LoggerOptions): Logger {
+  return new ConsoleLogger(options);
 }
 
 export const logger = new ConsoleLogger();
