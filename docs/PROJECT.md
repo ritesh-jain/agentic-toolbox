@@ -22,7 +22,7 @@ Unlike tool-specific configuration managers, Agentic Toolbox:
 
 ## 2. Target Audience
 
-Agentic Toolkit is designed for:
+Agentic Toolbox is designed for:
 
 - **AI-Assisted Developers** — Engineers who use AI coding assistants daily and want consistent agent/skill configurations across tools
 - **Tool Developers** — Creators of AI coding assistants who want a standard format for agent/skill definitions
@@ -44,12 +44,20 @@ Authors write agents/skills using a superset of all platform fields. The toolkit
 ### 3.3. Project-Level Customization
 Consuming projects can maintain their own `./agents/` and `./skills/` directories. On sync, these **override** package templates, allowing project-specific customizations without forking the toolkit.
 
-### 3.4. Toolkit Development
+### 3.4. Bootstrapping / Self-Hosting
+The toolkit is designed for **bootstrapping** — the published npm package (`agentic-toolbox@0.1.8`) is installed as a devDependency and used to develop the toolkit itself. This creates a **recursive improvement cycle**:
+- Published sync engine manages the toolkit's own agents and skills
+- Published creation skills (`agent-creator`, `skill-creator`, `agentic-resource-gatherer`) build new agents and skills for the toolkit
+- **Recursive improvement loop**: toolkit → better agents/skills → better toolkit
+
+This approach, known as **bootstrapping** in software engineering, ensures the toolkit validates itself in real-world usage and continuously improves through self-application.
+
+### 3.5. Toolkit Development (Traditional)
 Developers can work on the toolkit directly with full TypeScript support, watch mode (`npm run dev`), and build pipeline (`npm run build`).
 
 ---
 
-## 4. Domain Concepts (The Agentic Toolkit Ontology)
+## 4. Domain Concepts (The Agentic Toolbox Ontology)
 
 | Concept | Definition | Relationship |
 |----------|------------|--------------|
@@ -64,11 +72,12 @@ Developers can work on the toolkit directly with full TypeScript support, watch 
 
 ## 5. Success Criteria (The "Definition of Done")
 
-From a product perspective, Agentic Toolkit is successful when:
+From a product perspective, Agentic Toolbox is successful when:
 
 1. **Reliability**: A user can define an agent once, run `agentic-toolbox`, and get working configurations in `.opencode/`, `.claude/`, and `.agents/` without manual edits.
 2. **Fidelity**: No data loss during transform — all compatible fields preserved, incompatible fields cleanly stripped.
 3. **Extensibility**: Project-level customizations work seamlessly.
 4. **Developer Experience**: `npm run build && npx agentic-toolbox` works out of the box; clear error messages; helpful `--help`.
 5. **Reliability**: Zero data corruption — sync never loses user data, `--dry-run` accurately previews changes.
-6. **Adoption**: Toolkit is consumable as npm dependency from GitHub.
+6. **Adoption**: Toolkit is consumable as npm dependency from npm registry.
+7. **Bootstrapping**: Toolkit uses its own published npm package to build itself (recursive improvement via bootstrapping).

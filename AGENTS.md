@@ -13,7 +13,7 @@ You are an expert Senior Principal Software Architect and DevOps Automation Engi
 3. Creating new skill definitions in `skills/`
 4. Ensuring cross-platform compatibility between Claude and OpenCode
 
-This package is consumed via npm (GitHub URL). The binary name is `agentic-toolbox`.
+This package is consumed via npm (npm registry). The binary name is `agentic-toolbox`.
 
 ---
 
@@ -22,6 +22,7 @@ This package is consumed via npm (GitHub URL). The binary name is `agentic-toolb
 | Resource | Purpose |
 | -------- | ------- |
 | `README.md` | Project overview, features, setup |
+| `HANDOFF.md` | Complete context transfer for new AI sessions |
 | `docs/index.md` | Master documentation index & status tracker |
 | `docs/architecture.md` | System design |
 | `docs/roadmap.md` | Task tracking, completed work |
@@ -36,6 +37,7 @@ This package is consumed via npm (GitHub URL). The binary name is `agentic-toolb
 
 | File | Purpose | When to Read |
 |------|---------|--------------|
+| `HANDOFF.md` | **Complete context transfer** — project state, decisions, initialization steps | **First** — for new AI sessions |
 | `docs/index.md` | **Master documentation index** — complete map of all docs, status, and navigation | **First** — gives you the full map of all documentation |
 | `docs/architecture.md` | System design: sync engine, transform logic, CLI, project-level merge, data flow, distribution models | When working on sync engine, transform logic, or data flow |
 | `docs/roadmap.md` | Development phases, prioritized task lists (Up Next, Backlog, Deferred, Completed) | Before starting any task — check current goal and priorities |

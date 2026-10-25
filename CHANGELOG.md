@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [0.2.0] - 2026-10-24
+## [0.2.0] - 2026-10-25
 
 ### Added
-- **Dogfooding**: Package now depends on itself (`agentic-toolbox@0.1.8` as devDependency) — the toolkit uses its own published version for development
-- **Self-Hosting**: Published npm package can be used to develop the toolkit itself, creating a recursive improvement loop
+- **Bootstrapping**: Package now depends on itself (`agentic-toolbox@0.1.8` as devDependency) — the toolkit uses its own published version for development
+- **Self-Hosting**: Published npm package can be used to develop the toolkit itself, creating a recursive improvement loop via bootstrapping
 
 ### Changed
 - **Package Rename**: `agentic-toolkit` → `agentic-toolbox` across entire codebase
@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   - Config file: `agentic-toolkit.json` → `agentic-toolbox.json`
   - All documentation, source code, and references updated
 - **Manual Release Flow**: Simplified from semantic-release to manual version bump + PR validation + merge + npm stage + manual promote
-- **Version**: Bumped to 0.2.0 (minor) for dogfooding milestone
+- **Version**: Bumped to 0.2.0 (minor) for bootstrapping milestone
 
 ### Fixed
 - **Repository URLs**: Updated to `ritesh-jain/agentic-toolbox` consistently

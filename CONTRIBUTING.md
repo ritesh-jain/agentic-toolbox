@@ -2,6 +2,8 @@
 
 Thank you for your interest in contributing to Agentic Toolbox! We welcome contributions that improve the sync engine, add platform support, enhance agent/skill templates, or fix bugs.
 
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -27,6 +29,8 @@ npm run build
 npm run dev
 ```
 
+---
+
 ## 🛠 Contribution Workflow
 
 ### 1. Reporting Issues
@@ -45,7 +49,7 @@ We use a structured branching model to keep the git history clean. Please use th
 
 ### 3. Commit Conventions
 
-Agentic Toolkit follows the [Conventional Commits](https://www.conventionalcommits.org/) specification.
+Agentic Toolbox follows the [Conventional Commits](https://www.conventionalcommits.org/) specification.
 
 **Format**: `<type>(<scope>): <description>`
 
@@ -69,6 +73,8 @@ When you are ready to submit your changes, open a Pull Request (PR) against the 
 - **Verification**: Evidence that the changes were tested (e.g., build output, manual test results).
 - **Build Status**: Confirmation that the project still builds successfully (`npm run build`).
 
+---
+
 ## ✅ Quality Checklist
 
 Before submitting your PR, please ensure you have completed the following:
@@ -80,12 +86,16 @@ Before submitting your PR, please ensure you have completed the following:
 - [ ] **Tests**: You have added tests for new functionality (when test infrastructure exists).
 - [ ] **Non-Destructive**: If you moved or refactored files, you have ensured no critical historical information was lost.
 
+---
+
 ## 🧐 Review Process
 
 All PRs undergo a review process to ensure architectural alignment and code quality.
 - **Feedback**: You may receive requests for changes. This is a normal part of the collaborative process.
 - **Iterative Improvements**: Please address feedback promptly and push updated commits to your branch.
 - **Approval**: Once the reviewer is satisfied, the PR will be merged into the main branch.
+
+---
 
 ## 🎯 Code Standards (Summary)
 
@@ -95,4 +105,6 @@ All PRs undergo a review process to ensure architectural alignment and code qual
 - **Async** — `async/await` preferred, structured concurrency with `Promise.all`
 - **File Organization** — Single responsibility per module, barrel exports avoided
 
-Thank you for helping make Agentic Toolkit better!
+---
+
+Thank you for helping make Agentic Toolbox better!

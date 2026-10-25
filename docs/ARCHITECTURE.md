@@ -1,6 +1,6 @@
 # Architecture Overview — Agentic Toolbox
 
-> **High-level technical blueprint** for the Agentic Toolkit sync engine.
+> **High-level technical blueprint** for the Agentic Toolbox sync engine.
 
 ---
 
@@ -13,7 +13,7 @@ src/
 ├── index.ts            # CLI entry point
 ├── cli.ts              # Argument parsing, help, orchestration
 ├── config.ts           # Config loading + auto-discovery
-├── constants.ts        # TOOL_MAP, STRIP_FIELDS, regexes
+├── constants.ts        # TOOL_MAP, STRIP_FIELDS, DEFAULT_CONFIG_NAME
 ├── transform.ts        # Frontmatter transformation per platform
 ├── sync.ts             # syncToTarget (with project merge)
 └── types.ts            # TypeScript interfaces
@@ -125,7 +125,7 @@ Project files **override** package files with the same name. This enables custom
 | `index.ts` | CLI entry point | `runCli()` |
 | `cli.ts` | Arg parsing, help, orchestration | `parseArgs()`, `printHelp()`, `runCli()` |
 | `config.ts` | Config loading + auto-discovery | `loadConfig()`, `getParentProjectRoot()`, `getSubmoduleDir()` |
-| `constants.ts` | Shared constants | `TOOL_MAP`, `STRIP_FIELDS`, `FRONTMATTER_REGEX` |
+| `constants.ts` | Shared constants | `TOOL_MAP`, `STRIP_FIELDS`, `DEFAULT_CONFIG_NAME`, `FRONTMATTER_REGEX` |
 | `transform.ts` | Frontmatter transformation | `transformAgentContent()` |
 | `sync.ts` | Sync logic (forward) | `syncToTarget()` |
 | `types.ts` | TypeScript interfaces | `ToolMap`, `StripFields`, `AgenticToolkitConfig`, `CliOptions`, `SyncResult` |
@@ -223,5 +223,13 @@ return { targets: ['agents'] }
 ## 🚀 Deployment Pipeline
 
 1. **Local**: `npm run build` → `dist/`
-2. **Consume**: `npm install git+https://github.com/ritesh-jain/agentic-toolbox.git#main`
+2. **Consume**: `npm install agentic-toolbox@0.1.8` (from npm registry)
 3. **Run**: `npx agentic-toolbox` or `npm run agent:sync`
+
+---
+
+## 📦 Distribution
+
+- **npm registry**: `agentic-toolbox@0.1.8` (published)
+- **GitHub**: `ritesh-jain/agentic-toolbox` (source)
+- **Binary**: `agentic-toolbox` (via `package.json:bin` → `dist/index.js`)

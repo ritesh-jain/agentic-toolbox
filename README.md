@@ -20,18 +20,14 @@ This package acts as a **single source of truth** that syncs your agents and ski
 
 ## Installation
 
-Install as an npm package from GitHub. Requires Node.js `>=18`.
+**Published on npm** as `agentic-toolbox`. Requires Node.js `>=18`.
 
 ```bash
-# HTTPS (public repo — works everywhere, no SSH keys needed)
-npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolbox.git
+# Install from npm registry (recommended)
+npm install --save-dev agentic-toolbox
 
-# Or SSH (if you have GitHub SSH keys set up)
-npm install --save-dev git+ssh://git@github.com/ritesh-jain/agentic-toolbox.git
-
-# Pin to a branch/tag/commit if needed
-npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolbox.git#main
-npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolbox.git#v0.2.0
+# Or pin to a specific version
+npm install --save-dev agentic-toolbox@0.1.8
 ```
 
 This adds to your `package.json`:
@@ -39,7 +35,7 @@ This adds to your `package.json`:
 ```json
 {
   "devDependencies": {
-    "agentic-toolbox": "git+https://github.com/ritesh-jain/agentic-toolbox.git"
+    "agentic-toolbox": "^0.1.8"
   }
 }
 ```
@@ -79,9 +75,30 @@ npx agentic-toolbox --config ./agentic-toolbox.json
 
 ```bash
 npm update agentic-toolbox
-# or reinstall to pull latest main
-npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolbox.git#main
+# or reinstall specific version
+npm install --save-dev agentic-toolbox@latest
 ```
+
+---
+
+## Bootstrapping / Self-Hosting
+
+This toolkit is designed for **bootstrapping** — the published npm package can be installed as a devDependency and used to develop the toolkit itself. This creates a **recursive improvement cycle**:
+
+```json
+{
+  "devDependencies": {
+    "agentic-toolbox": "^0.1.8"
+  }
+}
+```
+
+This enables:
+- Using the published sync engine to manage the toolkit's own agents and skills
+- Using the published creation skills (`agent-creator`, `skill-creator`, `agentic-resource-gatherer`) to build new agents and skills for the toolkit
+- A **recursive improvement loop**: toolkit → better agents/skills → better toolkit
+
+This approach, known as **bootstrapping** in software engineering, ensures the toolkit validates itself in real-world usage and continuously improves through self-application.
 
 ---
 
