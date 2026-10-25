@@ -10,16 +10,16 @@
 *Target: Minimum viable product — consumable library with reliable core functionality*
 
 ### Core Functionality Consolidation
-- [ ] **Smart default behavior**: `agentic-toolbox` (no args) detects missing config → shows helpful hint with `init` subcommand usage
-- [ ] **`init` subcommand enhancement**: `agentic-toolbox init [--force]` creates config if missing, supports `--force` to overwrite
-- [ ] **Config validation**: Robust validation with clear error messages for malformed configs
-- [ ] **Sync reliability**: Verify sync works correctly across all targets (opencode, claude, agents)
-- [ ] **Error handling**: Consistent, actionable error messages across all commands
+- [x] **Smart default behavior**: `agentic-toolbox` (no args) detects missing config → shows helpful hint with `init` subcommand usage
+- [x] **`init` subcommand enhancement**: `agentic-toolbox init [--force]` creates config if missing, supports `--force` to overwrite
+- [x] **Config validation**: Robust validation with clear error messages for malformed configs
+- [x] **Sync reliability**: Verify sync works correctly across all targets (opencode, claude, agents)
+- [x] **Error handling**: Consistent, actionable error messages across all commands
 
 ### Developer Experience
-- [ ] **Clear help text**: `agentic-toolbox --help` shows clear usage for init + sync workflow
-- [ ] **Version output**: `agentic-toolbox --version` / `-V`
-- [ ] **Dry-run clarity**: `--dry-run` shows exactly what would change
+- [x] **Clear help text**: `agentic-toolbox --help` shows clear usage for init + sync workflow
+- [x] **Version output**: `agentic-toolbox --version` / `-V`
+- [x] **Dry-run clarity**: `--dry-run` shows exactly what would change
 
 ---
 
@@ -72,10 +72,10 @@
 
 | # | Task | Module | Priority | Est. Effort | Target |
 |---|------|--------|----------|-------------|--------|
-| 1 | Smart default: no args + no config → helpful hint | `cli/run-cli.ts` | 🔴 Critical | Low | Current |
-| 2 | `init` subcommand: `--force` flag, overwrite logic | `cli/commands/init.ts` | 🔴 Critical | Low | Current |
-| 3 | Config validation improvements | `core/config/schema.ts` | 🟡 High | Low | Current |
-| 4 | Sync reliability verification | `core/sync/` | 🟡 High | Medium | Current |
+| 1 | Smart default: no args + no config → helpful hint | `cli/run-cli.ts` | 🔴 Critical | Low | Done |
+| 2 | `init` subcommand: `--force` flag, overwrite logic | `cli/commands/init.ts` | 🔴 Critical | Low | Done |
+| 3 | Config validation improvements | `core/config/schema.ts` | 🟡 High | Low | Done |
+| 4 | Sync reliability verification | `core/sync/` | 🟡 High | Medium | Done |
 | 5 | Help text improvements | `cli/help/` | 🟢 Medium | Low | Current |
 | 6 | Unit tests for init/sync | `core/`, `cli/` | 🔴 Critical | Medium | Current |
 | 7 | Integration tests | `sync.integration.test.ts` | 🟡 High | Medium | Next |
