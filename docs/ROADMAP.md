@@ -10,7 +10,6 @@
 *Target: Enhanced developer experience and CLI polish*
 
 ### Core Functionality
-- [ ] Colorized terminal output (ANSI codes, `--color` flag)
 - [ ] Verbose logging levels (`--verbose`, `--quiet`)
 - [ ] `--diff` flag for preview (unified diff) — *foundation exists*
 - [ ] Shell completion scripts (bash, zsh, fish)
@@ -60,16 +59,15 @@
 
 | # | Task | Module | Priority | Est. Effort | Target |
 |---|------|--------|----------|-------------|--------|
-| 1 | Colorized terminal output | `cli/run-cli.ts` | 🔴 Critical | Low | v0.5.x |
-| 2 | Verbose/quiet logging levels | `cli/run-cli.ts` | 🟡 High | Low | v0.5.x |
-| 3 | `--diff` flag (unified diff) | `cli/commands/diff.ts` | 🟡 High | Medium | v0.5.x |
-| 4 | Shell completions | `cli/` | 🟢 Medium | Medium | v0.5.x |
-| 5 | Vitest setup | `package.json` + `vitest.config.ts` | 🔴 Critical | Medium | v0.5.x |
-| 6 | Unit tests — transform | `core/transform/*.test.ts` | 🔴 Critical | Medium | v0.5.x |
-| 7 | Unit tests — config | `core/config/*.test.ts` | 🔴 Critical | Low | v0.5.x |
-| 8 | Unit tests — sync | `core/sync/*.test.ts` | 🔴 Critical | High | v0.5.x |
-| 9 | Unit tests — CLI args | `cli/args/*.test.ts` | 🔴 Critical | Low | v0.5.x |
-| 10 | Integration tests | `sync.integration.test.ts` | 🟡 High | Medium | v0.5.x |
+| 1 | Verbose/quiet logging levels | `cli/run-cli.ts` | 🟡 High | Low | v0.5.x |
+| 2 | `--diff` flag (unified diff) | `cli/commands/diff.ts` | 🟡 High | Medium | v0.5.x |
+| 3 | Shell completions | `cli/` | 🟢 Medium | Medium | v0.5.x |
+| 4 | Vitest setup | `package.json` + `vitest.config.ts` | 🔴 Critical | Medium | v0.5.x |
+| 5 | Unit tests — transform | `core/transform/*.test.ts` | 🔴 Critical | Medium | v0.5.x |
+| 6 | Unit tests — config | `core/config/*.test.ts` | 🔴 Critical | Low | v0.5.x |
+| 7 | Unit tests — sync | `core/sync/*.test.ts` | 🔴 Critical | High | v0.5.x |
+| 8 | Unit tests — CLI args | `cli/args/*.test.ts` | 🔴 Critical | Low | v0.5.x |
+| 9 | Integration tests | `sync.integration.test.ts` | 🟡 High | Medium | v0.5.x |
 
 ---
 

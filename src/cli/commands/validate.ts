@@ -1,5 +1,4 @@
-// Validate command implementation
-import { CliArgs, CommandResult } from '@/types/index.js';
+import { ValidateArgs, CommandResult } from '@/types/index.js';
 import { loadConfig, validateConfig } from '@/core/config/index.js';
 import { logger } from '@/utils/logging/index.js';
 import { getPackageVersion } from '@/utils/fs/paths.js';
@@ -7,13 +6,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { getParentProjectRoot, getToolkitDir } from '@/utils/fs/paths.js';
 
-export async function validateCommand(args: CliArgs): Promise<CommandResult> {
+export async function validateCommand(args: ValidateArgs): Promise<CommandResult> {
   if (args.verbose) {
     logger.setLevel('debug');
-  }
-
-  if (args.noColor) {
-    logger.setColor(false);
   }
 
   try {

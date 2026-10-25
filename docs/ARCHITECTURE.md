@@ -11,17 +11,29 @@
 ```
 src/
 ├── index.ts                      # CLI entry point
-├── shared/                       # Shared constants, types, utilities
-│   ├── constants.ts              # Error codes, messages, exit codes, regex patterns
-│   ├── targets.ts                # Target definitions, STRIP_FIELDS, TARGET_OPTIONS
-│   └── validation.ts             # Input sanitization utilities
-├── types/                        # Shared type definitions
+├── types/                        # Type definitions and target configurations
 │   ├── index.ts                  # Barrel export
+│   ├── targets.ts                # Target definitions, STRIP_FIELDS, TARGET_OPTIONS
 │   ├── config.ts                 # Config, Target, SyncConfig, LoadedConfig
 │   ├── sync.ts                   # SyncOptions, SyncResult, TargetConfig
 │   ├── transform.ts              # StripFields, TransformOptions, ParsedContent
 │   ├── errors.ts                 # ErrorCode, ErrorContext, ValidationError
 │   └── cli.ts                    # CliArgs, FlagDefinition, SubcommandDefinition
+├── utils/                        # Infrastructure utilities (fs, logging, errors)
+│   ├── index.ts                  # Utils barrel export
+│   ├── fs/                       # Safe filesystem operations
+│   │   ├── index.ts              # FS operations barrel
+│   │   ├── operations.ts         # read, write, copy, remove, exists
+│   │   ├── atomic.ts             # Atomic writes
+│   │   └── paths.ts              # Path resolution utilities
+│   ├── logging/                  # Logging abstraction
+│   │   ├── index.ts              # Logging barrel
+│   │   ├── console.ts            # Console logger implementation
+│   │   └── levels.ts             # Log levels
+│   └── errors/                   # Structured error classes
+│       ├── index.ts              # Errors barrel
+│       ├── classes.ts            # Error classes (ConfigError, SyncError, etc.)
+│       └── codes.ts              # Error code enums
 ├── core/                         # Core domain logic
 │   ├── index.ts                  # Core barrel export
 │   ├── config/                   # Configuration management
@@ -44,21 +56,6 @@ src/
 │       ├── stripper.ts           # Field stripper
 │       ├── reassembler.ts        # Content reassembler
 │       └── transform-agent.ts    # Main transform function
-├── utils/                        # Infrastructure utilities
-│   ├── index.ts                  # Utils barrel export
-│   ├── fs/                       # Safe filesystem operations
-│   │   ├── index.ts              # FS operations barrel
-│   │   ├── operations.ts         # read, write, copy, remove, exists
-│   │   ├── atomic.ts             # Atomic writes
-│   │   └── paths.ts              # Path resolution utilities
-│   ├── logging/                  # Logging abstraction
-│   │   ├── index.ts              # Logging barrel
-│   │   ├── console.ts            # Console logger implementation
-│   │   └── levels.ts             # Log levels
-│   └── errors/                   # Structured error classes
-│       ├── index.ts              # Errors barrel
-│       ├── classes.ts            # Error classes (ConfigError, SyncError, etc.)
-│       └── codes.ts              # Error code enums
 └── cli/                          # CLI interface
     ├── index.ts                  # CLI barrel export
     ├── run-cli.ts                # Main CLI entry point
@@ -78,6 +75,17 @@ src/
         ├── templates.ts          # Help text templates
         └── print-help.ts         # Print help function
 ```
+
+### Dependency Hierarchy (Strictly One-Directional)
+
+```
+types ──► utils ──► core ──► cli
+```
+
+- **`types/`**: Single source of truth for types and target definitions. Internal imports only (never imports from `utils/`, `core/`, `cli/`).
+- **`utils/`**: Infrastructure utilities (fs, logging, error classes). Can import from `types/` (never imports from `core/`, `cli/`).
+- **`core/`**: Core domain logic (sync engine, config, transform). Can import from `types/` and `utils/` (never imports from `cli/`).
+- **`cli/`**: CLI command routing and presentation. Can import from `types/`, `utils/`, and `core/`.
 
 ### Path Resolution
 
@@ -273,7 +281,7 @@ return { targets: ['agents'] }
 
 | Extension Point | Mechanism | Status |
 |----------------|-----------|--------|
-| New Target Platform | Add to `TARGET_DEFINITIONS` in `shared/targets.ts` | Manual code change |
+| New Target Platform | Add to `TARGET_DEFINITIONS` in `types/targets.ts` | Manual code change |
 | Custom Transformers | Not yet supported | Planned: plugin API |
 | Custom Validators | Not yet supported | Planned: plugin API |
 | Additional CLI Flags | Add to `flags.ts`, `subcommands.ts` | Manual code change |
@@ -295,13 +303,13 @@ return { targets: ['agents'] }
 ## 🚀 Deployment Pipeline
 
 1. **Local**: `npm run build` → `dist/`
-2. **Consume**: `npm install agentic-toolbox@0.3.0` (from npm registry)
+2. **Consume**: `npm install agentic-toolbox@0.5.0` (from npm registry)
 3. **Run**: `npx agentic-toolbox` or `npm run agent:sync`
 
 ---
 
 ## 📦 Distribution
 
-- **npm registry**: `agentic-toolbox@0.3.0` (published)
+- **npm registry**: `agentic-toolbox@0.5.0` (published)
 - **GitHub**: `ritesh-jain/agentic-toolbox` (source)
 - **Binary**: `agentic-toolbox` (via `package.json:bin` → `dist/index.js`)

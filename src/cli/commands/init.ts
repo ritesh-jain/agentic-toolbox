@@ -1,5 +1,4 @@
-// Init command implementation
-import { CliArgs, CommandResult, Target } from '@/types/index.js';
+import { InitArgs, CommandResult, Target, TARGET_OPTIONS } from '@/types/index.js';
 import { createDefaultConfig } from '@/core/config/schema.js';
 import { logger } from '@/utils/logging/index.js';
 import { getPackageVersion } from '@/utils/fs/paths.js';
@@ -7,7 +6,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { getParentProjectRoot, DEFAULT_CONFIG_NAME } from '@/utils/fs/paths.js';
 import { checkbox } from '@inquirer/prompts';
-import { TARGET_OPTIONS } from '@/shared/targets.js';
 
 async function promptForTargets(): Promise<Target[]> {
   const answers = await checkbox({
@@ -22,13 +20,9 @@ async function promptForTargets(): Promise<Target[]> {
   return answers as Target[];
 }
 
-export async function initCommand(args: CliArgs): Promise<CommandResult> {
+export async function initCommand(args: InitArgs): Promise<CommandResult> {
   if (args.verbose) {
     logger.setLevel('debug');
-  }
-
-  if (args.noColor) {
-    logger.setColor(false);
   }
 
   try {
@@ -58,9 +52,8 @@ export async function initCommand(args: CliArgs): Promise<CommandResult> {
     fs.writeFileSync(configPath, configContent, 'utf8');
 
     logger.success(`Created ${DEFAULT_CONFIG_NAME}`);
-    logger.info('\nCreated configuration:');
-    logger.info(configContent);
-    logger.info('\nEdit this file to customize sync options and paths.');
+    logger.info(`Config written to: ${configPath}`);
+    logger.info('Edit this file to customize sync options and paths.');
 
     return { success: true, exitCode: 0 };
   } catch (error) {

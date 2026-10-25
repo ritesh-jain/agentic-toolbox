@@ -4,3 +4,4 @@ export * from './sync.js';
 export * from './transform.js';
 export * from './errors.js';
 export * from './cli.js';
+export * from './targets.js';

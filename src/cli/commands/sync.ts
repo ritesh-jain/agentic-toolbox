@@ -1,20 +1,15 @@
-// Sync command implementation
-import { CliArgs, CommandResult, Target } from '@/types/index.js';
+import { SyncArgs, CommandResult, Target } from '@/types/index.js';
 import { loadConfig } from '@/core/config/index.js';
 import { syncToTargets } from '@/core/sync/index.js';
 import { logger } from '@/utils/logging/index.js';
 import { getPackageVersion } from '@/utils/fs/paths.js';
 
-export async function syncCommand(args: CliArgs): Promise<CommandResult> {
+export async function syncCommand(args: SyncArgs): Promise<CommandResult> {
   // Configure logger
   if (args.quiet) {
     logger.setLevel('error');
   } else if (args.verbose) {
     logger.setLevel('debug');
-  }
-
-  if (args.noColor) {
-    logger.setColor(false);
   }
 
   try {

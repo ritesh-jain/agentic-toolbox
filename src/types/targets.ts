@@ -1,8 +1,8 @@
 // Target definitions — single source of truth for target platforms
-import type { Target } from '@/types/index.js';
+import type { Target } from './config.js';
 
 export interface TargetDefinition {
-  name: string;
+  name: Target;
   value: Target;
   description: string;
   directory: string;
@@ -11,7 +11,9 @@ export interface TargetDefinition {
   transformSkills: boolean;
 }
 
-export const TARGET_DEFINITIONS: Record<string, TargetDefinition> = {
+export type TargetConfig = TargetDefinition;
+
+export const TARGET_DEFINITIONS: Record<Target, TargetDefinition> = {
   opencode: {
     name: 'opencode',
     value: 'opencode',
@@ -81,4 +83,12 @@ export function getTargetDefinition(target: Target): TargetDefinition {
 
 export function getTargetNames(): Target[] {
   return Object.keys(TARGET_DEFINITIONS) as Target[];
+}
+
+export function getAllTargetConfigs(): TargetConfig[] {
+  return Object.values(TARGET_DEFINITIONS);
+}
+
+export function getStripFields(target: Target): string[] {
+  return TARGET_DEFINITIONS[target]?.stripFields ?? [];
 }
