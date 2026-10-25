@@ -60,7 +60,7 @@ Work through items **one at a time**, in order. For each item:
 | # | Item | Description | Status | Notes |
 | --- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------ |
 | C1 | Consolidate target definitions into `src/types/targets.ts` | Single source of truth for target definitions: `TARGET_DEFINITIONS`, `STRIP_FIELDS`, `TARGET_OPTIONS`. Eliminate 4x duplication across `target-configs.ts`, `transform-agent.ts`, `init.ts`, `types/sync.ts`. Consolidate `src/shared` into `src/types`. | DONE | Completed. `src/shared` removed and merged into `src/types`. |
-| C2 | Create constants in `src/types/constants.ts` | Centralize magic strings: error codes, error messages, exit codes, regex patterns, file extensions, default values. | TODO | See [Magic Strings Inventory](#magic-strings-inventory) below. |
+| C2 | Feature-bound constants localization | Feature-bound constants remain in respective modules (`utils/errors`, `core/transform`, `cli`). Monolithic constants file rejected by design. | DONE | Feature locality principle enforced. |
 | C3 | Consolidate duplicate types | Move `FrontmatterData`, `ParsedContent`, `StripFields` from local copies to `types/transform.ts` and `types/targets.ts` as single source. | DONE | Eliminated local duplicates in `transform-agent.ts`, `stripper.ts`, `parser.ts`. |
 | C4 | Move `STRIP_FIELDS` to targets layer | Move `STRIP_FIELDS` from `src/core/transform/transform-agent.ts` to `src/types/targets.ts` — belongs in targets layer, not transform layer. | DONE | `transform-agent.ts` now uses `getStripFields()` from `@/types/index.js`. |
 
@@ -70,36 +70,35 @@ Work through items **one at a time**, in order. For each item:
 | Target names (`opencode`, `claude`, `agents`) | `target-configs.ts`, `transform-agent.ts`, `init.ts`, `types/targets.ts` | `types/targets.ts` (single source) |
 | `STRIP_FIELDS` (opencode/claude arrays) | `types/targets.ts` | `types/targets.ts` (single source) |
 | `TARGET_OPTIONS` (name/value/description) | `types/targets.ts` | `types/targets.ts` (single source) |
-| `Target` type | `types/config.ts`, `types/sync.ts`, `types/transform.ts`, `types/cli.ts`, `types/index.ts` | `types/config.ts` (single source) |
+| `Target` type | `types/config.ts`, `types/index.ts` | `types/config.ts` (single source) |
 
-### Magic Strings Inventory
+### Feature Locality Map
 | Category | Examples | Target Location |
 |----------|----------|-----------------|
-| Error codes | `'CONFIG_NOT_FOUND'`, `'CONFIG_INVALID_JSON'`, `'SYNC_TARGET_FAILED'` | `types/constants.ts` |
-| Error messages | `'Config file already exists at...'`, `'targets must be an array'` | `types/constants.ts` |
-| Exit codes | `process.exit(1)`, `process.exit(0)` | `types/constants.ts` |
-| Regex patterns | `/^(---\n)([\s\S]*?)(\n---)/` (frontmatter) | `types/constants.ts` |
-| File extensions | `'.md'`, `'.json'` | `types/constants.ts` |
-| Default values | `'agents'`, `incremental: false`, `backup: true` | `types/constants.ts` |
-| ExitPromptError | `'ExitPromptError'` (in init.ts) | `types/constants.ts` |
+| Error codes | `ERROR_CODES`, `ErrorCode` | `utils/errors/codes.ts` & `types/errors.ts` |
+| Regex patterns | `FRONTMATTER_REGEX` | `core/transform/parser.ts` |
+| Exit codes | `0`, `1` | `cli/` |
+| Default config name & paths | `DEFAULT_CONFIG_NAME`, `DEFAULT_PATHS` | `utils/fs/paths.ts` & `types/config.ts` |
+| Target definitions | `TARGET_DEFINITIONS`, `TARGET_OPTIONS` | `types/targets.ts` |
+| ExitPromptError | `'ExitPromptError'` | `cli/commands/init.ts` |
 
 ---
 ## 2. Type System Consolidation
 | # | Item | Description | Status | Notes |
 | --- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------ |
-| T1 | Consolidate `Target` type | Single source in `types/config.ts`, re-export from `types/index.ts`. Remove from `sync.ts`, `transform.ts`, `cli.ts`. | TODO | Currently in 5 files. |
+| T1 | Consolidate `Target` type | Single source in `types/config.ts`, re-export from `types/index.ts`. Remove duplicate type definitions from other files. | DONE | Single source in `types/config.ts`. |
 | T2 | Consolidate `StripFields` | Single definition in `types/targets.ts`, re-export from `types/index.ts`. | DONE | Completed. |
 | T3 | Consolidate `FrontmatterData` / `ParsedContent` | Single definition in `types/transform.ts`. Remove from `transform-agent.ts`, `parser.ts`, `stripper.ts`. | DONE | Local copies removed. |
 | T4 | Consolidate `FrontmatterData` / `ParsedContent` interfaces | Move local interface declarations from `transform-agent.ts`, `parser.ts`, `stripper.ts` to `types/transform.ts`. | DONE | Completed. |
-| T5 | Split `CliArgs` by command | Create `SyncArgs`, `InitArgs`, `ValidateArgs`, `DiffArgs` extending base `CliArgs`. | TODO | Current `CliArgs` has 12 optional props; commands use subset. |
-| T6 | Remove `[key: string]: unknown` from `CliArgs` | Replace with explicit types. | TODO | Violates type safety. |
+| T5 | Split `CliArgs` by command | Create `SyncArgs`, `InitArgs`, `ValidateArgs`, `DiffArgs` extending `BaseCommandArgs`. | DONE | Completed. Clean per-command types with shared BaseCommandArgs. |
+| T6 | Remove `[key: string]: unknown` from `CliArgs` | Replace with explicit types and purge color flags. | DONE | Index signature removed; strict type safety enforced. |
 
 ---
 ## 3. CLI Architecture Improvements
 | # | Item | Description | Status | Notes |
 | --- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------ |
 | CLI1 | Strategy pattern for arg parser | Replace hardcoded `parseFlags` in `src/cli/args/parser.ts` with strategy pattern for extensibility. | TODO | Open/Closed Principle violation. |
-| CLI2 | Extract CLI arg types per command | Create `SyncArgs`, `InitArgs`, `ValidateArgs`, `DiffArgs` in `types/cli.ts`. | TODO | Current `CliArgs` has 12 optional props. |
+| CLI2 | Extract CLI arg types per command | Create `SyncArgs`, `InitArgs`, `ValidateArgs`, `DiffArgs` in `types/cli.ts`. | DONE | Completed as part of T5/T6. |
 | CLI3 | Input sanitization utilities | Add `sanitizePath()`, `validateTarget()`, `sanitizeConfigPath()`. | TODO | No input sanitization currently. |
 | CLI4 | Logger dependency injection | `ConsoleLogger` should accept `WritableStream` instead of hardcoding `process.stdout`. | TODO | Enables testing with `MemoryStream`. |
 | CLI5 | Help text generation | Move help templates to unified location for reuse. | TODO | Templates duplicated in `templates.ts`. |
@@ -182,6 +181,7 @@ Work through items **one at a time**, in order. For each item:
 | AD8 | Interactive init | `@inquirer/prompts` checkbox for target selection | 2026-10-25 |
 | AD9 | Manual release flow | Version bump → PR → merge → stage → manual `npm promote` | 2026-10-25 |
 | AD10 | Consolidate shared into types | Merged `src/shared` into `src/types` to unify types and target definitions | 2026-10-25 |
+| AD11 | Feature-bound constants | Rejected monolithic constants file; constants stay co-located with their feature modules | 2026-10-25 |
 
 ---
 ## 7. Future Sprint Scratchpad (Next Iteration Cycle)
@@ -204,9 +204,9 @@ Work through items **one at a time**, in order. For each item:
 | --- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------ |
 | CR1 | Target definitions duplicated 4x | `target-configs.ts`, `transform-agent.ts`, `init.ts`, `types/sync.ts` | Resolved | Fixed via C1 in `types/targets.ts`. |
 | CR2 | `STRIP_FIELDS` in transform layer | Violates SRP — strip lists belong in targets config | Resolved | Fixed via C4 in `types/targets.ts`. |
-| CR3 | Magic strings everywhere | Error codes, messages, exit codes, regex, defaults | Critical | C2. |
+| CR3 | Magic strings everywhere | Feature-bound constants co-located; universal target definitions in types/targets.ts | Resolved | Fixed via C1, C2. |
 | CR4 | Type duplication | `Target`, `StripFields`, `FrontmatterData`, `ParsedContent` in 3-5 files each | Resolved | Fixed via C3, T2-T4 in `types/`. |
-| CR5 | `CliArgs` too broad | 12 optional props, commands use subset | High | CLI2. |
+| CR5 | `CliArgs` too broad | 12 optional props, commands use subset | Resolved | Fixed via T5, T6, CLI2. |
 | CR6 | Argument parser not extensible | Hardcoded parsing logic | Medium | CLI1. |
 | CR7 | No input sanitization | Path traversal, config injection risks | High | TD3, CLI3. |
 | CR8 | Mixed error patterns | Structured errors + raw strings | Medium | E3, E4. |
@@ -222,10 +222,10 @@ Work through items **one at a time**, in order. For each item:
 | M3 | Task 6: Help text improvements | Clear init + sync workflow, better examples | Current |
 | M4 | Task 7: Unit tests | Vitest setup, transform/config/sync/cli tests | Next |
 | M5 | Task 8: Integration tests | Temp directories, multi-target, manifest | Next |
-| M6 | Constants consolidation | `types/constants.ts` | v0.4.1 |
+| M6 | Constants consolidation | Localized by feature | DONE |
 | M7 | Type consolidation | `types/` cleanup, single source of truth | DONE |
 | M8 | CLI argument parser refactor | Strategy pattern, per-command arg types | v0.4.2 |
-| M9 | Error message constants | `types/constants.ts` | v0.4.2 |
+| M9 | Error message constants | In respective error/validation modules | v0.4.2 |
 | M10 | Input sanitization | Validation utilities | v0.4.2 |
 
 ---
@@ -242,6 +242,7 @@ Work through items **one at a time**, in order. For each item:
 | D8 | Interactive init | `@inquirer/prompts` checkbox for target selection | 2026-10-25 |
 | D9 | Manual release flow | Version bump → PR → merge → stage → manual `npm promote` | 2026-10-25 |
 | D10 | Consolidate shared into types | Merged `src/shared` into `src/types` to unify types and target definitions | 2026-10-25 |
+| D11 | Feature-bound constants | Rejected monolithic constants file; constants stay co-located with their feature modules | 2026-10-25 |
 
 ---
 ## 10. Completed Sprint History
