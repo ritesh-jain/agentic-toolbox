@@ -24,3 +24,8 @@ coverage/
 
 # Local files
 local/
+
+# AI Agent Toolkit - Generated directories
+.opencode/
+.claude/
+.agents/
