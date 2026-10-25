@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.0] - 2026-10-25
+
+### Added
+- **Command-Specific Argument Types**: Defined dedicated interfaces (`SyncArgs`, `InitArgs`, `ValidateArgs`, `DiffArgs`) extending `BaseCommandArgs`
+- **Target Definitions Consolidation**: Consolidated target definitions, target options, and strip fields into `src/types/targets.ts` as the single source of truth
+
+### Changed
+- **Type Safety Hardening**: Removed catch-all index signature `[key: string]: unknown` from CLI argument interfaces
+- **Directory Consolidation**: Merged `src/shared` into `src/types` and eliminated `src/shared` directory
+- **One-Directional Import Hierarchy**: Strictly enforced `types` → `utils` → `core` → `cli` dependency structure
+- **Feature Locality Architecture**: Removed monolithic constants in favor of domain-scoped constants
+- **Version**: Bumped to 0.5.0 (minor) for CLI type safety and target consolidation milestone
+
+### Removed
+- **Color Flags**: Removed non-core `--color` and `--no-color` flags from CLI options
+
 ## [0.4.0] - 2026-10-25
 
 ### Added

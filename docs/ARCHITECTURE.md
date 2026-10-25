@@ -303,13 +303,13 @@ return { targets: ['agents'] }
 ## 🚀 Deployment Pipeline
 
 1. **Local**: `npm run build` → `dist/`
-2. **Consume**: `npm install agentic-toolbox@0.3.0` (from npm registry)
+2. **Consume**: `npm install agentic-toolbox@0.5.0` (from npm registry)
 3. **Run**: `npx agentic-toolbox` or `npm run agent:sync`
 
 ---
 
 ## 📦 Distribution
 
-- **npm registry**: `agentic-toolbox@0.3.0` (published)
+- **npm registry**: `agentic-toolbox@0.5.0` (published)
 - **GitHub**: `ritesh-jain/agentic-toolbox` (source)
 - **Binary**: `agentic-toolbox` (via `package.json:bin` → `dist/index.js`)
