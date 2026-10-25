@@ -1,5 +1,4 @@
-// Diff command implementation
-import { CliArgs, CommandResult, Target } from '@/types/index.js';
+import { DiffArgs, CommandResult, Target } from '@/types/index.js';
 import { loadConfig } from '@/core/config/index.js';
 import { getTargetConfig } from '@/core/sync/targets/index.js';
 import { transformAgentContent } from '@/core/transform/index.js';
@@ -9,13 +8,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { getParentProjectRoot, getToolkitDir } from '@/utils/fs/paths.js';
 
-export async function diffCommand(args: CliArgs): Promise<CommandResult> {
+export async function diffCommand(args: DiffArgs): Promise<CommandResult> {
   if (args.verbose) {
     logger.setLevel('debug');
-  }
-
-  if (args.noColor) {
-    logger.setColor(false);
   }
 
   try {

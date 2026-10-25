@@ -13,7 +13,7 @@ function findFlagDef(allFlags: FlagDefinition[], flagName: string): FlagDefiniti
 }
 
 function parseFlags(argv: string[], startIndex: number, allFlags: FlagDefinition[]): { args: CliArgs; nextIndex: number } {
-  const args: CliArgs = {};
+  const args: Record<string, unknown> = {};
   let i = startIndex;
 
   while (i < argv.length) {
@@ -27,7 +27,7 @@ function parseFlags(argv: string[], startIndex: number, allFlags: FlagDefinition
         throw new Error(`Unknown flag: --${flagName}`);
       }
 
-      const targetName = flagDef.name;
+      const targetName = flagDef.name === 'config' ? 'configPath' : flagDef.name;
 
       if (flagDef.type === 'boolean') {
         args[targetName] = true;
@@ -54,14 +54,16 @@ function parseFlags(argv: string[], startIndex: number, allFlags: FlagDefinition
         throw new Error(`Unknown flag: -${shortFlag}`);
       }
 
+      const targetName = flagDef.name === 'config' ? 'configPath' : flagDef.name;
+
       if (flagDef.type === 'boolean') {
-        args[flagDef.name] = true;
+        args[targetName] = true;
       } else {
         i++;
         if (i >= argv.length) {
           throw new Error(`Flag -${shortFlag} requires a value`);
         }
-        args[flagDef.name] = argv[i];
+        args[targetName] = argv[i];
       }
     } else {
       // Positional argument
@@ -73,7 +75,7 @@ function parseFlags(argv: string[], startIndex: number, allFlags: FlagDefinition
     i++;
   }
 
-  return { args, nextIndex: i };
+  return { args: args as unknown as CliArgs, nextIndex: i };
 }
 
 export function parseArgs(argv: string[]): CliArgs {

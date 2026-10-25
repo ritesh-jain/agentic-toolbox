@@ -1,5 +1,4 @@
-// Init command implementation
-import { CliArgs, CommandResult, Target, TARGET_OPTIONS } from '@/types/index.js';
+import { InitArgs, CommandResult, Target, TARGET_OPTIONS } from '@/types/index.js';
 import { createDefaultConfig } from '@/core/config/schema.js';
 import { logger } from '@/utils/logging/index.js';
 import { getPackageVersion } from '@/utils/fs/paths.js';
@@ -21,13 +20,9 @@ async function promptForTargets(): Promise<Target[]> {
   return answers as Target[];
 }
 
-export async function initCommand(args: CliArgs): Promise<CommandResult> {
+export async function initCommand(args: InitArgs): Promise<CommandResult> {
   if (args.verbose) {
     logger.setLevel('debug');
-  }
-
-  if (args.noColor) {
-    logger.setColor(false);
   }
 
   try {

@@ -44,14 +44,4 @@ export const flags: FlagDefinition[] = [
     description: 'Suppress non-error output',
     type: 'boolean',
   },
-  {
-    name: 'color',
-    description: 'Force color output',
-    type: 'boolean',
-  },
-  {
-    name: 'noColor',
-    description: 'Disable color output',
-    type: 'boolean',
-  },
 ];
