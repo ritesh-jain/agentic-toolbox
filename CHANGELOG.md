@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.0] - 2026-10-25
+
+### Added
+- **Modular CLI Architecture**: Subcommands (`sync`, `validate`, `diff`, `init`) with dedicated implementations
+- **Config Schema Validation**: Zod-like validation for `agentic-toolbox.json` with unknown field detection
+- **YAML Frontmatter Parser**: Replaced regex-based parsing with `yaml` package for robust frontmatter handling
+- **Structured Error Classes**: `SyncError`, `ConfigError`, `TransformError`, `ParseError`, `FsError`, `CliError`, `ValidationError` with error codes
+- **Colored Console Logger**: Leveled logging (debug/info/warn/error/success) with ANSI colors
+- **TypeScript Path Aliases**: `@/`, `@types/`, `@core/`, `@utils/`, `@cli/` for clean imports
+- **tsc-alias Integration**: Runtime path alias resolution for compiled output
+
+### Changed
+- **Complete Architecture Restructure**: `src/` reorganized into `core/`, `utils/`, `cli/`, `types/` with clear separation of concerns
+- **Barrel Export Pattern**: All `index.ts` files are now pure re-exports (no implementation)
+- **CLI Refactor**: Argument parsing supports kebab-case flags, subcommand-specific flags, and proper flag merging
+- **Sync Engine**: Modularized into `engine`, `targets`, `merger`, `manifest` with incremental sync foundation
+- **Transform Pipeline**: Separated `parser`, `stripper`, `reassembler` for testability
+- **Config System**: Split into `loader`, `schema`, `discovery` with full validation
+- **Dev Script**: `npm run dev` now builds and runs CLI for rapid iteration
+- **Version**: Bumped to 0.3.0 (minor) for architecture milestone
+
+### Fixed
+- **Binary Execution**: Added shebang to `src/index.ts` for proper npm bin wrapper
+- **Path Resolution**: Robust toolkit directory detection for both source and installed contexts
+
 ## [0.2.0] - 2026-10-25
 
 ### Added

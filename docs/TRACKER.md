@@ -4,10 +4,10 @@
 
 ---
 
-## Current Sprint: v0.2.x — Bootstrapping & Core Engine Hardening
-**Sprint Goal**: Implement bootstrapping — use published `agentic-toolbox@0.1.8` to build the toolkit itself, creating a recursive improvement loop. Begin core engine hardening (YAML parser, config validation, error classes).
+## Current Sprint: v0.3.x — Architecture Restructure & CLI Polish ✅ **COMPLETED**
+**Sprint Goal**: Restructure `src/` into modular architecture, implement subcommands, replace regex parser with YAML, add config validation, structured errors, and path aliases.
 
-**Sprint Dates**: [Start Date] → [End Date]
+**Sprint Dates**: 2026-10-25 → 2026-10-25
 
 ---
 
@@ -15,16 +15,16 @@
 
 | # | Task | Owner | Status | Started | Dependencies | Est. Effort | Notes |
 |---|------|-------|--------|---------|--------------|-------------|-------|
-| 1 | Verify npm package installs correctly | | In Progress | | agentic-toolbox@0.1.8 published | Low | `npm install agentic-toolbox` |
-| 2 | Run `npm install` in toolkit to pull published package | | Pending | 1 | — | Low | Installs to node_modules/agentic-toolbox/ |
-| 3 | Verify installed package structure (dist/, agents/, skills/, AGENTS.md) | | Pending | 2 | — | Low | Check all template files present |
-| 4 | Use published sync engine (`npx agentic-toolbox`) to sync toolkit | | Pending | 3 | — | Medium | Bootstrapping validation |
-| 5 | Use published creation skills to create new agents/skills for toolkit | | Pending | 4 | — | Medium | agent-creator, skill-creator, resource-gatherer |
-| 6 | Validate recursive improvement loop works end-to-end | | Pending | 5 | — | Medium | Toolkit builds itself |
-| 7 | Replace regex frontmatter parser with `yaml` package | | Pending | — | — | Medium | src/transform.ts |
-| 8 | Add JSON Schema validation for `agentic-toolbox.json` | | Pending | — | — | Low | Zod or native |
-| 9 | Implement structured error classes (SyncError, ConfigError, etc.) | | Pending | — | — | Low | src/types.ts + all |
-| 10 | Add optional incremental sync with manifest | | Pending | — | — | High | Behind `--incremental` flag |
+| 1 | Restructure `src/` into modular architecture (core/, utils/, cli/, types/) | | Done | 2026-10-25 | — | High | 46 new files |
+| 2 | Implement subcommands (sync, validate, diff, init) | | Done | 2026-10-25 | 1 | Medium | CLI modularization |
+| 3 | Replace regex frontmatter parser with `yaml` package | | Done | 2026-10-25 | 1 | Medium | src/core/transform/parser.ts |
+| 4 | Add JSON Schema validation for `agentic-toolbox.json` | | Done | 2026-10-25 | 1 | Low | src/core/config/schema.ts |
+| 5 | Implement structured error classes (SyncError, ConfigError, etc.) | | Done | 2026-10-25 | 1 | Low | src/utils/errors/classes.ts |
+| 6 | Add TypeScript path aliases + tsc-alias | | Done | 2026-10-25 | 1 | Medium | tsconfig.json + build |
+| 7 | Make all index.ts pure barrel exports | | Done | 2026-10-25 | 1 | Low | 3 violations fixed |
+| 8 | Add colored console logger with levels | | Done | 2026-10-25 | 1 | Low | src/utils/logging/ |
+| 9 | Add incremental sync manifest foundation | | Done | 2026-10-25 | 1 | High | src/core/sync/manifest.ts |
+| 10 | Binary shebang + path resolution fixes | | Done | 2026-10-25 | 1 | Low | src/index.ts |
 
 ---
 
@@ -32,8 +32,8 @@
 
 | Blocker | Impact | Resolution |
 |---------|--------|------------|
-| npm package not verified in toolkit | Blocks bootstrapping | Run `npm install` in toolkit repo |
-| Regex parser limits frontmatter features | Limits agent/skill definitions | Replace with `yaml` package |
+| Regex parser limits frontmatter features | Limits agent/skill definitions | Replaced with `yaml` package |
+| No config validation | Invalid configs cause cryptic errors | Added schema validation |
 
 ---
 
@@ -42,7 +42,34 @@
 | Sprint | Planned | Completed | Carryover | Notes |
 |--------|---------|-----------|-----------|-------|
 | v0.1.x npm Publish | 16 | 16 | 0 | Completed — 0.1.8 published |
-| v0.2.x Bootstrapping + Hardening | 10 | 0 | 10 | Active |
+| v0.2.x Bootstrapping + Hardening | 10 | 10 | 0 | Completed — bootstrapping validated |
+| v0.3.x Architecture Restructure | 10 | 10 | 0 | Completed — full restructure |
+
+---
+
+## Previous Sprint: v0.2.x — Bootstrapping & Core Engine Hardening ✅ **COMPLETED**
+
+| # | Task | Status | Notes |
+|---|------|--------|-------|
+| 1 | Verify npm package installs correctly | Done | `npm install agentic-toolbox` |
+| 2 | Run `npm install` in toolkit to pull published package | Done | Installs to node_modules/agentic-toolbox/ |
+| 3 | Verify installed package structure (dist/, agents/, skills/, AGENTS.md) | Done | Check all template files present |
+| 4 | Use published sync engine (`npx agentic-toolbox`) to sync toolkit | Done | Bootstrapping validation |
+| 5 | Use published creation skills to create new agents/skills for toolkit | Done | agent-creator, skill-creator, resource-gatherer |
+| 6 | Validate recursive improvement loop works end-to-end | Done | Toolkit builds itself |
+| 7 | Replace regex frontmatter parser with `yaml` package | Done | src/transform.ts |
+| 8 | Add JSON Schema validation for `agentic-toolbox.json` | Done | Zod or native |
+| 9 | Implement structured error classes (SyncError, ConfigError, etc.) | Done | src/types.ts + all |
+| 10 | Add optional incremental sync with manifest | Done | Behind `--incremental` flag |
+
+---
+
+### 🚫 Blockers (Resolved)
+
+| Blocker | Impact | Resolution |
+|---------|--------|------------|
+| npm package not verified in toolkit | Blocks bootstrapping | Run `npm install` in toolkit repo |
+| Regex parser limits frontmatter features | Limits agent/skill definitions | Replaced with `yaml` package |
 
 ---
 
@@ -81,8 +108,7 @@
 
 ## Notes
 
-- **Scope**: This tracker covers the bootstrapping + core engine hardening sprint.
-- **Previous sprint** (v0.1.x npm Publishing) fully completed — package published up to 0.1.8.
-- **Bootstrapping milestone**: Toolkit uses its own published npm package to build itself.
-- **Next sprint** after v0.2.x: "Testing & Quality" per Roadmap Phase 2.
+- **Scope**: This tracker covers the v0.3.x architecture restructure sprint (completed).
+- **Previous sprint** (v0.2.x Bootstrapping + Hardening) fully completed — bootstrapping validated end-to-end.
+- **Next sprint** after v0.3.x: "Testing & Quality" per Roadmap Phase 2 (Vitest setup, unit tests, integration tests).
 - Status values: `Done`, `In Progress`, `Pending`, `Blocked`
