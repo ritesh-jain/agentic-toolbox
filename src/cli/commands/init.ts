@@ -1,4 +1,4 @@
-import { InitArgs, CommandResult, Target, TARGET_OPTIONS } from '@/types/index.js';
+import { InitArgs, CommandResult, Target, TARGET_OPTIONS, validateTargets } from '@/types/index.js';
 import { createDefaultConfig } from '@/core/config/schema.js';
 import { logger } from '@/utils/logging/index.js';
 import { getPackageVersion } from '@/utils/fs/paths.js';
@@ -39,7 +39,7 @@ export async function initCommand(args: InitArgs): Promise<CommandResult> {
     // Determine targets: from args.targets, or prompt interactively
     let targets: Target[] = [];
     if (args.targets) {
-      targets = args.targets as Target[];
+      targets = validateTargets(args.targets);
     } else {
       // Always prompt interactively unless targets explicitly provided via --targets
       targets = await promptForTargets();

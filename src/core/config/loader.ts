@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { Config, LoadedConfig, Target } from '@/types/index.js';
-import { DEFAULT_CONFIG_NAME } from '@/utils/fs/paths.js';
+import { DEFAULT_CONFIG_NAME, sanitizeConfigPath } from '@/utils/fs/index.js';
 import { getParentProjectRoot, getToolkitDir } from '@/utils/fs/paths.js';
 import { discoverConfig } from './discovery.js';
 import { validateConfig } from './schema.js';
@@ -10,7 +10,7 @@ import { ConfigError, ConfigErrorCode } from '@/utils/errors/classes.js';
 
 export function loadConfig(customConfigPath?: string): LoadedConfig {
   const parentProjectRoot = getParentProjectRoot();
-  const configPath = customConfigPath || path.join(parentProjectRoot, DEFAULT_CONFIG_NAME);
+  const configPath = sanitizeConfigPath(customConfigPath, parentProjectRoot);
   const defaultConfig: Config = { targets: ['agents'] };
 
   let config: Config;

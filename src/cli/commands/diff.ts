@@ -1,4 +1,4 @@
-import { DiffArgs, CommandResult, Target } from '@/types/index.js';
+import { DiffArgs, CommandResult, validateTargets } from '@/types/index.js';
 import { loadConfig } from '@/core/config/index.js';
 import { getTargetConfig } from '@/core/sync/targets/index.js';
 import { transformAgentContent } from '@/core/transform/index.js';
@@ -17,7 +17,7 @@ export async function diffCommand(args: DiffArgs): Promise<CommandResult> {
     logger.info(`Agentic Toolbox v${getPackageVersion()} - Diff preview`);
 
     const config = loadConfig(args.configPath);
-    const targets = args.targets ? (args.targets as string[]).map(t => t.trim() as Target) : config.resolvedTargets;
+    const targets = args.targets ? validateTargets(args.targets) : config.resolvedTargets;
 
     let hasChanges = false;
 

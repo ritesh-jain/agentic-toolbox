@@ -92,3 +92,23 @@ export function getAllTargetConfigs(): TargetConfig[] {
 export function getStripFields(target: Target): string[] {
   return TARGET_DEFINITIONS[target]?.stripFields ?? [];
 }
+
+export function isValidTarget(target: string): target is Target {
+  return typeof target === 'string' && Object.prototype.hasOwnProperty.call(TARGET_DEFINITIONS, target.trim());
+}
+
+export function validateTarget(target: string): Target {
+  const trimmed = typeof target === 'string' ? target.trim() : '';
+  if (!isValidTarget(trimmed)) {
+    const validTargets = getTargetNames().join(', ');
+    throw new Error(`Invalid target: "${target}". Expected one of: ${validTargets}`);
+  }
+  return trimmed as Target;
+}
+
+export function validateTargets(targets: string[]): Target[] {
+  if (!Array.isArray(targets)) {
+    throw new Error('Targets must be an array of strings');
+  }
+  return targets.map(t => validateTarget(t));
+}

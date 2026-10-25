@@ -1,4 +1,4 @@
-import { SyncArgs, CommandResult, Target } from '@/types/index.js';
+import { SyncArgs, CommandResult, validateTargets } from '@/types/index.js';
 import { loadConfig } from '@/core/config/index.js';
 import { syncToTargets } from '@/core/sync/index.js';
 import { logger } from '@/utils/logging/index.js';
@@ -16,7 +16,7 @@ export async function syncCommand(args: SyncArgs): Promise<CommandResult> {
     logger.info(`Agentic Toolbox v${getPackageVersion()} - Syncing agents and skills`);
 
     const config = loadConfig(args.configPath);
-    const targets = args.targets ? (args.targets as string[]).map(t => t.trim() as Target) : undefined;
+    const targets = args.targets ? validateTargets(args.targets) : undefined;
 
     const results = await syncToTargets({ config, dryRun: args.dryRun, verbose: args.verbose, targets });
 
