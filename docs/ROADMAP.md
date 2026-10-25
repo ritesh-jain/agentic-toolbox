@@ -5,71 +5,54 @@
 
 ---
 
-## 🎯 Release Phases
+## 🎯 Current Sprint: Testing & Quality (v0.4.x)
 
-### Phase 3: v0.4.x — Testing & Quality 🔄 **NEXT**
 *Target: Comprehensive test coverage and quality gates*
 
-**3.1 Test Infrastructure**
+### Test Infrastructure
 - [ ] Set up Vitest test suite
 - [ ] Configure coverage thresholds (80%+)
 
-**3.2 Unit Tests**
+### Unit Tests
 - [ ] `src/core/transform/` — parser, stripper, reassembler
 - [ ] `src/core/config/` — loader, schema, discovery
 - [ ] `src/core/sync/` — engine, merger, manifest, targets
 - [ ] `src/cli/args/` — argument parsing, flag handling
 - [ ] `src/utils/fs/` — operations, atomic, paths
 
-**3.3 Integration Tests**
+### Integration Tests
 - [ ] Full sync cycle with temp directories
 - [ ] Multi-target sync verification
 - [ ] Project merge override behavior
 - [ ] Incremental sync with manifest
 
-**3.4 Quality Gates**
+### Quality Gates
 - [ ] CI test execution on PR
 - [ ] Coverage reporting
 - [ ] Linting (ESLint + TypeScript strict)
 
 ---
 
-### Phase 4: v0.5.x — CLI & UX Polish
+## 🔮 Future Planning
 
+### Next: CLI & UX Polish (v0.5.x)
 - [ ] Colorized terminal output (ANSI codes, `--color` flag)
 - [ ] Verbose logging levels (`--verbose`, `--quiet`)
-- [ ] `--diff` flag for preview (unified diff) — *foundation exists in v0.3.x*
+- [ ] `--diff` flag for preview (unified diff) — *foundation exists*
 - [ ] Shell completion scripts (bash, zsh, fish)
 
----
-
-### Phase 5: v1.0.x — Production Hardening
-
+### Production Hardening (v1.0.x)
 - [ ] Achieve 80%+ test coverage
 - [ ] Performance benchmarks
 - [ ] Security audit
 - [ ] Documentation complete (ADRs, module specs)
 - [ ] Create `v1.0.0` tag and GitHub release
 
----
-
-## 📦 Future Major Goals (Post v1.0.x)
-
-### Plugin System
-- Allow custom transformers, validators, target handlers via plugin API
-- Plugin discovery and loading mechanism
-
-### Additional Targets
-- Cursor, Windsurf, Zed, VS Code extensions
-- Generic `.agents/` enhancements
-
-### Remote Configuration
-- Fetch agent/skill definitions from remote registry
-- Versioned remote configs with caching
-
-### Web UI / Dashboard
-- Optional local web dashboard for managing agents/skills
-- Visual sync status and conflict resolution
+### Post v1.0.x — Major Goals
+- **Plugin System**: Custom transformers, validators, target handlers via plugin API
+- **Additional Targets**: Cursor, Windsurf, Zed, VS Code extensions
+- **Remote Configuration**: Fetch agent/skill definitions from remote registry
+- **Web UI / Dashboard**: Optional local dashboard for managing agents/skills
 
 ---
 
@@ -95,18 +78,18 @@
 
 ---
 
-## 📋 Detailed Task Breakdown
+## 📋 Task Breakdown
 
-| # | Task | Module | Priority | Est. Effort | Phase |
-|---|------|--------|----------|-------------|-------|
-| 3.1 | Vitest setup | `package.json` + `vitest.config.ts` | 🔴 Critical | Medium | 3 |
-| 3.2 | Transform unit tests | `core/transform/*.test.ts` | 🔴 Critical | Medium | 3 |
-| 3.3 | Config unit tests | `core/config/*.test.ts` | 🔴 Critical | Low | 3 |
-| 3.4 | Sync unit tests | `core/sync/*.test.ts` | 🔴 Critical | High | 3 |
-| 3.5 | Integration tests | `sync.integration.test.ts` | 🔴 Critical | Medium | 3 |
-| 4.1 | Colorized output | `cli.ts` | 🟢 Medium | Low | 4 |
-| 4.2 | Verbose logging | `cli.ts` + `sync.ts` | 🟢 Medium | Low | 4 |
-| 4.3 | Shell completions | `cli/` | 🟢 Medium | Medium | 4 |
+| # | Task | Module | Priority | Est. Effort | Target |
+|---|------|--------|----------|-------------|--------|
+| 1 | Vitest setup | `package.json` + `vitest.config.ts` | 🔴 Critical | Medium | Current |
+| 2 | Transform unit tests | `core/transform/*.test.ts` | 🔴 Critical | Medium | Current |
+| 3 | Config unit tests | `core/config/*.test.ts` | 🔴 Critical | Low | Current |
+| 4 | Sync unit tests | `core/sync/*.test.ts` | 🔴 Critical | High | Current |
+| 5 | Integration tests | `sync.integration.test.ts` | 🔴 Critical | Medium | Current |
+| 6 | Colorized output | `cli.ts` | 🟢 Medium | Low | Next |
+| 7 | Verbose logging | `cli.ts` + `sync.ts` | 🟢 Medium | Low | Next |
+| 8 | Shell completions | `cli/` | 🟢 Medium | Medium | Next |
 
 ---
 
