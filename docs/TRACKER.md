@@ -4,10 +4,10 @@
 
 ---
 
-## Current Sprint: v0.3.x — Architecture Restructure & CLI Polish ✅ **COMPLETED**
-**Sprint Goal**: Restructure `src/` into modular architecture, implement subcommands, replace regex parser with YAML, add config validation, structured errors, and path aliases.
+## Current Sprint: v0.4.x — MVP Consolidation 🔄 **ACTIVE**
+**Sprint Goal**: Consolidate app features to MVP — reliable `init` subcommand, smart default behavior, robust sync, clear errors.
 
-**Sprint Dates**: 2026-10-25 → 2026-10-25
+**Sprint Dates**: 2026-10-25 → [End Date]
 
 ---
 
@@ -15,16 +15,14 @@
 
 | # | Task | Owner | Status | Started | Dependencies | Est. Effort | Notes |
 |---|------|-------|--------|---------|--------------|-------------|-------|
-| 1 | Restructure `src/` into modular architecture (core/, utils/, cli/, types/) | | Done | 2026-10-25 | — | High | 46 new files |
-| 2 | Implement subcommands (sync, validate, diff, init) | | Done | 2026-10-25 | 1 | Medium | CLI modularization |
-| 3 | Replace regex frontmatter parser with `yaml` package | | Done | 2026-10-25 | 1 | Medium | src/core/transform/parser.ts |
-| 4 | Add JSON Schema validation for `agentic-toolbox.json` | | Done | 2026-10-25 | 1 | Low | src/core/config/schema.ts |
-| 5 | Implement structured error classes (SyncError, ConfigError, etc.) | | Done | 2026-10-25 | 1 | Low | src/utils/errors/classes.ts |
-| 6 | Add TypeScript path aliases + tsc-alias | | Done | 2026-10-25 | 1 | Medium | tsconfig.json + build |
-| 7 | Make all index.ts pure barrel exports | | Done | 2026-10-25 | 1 | Low | 3 violations fixed |
-| 8 | Add colored console logger with levels | | Done | 2026-10-25 | 1 | Low | src/utils/logging/ |
-| 9 | Add incremental sync manifest foundation | | Done | 2026-10-25 | 1 | High | src/core/sync/manifest.ts |
-| 10 | Binary shebang + path resolution fixes | | Done | 2026-10-25 | 1 | Low | src/index.ts |
+| 1 | Smart default: no args + no config → helpful hint with init usage | | In Progress | 2026-10-25 | — | Low | `cli/run-cli.ts` |
+| 2 | `init` subcommand: add `--force` flag, overwrite logic | | Pending | 2026-10-25 | 1 | Low | `cli/commands/init.ts` |
+| 3 | Config validation improvements: clear error messages | | Pending | 2026-10-25 | 1 | Low | `core/config/schema.ts` |
+| 4 | Sync reliability: verify all targets work correctly | | Pending | 2026-10-25 | 1 | Medium | `core/sync/` |
+| 5 | Error handling: consistent, actionable messages | | Pending | 2026-10-25 | 1 | Low | `utils/errors/`, `cli/` |
+| 6 | Help text: clear init + sync workflow | | Pending | 2026-10-25 | 1 | Low | `cli/help/` |
+| 7 | Unit tests for init/sync commands | | Pending | 2026-10-25 | 1 | Medium | `core/`, `cli/` |
+| 8 | Integration tests for full workflow | | Pending | 2026-10-25 | 7 | Medium | `sync.integration.test.ts` |
 
 ---
 
@@ -32,8 +30,7 @@
 
 | Blocker | Impact | Resolution |
 |---------|--------|------------|
-| Regex parser limits frontmatter features | Limits agent/skill definitions | Replaced with `yaml` package |
-| No config validation | Invalid configs cause cryptic errors | Added schema validation |
+| None currently | — | — |
 
 ---
 
@@ -44,6 +41,33 @@
 | v0.1.x npm Publish | 16 | 16 | 0 | Completed — 0.1.8 published |
 | v0.2.x Bootstrapping + Hardening | 10 | 10 | 0 | Completed — bootstrapping validated |
 | v0.3.x Architecture Restructure | 10 | 10 | 0 | Completed — full restructure |
+| v0.4.x MVP Consolidation | 8 | 0 | 8 | Active |
+
+---
+
+## Previous Sprint: v0.3.x — Architecture Restructure & CLI Polish ✅ **COMPLETED**
+
+| # | Task | Status | Notes |
+|---|------|--------|-------|
+| 1 | Restructure `src/` into modular architecture (core/, utils/, cli/, types/) | Done | 46 new files |
+| 2 | Implement subcommands (sync, validate, diff, init) | Done | CLI modularization |
+| 3 | Replace regex frontmatter parser with `yaml` package | Done | src/core/transform/parser.ts |
+| 4 | Add JSON Schema validation for `agentic-toolbox.json` | Done | src/core/config/schema.ts |
+| 5 | Implement structured error classes (SyncError, ConfigError, etc.) | Done | src/utils/errors/classes.ts |
+| 6 | Add TypeScript path aliases + tsc-alias | Done | tsconfig.json + build |
+| 7 | Make all index.ts pure barrel exports | Done | 3 violations fixed |
+| 8 | Add colored console logger with levels | Done | src/utils/logging/ |
+| 9 | Add incremental sync manifest foundation | Done | src/core/sync/manifest.ts |
+| 10 | Binary shebang + path resolution fixes | Done | src/index.ts |
+
+---
+
+### 🚫 Blockers (Resolved)
+
+| Blocker | Impact | Resolution |
+|---------|--------|------------|
+| Regex parser limits frontmatter features | Limits agent/skill definitions | Replaced with `yaml` package |
+| No config validation | Invalid configs cause cryptic errors | Added schema validation |
 
 ---
 
@@ -108,7 +132,7 @@
 
 ## Notes
 
-- **Scope**: This tracker covers the v0.3.x architecture restructure sprint (completed).
-- **Previous sprint** (v0.2.x Bootstrapping + Hardening) fully completed — bootstrapping validated end-to-end.
-- **Next sprint** after v0.3.x: "Testing & Quality" per Roadmap Phase 2 (Vitest setup, unit tests, integration tests).
+- **Scope**: This tracker covers the v0.4.x MVP Consolidation sprint.
+- **Previous sprint** (v0.3.x Architecture Restructure) fully completed — modular architecture, subcommands, YAML parser, config validation, structured errors, path aliases.
+- **Next sprint** after v0.4.x: "Testing & Quality" — Vitest setup, unit tests, integration tests, CI integration.
 - Status values: `Done`, `In Progress`, `Pending`, `Blocked`

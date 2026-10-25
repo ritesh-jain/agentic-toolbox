@@ -5,31 +5,21 @@
 
 ---
 
-## 🎯 Current Sprint: Testing & Quality (v0.4.x)
+## 🎯 Current Sprint: MVP Consolidation (v0.4.x)
 
-*Target: Comprehensive test coverage and quality gates*
+*Target: Minimum viable product — consumable library with reliable core functionality*
 
-### Test Infrastructure
-- [ ] Set up Vitest test suite
-- [ ] Configure coverage thresholds (80%+)
+### Core Functionality Consolidation
+- [ ] **Smart default behavior**: `agentic-toolbox` (no args) detects missing config → shows helpful hint with `init` subcommand usage
+- [ ] **`init` subcommand enhancement**: `agentic-toolbox init [--force]` creates config if missing, supports `--force` to overwrite
+- [ ] **Config validation**: Robust validation with clear error messages for malformed configs
+- [ ] **Sync reliability**: Verify sync works correctly across all targets (opencode, claude, agents)
+- [ ] **Error handling**: Consistent, actionable error messages across all commands
 
-### Unit Tests
-- [ ] `src/core/transform/` — parser, stripper, reassembler
-- [ ] `src/core/config/` — loader, schema, discovery
-- [ ] `src/core/sync/` — engine, merger, manifest, targets
-- [ ] `src/cli/args/` — argument parsing, flag handling
-- [ ] `src/utils/fs/` — operations, atomic, paths
-
-### Integration Tests
-- [ ] Full sync cycle with temp directories
-- [ ] Multi-target sync verification
-- [ ] Project merge override behavior
-- [ ] Incremental sync with manifest
-
-### Quality Gates
-- [ ] CI test execution on PR
-- [ ] Coverage reporting
-- [ ] Linting (ESLint + TypeScript strict)
+### Developer Experience
+- [ ] **Clear help text**: `agentic-toolbox --help` shows clear usage for init + sync workflow
+- [ ] **Version output**: `agentic-toolbox --version` / `-V`
+- [ ] **Dry-run clarity**: `--dry-run` shows exactly what would change
 
 ---
 
@@ -82,14 +72,13 @@
 
 | # | Task | Module | Priority | Est. Effort | Target |
 |---|------|--------|----------|-------------|--------|
-| 1 | Vitest setup | `package.json` + `vitest.config.ts` | 🔴 Critical | Medium | Current |
-| 2 | Transform unit tests | `core/transform/*.test.ts` | 🔴 Critical | Medium | Current |
-| 3 | Config unit tests | `core/config/*.test.ts` | 🔴 Critical | Low | Current |
-| 4 | Sync unit tests | `core/sync/*.test.ts` | 🔴 Critical | High | Current |
-| 5 | Integration tests | `sync.integration.test.ts` | 🔴 Critical | Medium | Current |
-| 6 | Colorized output | `cli.ts` | 🟢 Medium | Low | Next |
-| 7 | Verbose logging | `cli.ts` + `sync.ts` | 🟢 Medium | Low | Next |
-| 8 | Shell completions | `cli/` | 🟢 Medium | Medium | Next |
+| 1 | Smart default: no args + no config → helpful hint | `cli/run-cli.ts` | 🔴 Critical | Low | Current |
+| 2 | `init` subcommand: `--force` flag, overwrite logic | `cli/commands/init.ts` | 🔴 Critical | Low | Current |
+| 3 | Config validation improvements | `core/config/schema.ts` | 🟡 High | Low | Current |
+| 4 | Sync reliability verification | `core/sync/` | 🟡 High | Medium | Current |
+| 5 | Help text improvements | `cli/help/` | 🟢 Medium | Low | Current |
+| 6 | Unit tests for init/sync | `core/`, `cli/` | 🔴 Critical | Medium | Current |
+| 7 | Integration tests | `sync.integration.test.ts` | 🟡 High | Medium | Next |
 
 ---
 
