@@ -4,6 +4,9 @@ import { printHelp } from './help/print-help.js';
 import { subcommands, defaultCommand } from './args/subcommands.js';
 import { getPackageVersion } from '@/utils/fs/paths.js';
 import { CliArgs, CommandResult } from '@/types/index.js';
+import * as fs from 'fs';
+import * as path from 'path';
+import { getParentProjectRoot, DEFAULT_CONFIG_NAME } from '@/utils/fs/paths.js';
 
 export async function runCli(argv: string[]): Promise<CommandResult> {
   // Handle version flag early
@@ -21,6 +24,20 @@ export async function runCli(argv: string[]): Promise<CommandResult> {
     } else {
       printHelp();
     }
+    return { success: true, exitCode: 0 };
+  }
+
+  // Smart default: if no command given and no config exists, show helpful hint
+  const configPath = args.configPath || path.join(getParentProjectRoot(), DEFAULT_CONFIG_NAME);
+  const hasConfig = fs.existsSync(configPath);
+
+  if (!args.command && !hasConfig) {
+    console.log(`No config file found at ${configPath}`);
+    console.log('Run one of the following to get started:');
+    console.log('  agentic-toolbox init          # Create default config file');
+    console.log('  agentic-toolbox init --force  # Overwrite existing config');
+    console.log('');
+    printHelp();
     return { success: true, exitCode: 0 };
   }
 

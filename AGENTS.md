@@ -22,11 +22,10 @@ This package is consumed via npm (npm registry). The binary name is `agentic-too
 | Resource | Purpose |
 | -------- | ------- |
 | `README.md` | Project overview, features, setup |
-| `HANDOFF.md` | Complete context transfer for new AI sessions |
 | `docs/index.md` | Master documentation index & status tracker |
 | `docs/architecture.md` | System design |
 | `docs/roadmap.md` | Task tracking, completed work |
-| `docs/changelog.md` | Recent changes and release history |
+| `CHANGELOG.md` | Recent changes and release history |
 | `docs/tracker.md` | Sprint-level task management |
 
 ---
@@ -37,12 +36,11 @@ This package is consumed via npm (npm registry). The binary name is `agentic-too
 
 | File | Purpose | When to Read |
 |------|---------|--------------|
-| `HANDOFF.md` | **Complete context transfer** — project state, decisions, initialization steps | **First** — for new AI sessions |
 | `docs/index.md` | **Master documentation index** — complete map of all docs, status, and navigation | **First** — gives you the full map of all documentation |
 | `docs/architecture.md` | System design: sync engine, transform logic, CLI, project-level merge, data flow, distribution models | When working on sync engine, transform logic, or data flow |
 | `docs/roadmap.md` | Development phases, prioritized task lists (Up Next, Backlog, Deferred, Completed) | Before starting any task — check current goal and priorities |
 | `docs/tracker.md` | Sprint-level task management: current epic, tasks in progress, finished, pending | During active development — track current sprint state |
-| `docs/changelog.md` | Curated chronological log of notable changes per release (Keep a Changelog format) | When reviewing history or preparing releases |
+| `CHANGELOG.md` | Curated chronological log of notable changes per release (Keep a Changelog format) | When reviewing history or preparing releases |
 | `docs/project.md` | Product vision, target users, core use cases, domain concepts, success criteria | When needing product context or domain understanding |
 | `docs/roadmap.md` | Development phases, prioritized task lists (Up Next, Backlog, Deferred, Completed) | When planning or prioritizing work |
 | `README.md` | Project overview, features, tech stack, quick start, installation, usage | For quick project overview and setup instructions |
@@ -238,7 +236,3 @@ The `dist/index.js` engine (published as `agentic-toolbox` binary) supports thes
 When asked to optimize the synchronization engine (`dist/index.js`):
 
 - [ ] Async execution for large asset blocks
-- [ ] Schema validation for `agentic-toolbox.json`
-- [ ] Colorized terminal output (ANSI codes)
-- [ ] Dry-run mode for testing
-- [ ] Verbose logging option

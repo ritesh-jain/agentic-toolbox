@@ -71,7 +71,13 @@ export async function validateCommand(args: CliArgs): Promise<CommandResult> {
     logger.success('\nValidation complete - all checks passed');
     return { success: true, exitCode: 0 };
   } catch (error) {
-    logger.error(`Validation failed: ${error instanceof Error ? error.message : String(error)}`);
+    const err = error as Error & { context?: { errors?: Array<{ field: string; message: string; value?: unknown }> } };
+    logger.error(`Validation failed: ${err.message}`);
+    if (err.context?.errors) {
+      for (const e of err.context.errors) {
+        logger.error(`  ${e.field}: ${e.message}${e.value !== undefined ? ` (got: ${JSON.stringify(e.value)})` : ''}`);
+      }
+    }
     return { success: false, exitCode: 1, error: error as Error };
   }
 }

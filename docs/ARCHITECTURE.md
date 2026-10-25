@@ -10,13 +10,73 @@
 
 ```
 src/
-├── index.ts            # CLI entry point
-├── cli.ts              # Argument parsing, help, orchestration
-├── config.ts           # Config loading + auto-discovery
-├── constants.ts        # TOOL_MAP, STRIP_FIELDS, DEFAULT_CONFIG_NAME
-├── transform.ts        # Frontmatter transformation per platform
-├── sync.ts             # syncToTarget (with project merge)
-└── types.ts            # TypeScript interfaces
+├── index.ts                      # CLI entry point
+├── shared/                       # Shared constants, types, utilities
+│   ├── constants.ts              # Error codes, messages, exit codes, regex patterns
+│   ├── targets.ts                # Target definitions, STRIP_FIELDS, TARGET_OPTIONS
+│   └── validation.ts             # Input sanitization utilities
+├── types/                        # Shared type definitions
+│   ├── index.ts                  # Barrel export
+│   ├── config.ts                 # Config, Target, SyncConfig, LoadedConfig
+│   ├── sync.ts                   # SyncOptions, SyncResult, TargetConfig
+│   ├── transform.ts              # StripFields, TransformOptions, ParsedContent
+│   ├── errors.ts                 # ErrorCode, ErrorContext, ValidationError
+│   └── cli.ts                    # CliArgs, FlagDefinition, SubcommandDefinition
+├── core/                         # Core domain logic
+│   ├── index.ts                  # Core barrel export
+│   ├── config/                   # Configuration management
+│   │   ├── index.ts              # Config public API
+│   │   ├── loader.ts             # Config loading + auto-discovery
+│   │   ├── schema.ts             # Config schema validation
+│   │   └── discovery.ts          # Auto-discovery logic
+│   ├── sync/                     # Sync engine
+│   │   ├── index.ts              # Sync public API
+│   │   ├── engine.ts             # Sync orchestration
+│   │   ├── engine-internal.ts    # Internal sync implementation
+│   │   ├── merger.ts             # Project merge logic
+│   │   ├── manifest.ts           # Incremental sync manifest
+│   │   └── targets/
+│   │       ├── index.ts          # Target configurations
+│   │       └── target-configs.ts # Target definitions + STRIP_FIELDS
+│   └── transform/                # Frontmatter transformation
+│       ├── index.ts              # Transform public API
+│       ├── parser.ts             # YAML frontmatter parser
+│       ├── stripper.ts           # Field stripper
+│       ├── reassembler.ts        # Content reassembler
+│       └── transform-agent.ts    # Main transform function
+├── utils/                        # Infrastructure utilities
+│   ├── index.ts                  # Utils barrel export
+│   ├── fs/                       # Safe filesystem operations
+│   │   ├── index.ts              # FS operations barrel
+│   │   ├── operations.ts         # read, write, copy, remove, exists
+│   │   ├── atomic.ts             # Atomic writes
+│   │   └── paths.ts              # Path resolution utilities
+│   ├── logging/                  # Logging abstraction
+│   │   ├── index.ts              # Logging barrel
+│   │   ├── console.ts            # Console logger implementation
+│   │   └── levels.ts             # Log levels
+│   └── errors/                   # Structured error classes
+│       ├── index.ts              # Errors barrel
+│       ├── classes.ts            # Error classes (ConfigError, SyncError, etc.)
+│       └── codes.ts              # Error code enums
+└── cli/                          # CLI interface
+    ├── index.ts                  # CLI barrel export
+    ├── run-cli.ts                # Main CLI entry point
+    ├── args/                     # Argument parsing
+    │   ├── index.ts              # Args barrel
+    │   ├── parser.ts             # Argument parsing
+    │   ├── flags.ts              # Flag definitions
+    │   └── subcommands.ts        # Subcommand definitions
+    ├── commands/                 # Command implementations
+    │   ├── index.ts              # Commands barrel
+    │   ├── sync.ts               # Sync command
+    │   ├── validate.ts           # Validate command
+    │   ├── diff.ts               # Diff command
+    │   └── init.ts               # Init command
+    └── help/                     # Help system
+        ├── index.ts              # Help barrel
+        ├── templates.ts          # Help text templates
+        └── print-help.ts         # Print help function
 ```
 
 ### Path Resolution
@@ -123,26 +183,38 @@ Project files **override** package files with the same name. This enables custom
 | Module | Responsibility | Key Exports |
 |--------|---------------|-------------|
 | `index.ts` | CLI entry point | `runCli()` |
-| `cli.ts` | Arg parsing, help, orchestration | `parseArgs()`, `printHelp()`, `runCli()` |
-| `config.ts` | Config loading + auto-discovery | `loadConfig()`, `getParentProjectRoot()`, `getSubmoduleDir()` |
-| `constants.ts` | Shared constants | `TOOL_MAP`, `STRIP_FIELDS`, `DEFAULT_CONFIG_NAME`, `FRONTMATTER_REGEX` |
-| `transform.ts` | Frontmatter transformation | `transformAgentContent()` |
-| `sync.ts` | Sync logic (forward) | `syncToTarget()` |
-| `types.ts` | TypeScript interfaces | `ToolMap`, `StripFields`, `AgenticToolkitConfig`, `CliOptions`, `SyncResult` |
+| `cli/run-cli.ts` | CLI orchestration | `runCli()` |
+| `cli/args/parser.ts` | Argument parsing | `parseArgs()` |
+| `cli/args/subcommands.ts` | Subcommand definitions | `subcommands`, `defaultCommand` |
+| `cli/commands/sync.ts` | Sync command | `syncCommand()` |
+| `cli/commands/validate.ts` | Validate command | `validateCommand()` |
+| `cli/commands/diff.ts` | Diff command | `diffCommand()` |
+| `cli/commands/init.ts` | Init command | `initCommand()` |
+| `core/config/loader.ts` | Config loading + auto-discovery | `loadConfig()` |
+| `core/config/schema.ts` | Config schema validation | `validateConfig()` |
+| `core/config/discovery.ts` | Auto-discovery logic | `discoverConfig()` |
+| `core/sync/engine.ts` | Sync orchestration | `syncToTargets()`, `syncToTarget()` |
+| `core/sync/engine-internal.ts` | Internal sync implementation | `syncToTargetImpl()` |
+| `core/sync/merger.ts` | Project merge logic | `mergeAgents()`, `mergeSkills()` |
+| `core/sync/manifest.ts` | Incremental sync manifest | `loadManifest()`, `saveManifest()`, `createFileEntry()` |
+| `core/sync/targets/index.ts` | Target configurations | `TARGET_CONFIGS`, `getTargetConfig()` |
+| `core/transform/index.ts` | Transform public API | `transformAgentContent()`, `parseFrontmatter()`, etc. |
+| `core/transform/parser.ts` | YAML frontmatter parser | `parseFrontmatter()`, `stringifyFrontmatter()` |
+| `core/transform/stripper.ts` | Field stripper | `stripFields()`, `getStripFields()` |
+| `core/transform/reassembler.ts` | Content reassembler | `reassembleContent()` |
+| `core/transform/transform-agent.ts` | Main transform function | `transformAgentContent()` |
+| `utils/fs/operations.ts` | Safe filesystem operations | `readFile()`, `writeFile()`, `copyFile()`, etc. |
+| `utils/fs/paths.ts` | Path resolution | `getParentProjectRoot()`, `getToolkitDir()` |
+| `utils/logging/console.ts` | Colored console logger | `ConsoleLogger`, `logger` |
+| `utils/errors/classes.ts` | Structured error classes | `ConfigError`, `SyncError`, `TransformError`, etc. |
 
 ---
 
 ## 🔧 Key Algorithms
 
-### Frontmatter Transformation (`transform.ts`)
+### Frontmatter Transformation (`core/transform/`)
 
-**Current**: Regex-based parsing
-```typescript
-const FRONTMATTER_REGEX = /^(---\n)([\s\S]*?)(\n---)/;
-// Line-by-line parsing with indent tracking for nested blocks
-```
-
-**Planned**: YAML parser (`yaml` package)
+**Current**: YAML parser (`yaml` package)
 ```typescript
 import { parse, stringify } from 'yaml';
 // Parse frontmatter → remove fields → stringify → reassemble
@@ -150,12 +222,12 @@ import { parse, stringify } from 'yaml';
 
 **Field Stripping Logic**:
 1. Match frontmatter between `---` delimiters
-2. Split into lines
-3. Track indent level for nested YAML blocks
-4. Skip lines for fields in `STRIP_FIELDS[target]`
-5. Rejoin and replace in original content
+2. Parse YAML to object
+3. Remove fields in `STRIP_FIELDS[target]`
+4. Stringify back to YAML
+5. Reassemble with original body
 
-### Project Merge Strategy (`sync.ts`)
+### Project Merge Strategy (`core/sync/merger.ts`)
 
 **Agents** (with transformation):
 ```typescript
@@ -177,7 +249,7 @@ cpSync(packageSkills, targetSkills)
 cpSync(projectSkills, targetSkills)
 ```
 
-### Auto-Discovery (`config.ts`)
+### Auto-Discovery (`core/config/discovery.ts`)
 
 ```typescript
 if (exists('opencode.json')) return { targets: ['opencode'] }
@@ -201,11 +273,11 @@ return { targets: ['agents'] }
 
 | Extension Point | Mechanism | Status |
 |----------------|-----------|--------|
-| New Target Platform | Add to `TOOL_MAP`, `STRIP_FIELDS` | Manual code change |
+| New Target Platform | Add to `TARGET_DEFINITIONS` in `shared/targets.ts` | Manual code change |
 | Custom Transformers | Not yet supported | Planned: plugin API |
 | Custom Validators | Not yet supported | Planned: plugin API |
-| Additional CLI Flags | Add to `parseArgs()`, `CliOptions` | Manual code change |
-| Config Schema | JSON Schema / Zod | Planned |
+| Additional CLI Flags | Add to `flags.ts`, `subcommands.ts` | Manual code change |
+| Config Schema | Native validation in `schema.ts` | Implemented |
 
 ---
 
@@ -223,13 +295,13 @@ return { targets: ['agents'] }
 ## 🚀 Deployment Pipeline
 
 1. **Local**: `npm run build` → `dist/`
-2. **Consume**: `npm install agentic-toolbox@0.1.8` (from npm registry)
+2. **Consume**: `npm install agentic-toolbox@0.3.0` (from npm registry)
 3. **Run**: `npx agentic-toolbox` or `npm run agent:sync`
 
 ---
 
 ## 📦 Distribution
 
-- **npm registry**: `agentic-toolbox@0.1.8` (published)
+- **npm registry**: `agentic-toolbox@0.3.0` (published)
 - **GitHub**: `ritesh-jain/agentic-toolbox` (source)
 - **Binary**: `agentic-toolbox` (via `package.json:bin` → `dist/index.js`)
