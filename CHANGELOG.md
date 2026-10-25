@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **CLI Flag Parsing Strategy Pattern**: Extracted flag parsing into dedicated strategies (`FlagStrategy`) supporting boolean, string, and string arrays (`CLI1`)
 - **Input Sanitization**: Added path traversal protections (`sanitizePath`, `sanitizeConfigPath`) and target validation utilities (`validateTarget`, `validateTargets`) (`CLI3`)
 - **Logger Dependency Injection**: Added stream injection options (`stream`, `errorStream`) to `ConsoleLogger` for testability (`CLI4`)
+- **Help Text Formatting Unification**: Added dynamic column alignment (`formatFlags`, `formatCommands`) and stream injection support for CLI help text (`CLI5`)
 
 ### Fixed
 - **Short Flag Array Parsing**: Fixed bug where short flags (e.g., `-t`) did not parse comma-separated string arrays
