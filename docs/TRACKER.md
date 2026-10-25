@@ -99,7 +99,7 @@ Work through items **one at a time**, in order. For each item:
 | --- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------ |
 | CLI1 | Strategy pattern for arg parser | Replace hardcoded `parseFlags` in `src/cli/args/parser.ts` with strategy pattern for extensibility. | DONE | Completed. Implemented FlagStrategy with boolean, string, and string[] strategies; fixed short flag array parsing. |
 | CLI2 | Extract CLI arg types per command | Create `SyncArgs`, `InitArgs`, `ValidateArgs`, `DiffArgs` in `types/cli.ts`. | DONE | Completed as part of T5/T6. |
-| CLI3 | Input sanitization utilities | Add `sanitizePath()`, `validateTarget()`, `sanitizeConfigPath()`. | TODO | No input sanitization currently. |
+| CLI3 | Input sanitization utilities | Add `sanitizePath()`, `validateTarget()`, `sanitizeConfigPath()`. | DONE | Completed. Added sanitizePath/sanitizeConfigPath in utils/fs/sanitization.ts and validateTarget/validateTargets in types/targets.ts. |
 | CLI4 | Logger dependency injection | `ConsoleLogger` should accept `WritableStream` instead of hardcoding `process.stdout`. | TODO | Enables testing with `MemoryStream`. |
 | CLI5 | Help text generation | Move help templates to unified location for reuse. | TODO | Templates duplicated in `templates.ts`. |
 

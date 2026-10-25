@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 - **CLI Flag Parsing Strategy Pattern**: Extracted flag parsing into dedicated strategies (`FlagStrategy`) supporting boolean, string, and string arrays (`CLI1`)
+- **Input Sanitization**: Added path traversal protections (`sanitizePath`, `sanitizeConfigPath`) and target validation utilities (`validateTarget`, `validateTargets`) (`CLI3`)
 
 ### Fixed
 - **Short Flag Array Parsing**: Fixed bug where short flags (e.g., `-t`) did not parse comma-separated string arrays
