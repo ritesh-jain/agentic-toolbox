@@ -52,6 +52,21 @@ export interface FlagDefinition {
   default?: unknown;
 }
 
+export interface FlagParseResult {
+  value: unknown;
+  nextIndex: number;
+}
+
+export interface FlagStrategy {
+  parse(
+    flagDef: FlagDefinition,
+    rawFlag: string,
+    argv: string[],
+    currentIndex: number,
+    currentValue?: unknown
+  ): FlagParseResult;
+}
+
 export interface SubcommandDefinition {
   name: string;
   description: string;
