@@ -17,7 +17,7 @@
 |---|------|-------|--------|---------|--------------|-------------|-------|
 | 1 | Smart default: no args + no config → helpful hint with init usage | | **Done** | 2026-10-25 | — | Low | `cli/run-cli.ts` |
 | 2 | `init` subcommand: add `--force` flag, overwrite logic | | **Done** | 2026-10-25 | 1 | Low | `cli/commands/init.ts` |
-| 3 | Config validation improvements: clear error messages | | Pending | 2026-10-25 | 1 | Low | `core/config/schema.ts` |
+| 3 | Config validation improvements: clear error messages | | **Done** | 2026-10-25 | 1 | Low | `cli/commands/validate.ts` |
 | 4 | Sync reliability: verify all targets work correctly | | Pending | 2026-10-25 | 1 | Medium | `core/sync/` |
 | 5 | Error handling: consistent, actionable messages | | Pending | 2026-10-25 | 1 | Low | `utils/errors/`, `cli/` |
 | 6 | Help text: clear init + sync workflow | | Pending | 2026-10-25 | 1 | Low | `cli/help/` |
