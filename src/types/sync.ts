@@ -16,13 +16,7 @@ export interface SyncResult {
   filesSynced?: string[];
 }
 
-export interface TargetConfig {
-  name: Target;
-  directory: string;
-  stripFields: string[];
-  transformAgents: boolean;
-  transformSkills: boolean;
-}
+export type { TargetConfig } from './targets.js';
 
 export interface SyncManifest {
   version: number;

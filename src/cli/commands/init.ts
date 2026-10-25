@@ -1,5 +1,5 @@
 // Init command implementation
-import { CliArgs, CommandResult, Target } from '@/types/index.js';
+import { CliArgs, CommandResult, Target, TARGET_OPTIONS } from '@/types/index.js';
 import { createDefaultConfig } from '@/core/config/schema.js';
 import { logger } from '@/utils/logging/index.js';
 import { getPackageVersion } from '@/utils/fs/paths.js';
@@ -7,7 +7,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { getParentProjectRoot, DEFAULT_CONFIG_NAME } from '@/utils/fs/paths.js';
 import { checkbox } from '@inquirer/prompts';
-import { TARGET_OPTIONS } from '@/shared/targets.js';
 
 async function promptForTargets(): Promise<Target[]> {
   const answers = await checkbox({
