@@ -58,9 +58,8 @@ export async function initCommand(args: CliArgs): Promise<CommandResult> {
     fs.writeFileSync(configPath, configContent, 'utf8');
 
     logger.success(`Created ${DEFAULT_CONFIG_NAME}`);
-    logger.info('\nCreated configuration:');
-    logger.info(configContent);
-    logger.info('\nEdit this file to customize sync options and paths.');
+    logger.info(`Config written to: ${configPath}`);
+    logger.info('Edit this file to customize sync options and paths.');
 
     return { success: true, exitCode: 0 };
   } catch (error) {

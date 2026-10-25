@@ -1,6 +1,6 @@
 {
   "targets": [
-    "agents"
+    "opencode"
   ],
   "sync": {
     "incremental": false,
