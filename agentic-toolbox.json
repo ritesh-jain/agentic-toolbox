@@ -1,0 +1,16 @@
+{
+  "targets": [
+    "agents"
+  ],
+  "sync": {
+    "incremental": false,
+    "backup": true
+  },
+  "transform": {
+    "preserveComments": false
+  },
+  "paths": {
+    "agents": "agents",
+    "skills": "skills"
+  }
+}
