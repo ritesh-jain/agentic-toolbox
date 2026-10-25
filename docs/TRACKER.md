@@ -215,7 +215,7 @@ Work through items **one at a time**, in order. For each item:
 | CR10 | `require()` in ESM codebase | Multiple files | Low | TD1, TD5, TD6. |
 
 ---
-## 9. Next Iteration Scratchpad (v0.4.x MVP Consolidation)
+## 9. Next Iteration Scratchpad (v0.5.x CLI & UX Polish)
 | # | Item | Description | Target |
 | --- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | M1 | Task 4: Sync reliability verification | Verify all targets, field transformation, dry-run, diff, incremental | Current |
@@ -250,7 +250,8 @@ Work through items **one at a time**, in order. For each item:
 | v0.1.x | npm Publishing | DONE | Package on npm, CI/CD, manual release flow |
 | v0.2.x | Bootstrapping & Core Hardening | DONE | Self-hosting, YAML parser, config validation, structured errors |
 | v0.3.x | Architecture Restructure | DONE | Modular src/, subcommands, YAML parser, config validation, path aliases |
-| v0.4.x | MVP Consolidation | IN PROGRESS | Smart defaults, init interactive, validation errors, sync reliability |
+| v0.4.x | MVP Consolidation | DONE | Smart defaults, init interactive, validation errors, sync reliability |
+| v0.5.x | CLI & UX Polish | IN PROGRESS | Colorized output, verbose/quiet modes, diff flag, shell completions |
 
 ---
-*Completed work (v0.1.x–v0.3.x) is documented in [CHANGELOG.md](../CHANGELOG.md).*
+*Completed work (v0.1.x–v0.4.x) is documented in [CHANGELOG.md](../CHANGELOG.md).*

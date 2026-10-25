@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.0] - 2026-10-25
+
+### Added
+- **Interactive Init Command**: `agentic-toolbox init` now prompts for target platforms via interactive checkbox
+- **Force Flag for Init**: `init --force` overwrites existing config with interactive target selection
+- **Targets Flag**: `init --targets opencode,claude` skips prompt and uses specified targets
+- **Shared Targets Module**: New `src/shared/targets.ts` as single source of truth for target definitions
+- **Structured Error Display**: `validate` command now shows field-level errors with received values
+
+### Changed
+- **Init Command**: Always prompts for targets unless `--targets` flag provided; `--force` enables overwrite with prompt
+- **Config Validation**: Enhanced error messages show field, message, and received value
+- **Sync Reliability**: Verified across all targets (opencode, claude, agents) with field transformation
+- **Version**: Bumped to 0.4.0 (minor) for MVP consolidation milestone
+
+### Fixed
+- **Init Command**: Now properly handles existing config with --force flag
+- **Validation Errors**: Now display field name, error message, and received value for clarity
+
 ## [0.3.0] - 2026-10-25
 
 ### Added
