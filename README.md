@@ -40,12 +40,12 @@ This adds to your `package.json`:
 }
 ```
 
-### 2. Add npm Scripts
+### 2. Add npm Scripts (optional)
 
 ```json
 {
   "scripts": {
-    "agent:sync": "agentic-toolbox"
+    "at": "agentic-toolbox"
   }
 }
 ```
@@ -65,7 +65,7 @@ Create `agentic-toolbox.json` in your project root:
 ### 4. Run Sync
 
 ```bash
-npm run agent:sync
+npm run at
 # or directly
 npx agentic-toolbox
 npx agentic-toolbox --config ./agentic-toolbox.json
@@ -78,27 +78,6 @@ npm update agentic-toolbox
 # or reinstall specific version
 npm install --save-dev agentic-toolbox@latest
 ```
-
----
-
-## Bootstrapping / Self-Hosting
-
-This toolkit is designed for **bootstrapping** — the published npm package can be installed as a devDependency and used to develop the toolkit itself. This creates a **recursive improvement cycle**:
-
-```json
-{
-  "devDependencies": {
-    "agentic-toolbox": "^0.1.8"
-  }
-}
-```
-
-This enables:
-- Using the published sync engine to manage the toolkit's own agents and skills
-- Using the published creation skills (`agent-creator`, `skill-creator`, `agentic-resource-gatherer`) to build new agents and skills for the toolkit
-- A **recursive improvement loop**: toolkit → better agents/skills → better toolkit
-
-This approach, known as **bootstrapping** in software engineering, ensures the toolkit validates itself in real-world usage and continuously improves through self-application.
 
 ---
 
@@ -115,7 +94,7 @@ This approach, known as **bootstrapping** in software engineering, ensures the t
 Via npm scripts:
 
 ```bash
-npm run agent:sync        # → agentic-toolbox
+npm run at        # → agentic-toolbox
 ```
 
 ---
@@ -214,7 +193,7 @@ Invoke via your AI assistant (Claude/OpenCode) with the agentic-tools-creator ag
 3. Run sync:
 
    ```bash
-   npm run agent:sync
+   npm run at
    ```
 
 ### Agent Description Format
@@ -251,7 +230,7 @@ Same as agents — use the `agentic-tools-creator` agent with type="skill".
 4. Run sync:
 
    ```bash
-   npm run agent:sync
+   npm run at
    ```
 
 ### Skill File Structure
