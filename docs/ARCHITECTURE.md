@@ -1,6 +1,6 @@
-# Architecture Overview — Agentic Toolkit
+# Architecture Overview — Agentic Toolbox
 
-> **High-level technical blueprint** for the Agentic Toolkit sync engine.
+> **High-level technical blueprint** for the Agentic Toolbox sync engine.
 
 ---
 
@@ -13,7 +13,7 @@ src/
 ├── index.ts            # CLI entry point
 ├── cli.ts              # Argument parsing, help, orchestration
 ├── config.ts           # Config loading + auto-discovery
-├── constants.ts        # TOOL_MAP, STRIP_FIELDS, regexes
+├── constants.ts        # TOOL_MAP, STRIP_FIELDS, DEFAULT_CONFIG_NAME
 ├── transform.ts        # Frontmatter transformation per platform
 ├── sync.ts             # syncToTarget (with project merge)
 └── types.ts            # TypeScript interfaces
@@ -25,7 +25,7 @@ src/
 |---------|------------|
 | Parent Project Root | `process.cwd()` |
 | Toolkit Dir | `import.meta.url` → `__dirname` |
-| Config File | `agentic-toolkit.json` in parent root |
+| Config File | `agentic-toolbox.json` in parent root |
 
 ---
 
@@ -50,7 +50,7 @@ Master agent/skill files contain a **superset** of all platform fields. The sync
 
 ### 5. Project-Level Merge (Key Differentiator)
 Sync is not a simple copy. It merges two sources in order:
-1. **Package templates** (from `node_modules/@riteshjain/agentic-toolkit/agents/`, `skills/`)
+1. **Package templates** (from `node_modules/agentic-toolbox/agents/`, `skills/`)
 2. **Project customizations** (from `./agents/`, `./skills/` in consuming project)
 
 Project files **override** package files with the same name. This enables customization without forking.
@@ -64,7 +64,7 @@ Project files **override** package files with the same name. This enables custom
 ```
 ┌─────────────────────┐
 │  Load Config        │
-│  (agentic-toolkit.  │
+│  (agentic-toolbox.  │
 │   json or auto)     │
 └─────────┬───────────┘
           │
@@ -125,7 +125,7 @@ Project files **override** package files with the same name. This enables custom
 | `index.ts` | CLI entry point | `runCli()` |
 | `cli.ts` | Arg parsing, help, orchestration | `parseArgs()`, `printHelp()`, `runCli()` |
 | `config.ts` | Config loading + auto-discovery | `loadConfig()`, `getParentProjectRoot()`, `getSubmoduleDir()` |
-| `constants.ts` | Shared constants | `TOOL_MAP`, `STRIP_FIELDS`, `FRONTMATTER_REGEX` |
+| `constants.ts` | Shared constants | `TOOL_MAP`, `STRIP_FIELDS`, `DEFAULT_CONFIG_NAME`, `FRONTMATTER_REGEX` |
 | `transform.ts` | Frontmatter transformation | `transformAgentContent()` |
 | `sync.ts` | Sync logic (forward) | `syncToTarget()` |
 | `types.ts` | TypeScript interfaces | `ToolMap`, `StripFields`, `AgenticToolkitConfig`, `CliOptions`, `SyncResult` |
@@ -193,7 +193,7 @@ return { targets: ['agents'] }
 - **Path validation** — all paths resolved from known roots
 - **Destructive operations guarded** — `fs.rmSync` only on target directories under parent root
 - **No network access** — pure local file operations
-- **No secrets in config** — `agentic-toolkit.json` only contains targets array
+- **No secrets in config** — `agentic-toolbox.json` only contains targets array
 
 ---
 
@@ -223,5 +223,13 @@ return { targets: ['agents'] }
 ## 🚀 Deployment Pipeline
 
 1. **Local**: `npm run build` → `dist/`
-2. **Consume**: `npm install git+https://github.com/ritesh-jain/agentic-toolkit.git#main`
-3. **Run**: `npx agentic-toolkit` or `npm run agent:sync`
+2. **Consume**: `npm install agentic-toolbox@0.1.8` (from npm registry)
+3. **Run**: `npx agentic-toolbox` or `npm run agent:sync`
+
+---
+
+## 📦 Distribution
+
+- **npm registry**: `agentic-toolbox@0.1.8` (published)
+- **GitHub**: `ritesh-jain/agentic-toolbox` (source)
+- **Binary**: `agentic-toolbox` (via `package.json:bin` → `dist/index.js`)

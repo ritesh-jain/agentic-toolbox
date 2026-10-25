@@ -1,30 +1,75 @@
-## [0.1.8](https://github.com/ritesh-jain/agentic-toolbox/compare/v0.1.7...v0.1.8) (2026-10-24)
-
-
-### Bug Fixes
-
-* reorder semantic-release plugins (npm before git) and remove [skip ci] from release commit ([09c6873](https://github.com/ritesh-jain/agentic-toolbox/commit/09c6873f839ad80249f3e58c8d44f6505b86b3ac))
-
-## [0.1.7](https://github.com/ritesh-jain/agentic-toolbox/compare/v0.1.6...v0.1.7) (2026-10-24)
-
-
-### Bug Fixes
-
-* align CHANGELOG.md with v0.1.6 tag ([dba5e85](https://github.com/ritesh-jain/agentic-toolbox/commit/dba5e85c0297fb980961f2aa02fd0e56bcdc620c))
-
 # Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [0.1.6] - 2026-10-24
+## [0.3.0] - 2026-10-25
 
-### Bug Fixes
+### Added
+- **Modular CLI Architecture**: Subcommands (`sync`, `validate`, `diff`, `init`) with dedicated implementations
+- **Config Schema Validation**: Zod-like validation for `agentic-toolbox.json` with unknown field detection
+- **YAML Frontmatter Parser**: Replaced regex-based parsing with `yaml` package for robust frontmatter handling
+- **Structured Error Classes**: `SyncError`, `ConfigError`, `TransformError`, `ParseError`, `FsError`, `CliError`, `ValidationError` with error codes
+- **Colored Console Logger**: Leveled logging (debug/info/warn/error/success) with ANSI colors
+- **TypeScript Path Aliases**: `@/`, `@types/`, `@core/`, `@utils/`, `@cli/` for clean imports
+- **tsc-alias Integration**: Runtime path alias resolution for compiled output
 
-* update repository URL to match actual repo name (agentic-toolbox) ([af11124](https://github.com/ritesh-jain/agentic-toolbox/commit/af11124520d32c6630823c7be3ff928db8815271))
-* use correct npx semver syntax for version comparison ([b6cc84f](https://github.com/ritesh-jain/agentic-toolbox/commit/b6cc84ffbd900a9046736c5a8d6f65b34d3a8fd1))
-* use semver.gt() for proper version comparison in PR validation ([f0e1c43](https://github.com/ritesh-jain/agentic-toolbox/commit/f0e1c4334344e17fcef2728457296c2730fc67c3))
+### Changed
+- **Complete Architecture Restructure**: `src/` reorganized into `core/`, `utils/`, `cli/`, `types/` with clear separation of concerns
+- **Barrel Export Pattern**: All `index.ts` files are now pure re-exports (no implementation)
+- **CLI Refactor**: Argument parsing supports kebab-case flags, subcommand-specific flags, and proper flag merging
+- **Sync Engine**: Modularized into `engine`, `targets`, `merger`, `manifest` with incremental sync foundation
+- **Transform Pipeline**: Separated `parser`, `stripper`, `reassembler` for testability
+- **Config System**: Split into `loader`, `schema`, `discovery` with full validation
+- **Dev Script**: `npm run dev` now builds and runs CLI for rapid iteration
+- **Version**: Bumped to 0.3.0 (minor) for architecture milestone
+
+### Fixed
+- **Binary Execution**: Added shebang to `src/index.ts` for proper npm bin wrapper
+- **Path Resolution**: Robust toolkit directory detection for both source and installed contexts
+
+## [0.2.0] - 2026-10-25
+
+### Added
+- **Bootstrapping**: Package now depends on itself (`agentic-toolbox@0.1.8` as devDependency) — the toolkit uses its own published version for development
+- **Self-Hosting**: Published npm package can be used to develop the toolkit itself, creating a recursive improvement loop via bootstrapping
+
+### Changed
+- **Package Rename**: `agentic-toolkit` → `agentic-toolbox` across entire codebase
+  - Binary name: `agentic-toolkit` → `agentic-toolbox`
+  - Config file: `agentic-toolkit.json` → `agentic-toolbox.json`
+  - All documentation, source code, and references updated
+- **Manual Release Flow**: Simplified from semantic-release to manual version bump + PR validation + merge + npm stage + manual promote
+- **Version**: Bumped to 0.2.0 (minor) for bootstrapping milestone
+
+### Fixed
+- **Repository URLs**: Updated to `ritesh-jain/agentic-toolbox` consistently
+
+## [0.1.8] - 2026-10-24
+
+### Added
+- **CI/CD Pipeline**: GitHub Actions workflows for validation and npm staging
+  - `validate.yml`: Runs on PR — build, test, package.json validation
+  - `publish.yml`: Runs on merge to main — stages to npm via OIDC
+- **npm OIDC Trusted Publisher**: Configured for automated staging with provenance
+- **Manual Release Flow**: Version bump via `npm version`, PR validation, merge, stage, manual promote
+
+### Changed
+- **Release Process**: Reverted from semantic-release to simple manual flow
+- **Workflows**: Removed semantic-release automation; kept `validate.yml` and `publish.yml`
+
+## [0.1.5] - 2026-10-18
+
+### Added
+- **npm Publishing**: Package published to npm registry as `agentic-toolbox`
+- **GitHub Actions CI**: Automated validation on PR (build, test, package.json check)
+- **npm Staging**: Automated `npm stage publish` on merge with OIDC provenance
+- **Manual Promote**: `npm promote` for controlled public release
+
+### Changed
+- **Distribution**: npm-only (removed git submodule support)
+- **Package Name**: `@riteshjain/agentic-toolkit` → `agentic-toolbox` (bare name)
 
 ## [0.1.0] - 2026-09-27
 

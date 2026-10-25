@@ -5,103 +5,44 @@
 
 ---
 
-## 🎯 Release Phases
+## 🎯 Current Sprint: MVP Consolidation (v0.4.x)
 
-### Phase 0: v0.1.0 — npm Publishing (Current Sprint)
-*Scope: `docs/TRACKER.md`*
+*Target: Minimum viable product — consumable library with reliable core functionality*
 
-- [ ] Publish `agentic-toolbox@0.1.0` to npm
-- [ ] GitHub Actions publish workflow with provenance
-- [ ] Verify install and update README
+### Core Functionality Consolidation
+- [ ] **Smart default behavior**: `agentic-toolbox` (no args) detects missing config → shows helpful hint with `init` subcommand usage
+- [ ] **`init` subcommand enhancement**: `agentic-toolbox init [--force]` creates config if missing, supports `--force` to overwrite
+- [ ] **Config validation**: Robust validation with clear error messages for malformed configs
+- [ ] **Sync reliability**: Verify sync works correctly across all targets (opencode, claude, agents)
+- [ ] **Error handling**: Consistent, actionable error messages across all commands
 
----
-
-### Phase 1: v0.2.0 — Core Engine Hardening
-*Target: Post-publish, first feature sprint*
-
-**1.1 YAML Frontmatter Parser**
-- [ ] Replace regex parser with `yaml` package in `src/transform.ts`
-- [ ] Handle arrays, multiline strings, comments
-- [ ] Preserve field stripping behavior for OpenCode/Claude
-
-**1.2 Config Schema Validation**
-- [ ] Add JSON Schema validation for `agentic-toolkit.json` (Zod or native)
-- [ ] Validate `targets` array, reject unknown fields
-
-**1.3 Structured Error Classes**
-- [ ] `SyncError`, `ConfigError`, `TransformError`, `ParseError`
-- [ ] Consistent error codes and user-facing messages
-
-**1.4 Incremental Sync (Optional)**
-- [ ] Manifest-based sync with file hashes
-- [ ] Behind `--incremental` flag
+### Developer Experience
+- [ ] **Clear help text**: `agentic-toolbox --help` shows clear usage for init + sync workflow
+- [ ] **Version output**: `agentic-toolbox --version` / `-V`
+- [ ] **Dry-run clarity**: `--dry-run` shows exactly what would change
 
 ---
 
-### Phase 2: v0.3.0 — Testing & Quality
+## 🔮 Future Planning
 
-**2.1 Test Infrastructure**
-- [ ] Set up Vitest test suite
-- [ ] Configure coverage thresholds
-
-**2.2 Unit Tests**
-- [ ] `transform.ts` — all field stripping combinations
-- [ ] `config.ts` — load, auto-discovery, invalid JSON
-- [ ] `sync.ts` — syncToTarget, project merge
-- [ ] `cli.ts` — argument parsing, help output
-
-**2.3 Integration Tests**
-- [ ] Full sync cycle with temp directories
-- [ ] Multi-target sync verification
-- [ ] Project merge override behavior
-
----
-
-### Phase 3: v0.4.0 — CLI & UX Polish
-
+### Next: CLI & UX Polish (v0.5.x)
 - [ ] Colorized terminal output (ANSI codes, `--color` flag)
 - [ ] Verbose logging levels (`--verbose`, `--quiet`)
-- [ ] `--diff` flag for preview (unified diff)
+- [ ] `--diff` flag for preview (unified diff) — *foundation exists*
 - [ ] Shell completion scripts (bash, zsh, fish)
 
----
-
-### Phase 4: v0.5.0 — CI/CD & Release Automation
-
-- [ ] GitHub Actions CI: build → test → lint on PR
-- [ ] GitHub Actions Release: publish on git tag (`v*`)
-- [ ] Automated changelog generation
-- [ ] Version bump workflow
-
----
-
-### Phase 5: v1.0.0 — Production Hardening
-
+### Production Hardening (v1.0.x)
 - [ ] Achieve 80%+ test coverage
 - [ ] Performance benchmarks
 - [ ] Security audit
 - [ ] Documentation complete (ADRs, module specs)
 - [ ] Create `v1.0.0` tag and GitHub release
 
----
-
-## 📦 Future Major Goals (Post v1.0.0)
-
-### Plugin System
-- Allow custom transformers, validators, target handlers via plugin API
-- Plugin discovery and loading mechanism
-
-### Additional Targets
-- Cursor, Windsurf, Zed, VS Code extensions
-- Generic `.agents/` enhancements
-
-### Remote Configuration
-- Fetch agent/skill definitions from remote registry
-- Versioned remote configs with caching
-
-### Web UI / Dashboard
-- Optional local web dashboard for managing agents/skills
-- Visual sync status and conflict resolution
+### Post v1.0.x — Major Goals
+- **Plugin System**: Custom transformers, validators, target handlers via plugin API
+- **Additional Targets**: Cursor, Windsurf, Zed, VS Code extensions
+- **Remote Configuration**: Fetch agent/skill definitions from remote registry
+- **Web UI / Dashboard**: Optional local dashboard for managing agents/skills
 
 ---
 
@@ -127,24 +68,18 @@
 
 ---
 
-## 📋 Detailed Task Breakdown
+## 📋 Task Breakdown
 
-| # | Task | Module | Priority | Est. Effort | Phase |
-|---|------|--------|----------|-------------|-------|
-| 1.1 | YAML parser replacement | `transform.ts` | 🔴 Critical | Medium | 1 |
-| 1.2 | Config schema validation | `config.ts` | 🔴 Critical | Low | 1 |
-| 1.3 | Structured error classes | `types.ts` + all | 🔴 Critical | Low | 1 |
-| 2.1 | Vitest setup | `package.json` + `vitest.config.ts` | 🟡 High | Medium | 2 |
-| 2.2 | Transform unit tests | `transform.test.ts` | 🟡 High | Medium | 2 |
-| 2.3 | Config unit tests | `config.test.ts` | 🟡 High | Low | 2 |
-| 2.4 | Sync unit tests | `sync.test.ts` | 🟡 High | High | 2 |
-| 2.5 | Integration test | `sync.integration.test.ts` | 🟡 High | Medium | 2 |
-| 3.1 | Colorized output | `cli.ts` | 🟢 Medium | Low | 3 |
-| 3.2 | Verbose logging | `cli.ts` + `sync.ts` | 🟢 Medium | Low | 3 |
-| 3.3 | `--diff` flag | `sync.ts` + `cli.ts` | 🟢 Medium | Medium | 3 |
-| 4.1 | GitHub Actions CI | `.github/workflows/ci.yml` | 🟢 Medium | Medium | 4 |
-| 4.2 | GitHub Actions Release | `.github/workflows/release.yml` | 🟢 Medium | Low | 4 |
+| # | Task | Module | Priority | Est. Effort | Target |
+|---|------|--------|----------|-------------|--------|
+| 1 | Smart default: no args + no config → helpful hint | `cli/run-cli.ts` | 🔴 Critical | Low | Current |
+| 2 | `init` subcommand: `--force` flag, overwrite logic | `cli/commands/init.ts` | 🔴 Critical | Low | Current |
+| 3 | Config validation improvements | `core/config/schema.ts` | 🟡 High | Low | Current |
+| 4 | Sync reliability verification | `core/sync/` | 🟡 High | Medium | Current |
+| 5 | Help text improvements | `cli/help/` | 🟢 Medium | Low | Current |
+| 6 | Unit tests for init/sync | `core/`, `cli/` | 🔴 Critical | Medium | Current |
+| 7 | Integration tests | `sync.integration.test.ts` | 🟡 High | Medium | Next |
 
 ---
 
-*Completed work is documented in [CHANGELOG.md](../CHANGELOG.md).*
+*Completed work (v0.1.x–v0.3.x) is documented in [CHANGELOG.md](../CHANGELOG.md).*

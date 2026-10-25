@@ -20,18 +20,14 @@ This package acts as a **single source of truth** that syncs your agents and ski
 
 ## Installation
 
-Install as an npm package from GitHub. Requires Node.js `>=18`.
+**Published on npm** as `agentic-toolbox`. Requires Node.js `>=18`.
 
 ```bash
-# HTTPS (public repo — works everywhere, no SSH keys needed)
-npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git
+# Install from npm registry (recommended)
+npm install --save-dev agentic-toolbox
 
-# Or SSH (if you have GitHub SSH keys set up)
-npm install --save-dev git+ssh://git@github.com/ritesh-jain/agentic-toolkit.git
-
-# Pin to a branch/tag/commit if needed
-npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git#main
-npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git#v0.1.0
+# Or pin to a specific version
+npm install --save-dev agentic-toolbox@0.1.8
 ```
 
 This adds to your `package.json`:
@@ -39,26 +35,26 @@ This adds to your `package.json`:
 ```json
 {
   "devDependencies": {
-    "@riteshjain/agentic-toolkit": "git+https://github.com/ritesh-jain/agentic-toolkit.git"
+    "agentic-toolbox": "^0.1.8"
   }
 }
 ```
 
-### 2. Add npm Scripts
+### 2. Add npm Scripts (optional)
 
 ```json
 {
   "scripts": {
-    "agent:sync": "agentic-toolkit"
+    "at": "agentic-toolbox"
   }
 }
 ```
 
-The binary `agentic-toolkit` is exposed via `package.json:bin` → `dist/index.js` and is available automatically through `npx` / npm scripts.
+The binary `agentic-toolbox` is exposed via `package.json:bin` → `dist/index.js` and is available automatically through `npx` / npm scripts.
 
 ### 3. Create Config File
 
-Create `agentic-toolkit.json` in your project root:
+Create `agentic-toolbox.json` in your project root:
 
 ```json
 {
@@ -69,18 +65,18 @@ Create `agentic-toolkit.json` in your project root:
 ### 4. Run Sync
 
 ```bash
-npm run agent:sync
+npm run at
 # or directly
-npx agentic-toolkit
-npx agentic-toolkit --config ./agentic-toolkit.json
+npx agentic-toolbox
+npx agentic-toolbox --config ./agentic-toolbox.json
 ```
 
 ### Updating
 
 ```bash
-npm update @riteshjain/agentic-toolkit
-# or reinstall to pull latest main
-npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git#main
+npm update agentic-toolbox
+# or reinstall specific version
+npm install --save-dev agentic-toolbox@latest
 ```
 
 ---
@@ -89,23 +85,23 @@ npm install --save-dev git+https://github.com/ritesh-jain/agentic-toolkit.git#ma
 
 | Command | Description |
 |---------|-------------|
-| `agentic-toolkit` | Sync agents/skills from toolkit to target dirs |
-| `agentic-toolkit --config <path>` | Use a non-default config file |
-| `agentic-toolkit --dry-run` | Preview what would be synced without making changes |
-| `agentic-toolkit --verbose` | Enable verbose output |
-| `agentic-toolkit --help` | Show help message |
+| `agentic-toolbox` | Sync agents/skills from toolkit to target dirs |
+| `agentic-toolbox --config <path>` | Use a non-default config file |
+| `agentic-toolbox --dry-run` | Preview what would be synced without making changes |
+| `agentic-toolbox --verbose` | Enable verbose output |
+| `agentic-toolbox --help` | Show help message |
 
 Via npm scripts:
 
 ```bash
-npm run agent:sync        # → agentic-toolkit
+npm run at        # → agentic-toolbox
 ```
 
 ---
 
 ## Configuration
 
-### `agentic-toolkit.json`
+### `agentic-toolbox.json`
 
 Located in the **parent project root** (alongside `package.json`).
 
@@ -132,7 +128,7 @@ Sync to all platforms:
 
 ### Auto-Discovery
 
-If `agentic-toolkit.json` is missing, the engine auto-detects:
+If `agentic-toolbox.json` is missing, the engine auto-detects:
 - `opencode.json` → targets `.opencode/`
 - `claude.json` or `.clauderc` → targets `.claude/`
 - Otherwise → targets `.agents/`
@@ -140,7 +136,7 @@ If `agentic-toolkit.json` is missing, the engine auto-detects:
 ### Custom Config Path
 
 ```bash
-agentic-toolkit --config ./my-custom-config.json
+agentic-toolbox --config ./my-custom-config.json
 ```
 
 ---
@@ -152,9 +148,9 @@ agentic-toolkit --config ./my-custom-config.json
 ```
 parent-project/
 ├── package.json
-├── agentic-toolkit.json
-├── node_modules/@riteshjain/agentic-toolkit/
-│   ├── package.json         # CLI binary: agentic-toolkit → dist/index.js
+├── agentic-toolbox.json
+├── node_modules/agentic-toolbox/
+│   ├── package.json         # CLI binary: agentic-toolbox → dist/index.js
 │   ├── dist/                # Compiled output (generated)
 │   │   └── index.js         # Sync engine
 │   ├── AGENTS.md            # Instructions for AI models
@@ -189,7 +185,7 @@ Invoke via your AI assistant (Claude/OpenCode) with the agentic-tools-creator ag
 1. Copy the template:
 
    ```bash
-   cp node_modules/@riteshjain/agentic-toolkit/agents/Agent.md.sample agents/MyAgent.md
+   cp node_modules/agentic-toolbox/agents/Agent.md.sample agents/MyAgent.md
    ```
 
 2. Edit the new file with your agent's configuration
@@ -197,7 +193,7 @@ Invoke via your AI assistant (Claude/OpenCode) with the agentic-tools-creator ag
 3. Run sync:
 
    ```bash
-   npm run agent:sync
+   npm run at
    ```
 
 ### Agent Description Format
@@ -226,7 +222,7 @@ Same as agents — use the `agentic-tools-creator` agent with type="skill".
 2. Copy the template:
 
    ```bash
-   cp node_modules/@riteshjain/agentic-toolkit/skills/SKILL.md.sample skills/my-skill/SKILL.md
+   cp node_modules/agentic-toolbox/skills/SKILL.md.sample skills/my-skill/SKILL.md
    ```
 
 3. Edit the new file with your skill's configuration
@@ -234,7 +230,7 @@ Same as agents — use the `agentic-tools-creator` agent with type="skill".
 4. Run sync:
 
    ```bash
-   npm run agent:sync
+   npm run at
    ```
 
 ### Skill File Structure
@@ -294,7 +290,7 @@ For detailed field documentation, see `agents/Agent.md.sample`.
 
 ## How It Works
 
-The sync engine (`dist/index.js`, published as `agentic-toolkit` binary) reads your master agent/skill files (which contain a **superset** of all platform fields), then **transforms** them per target:
+The sync engine (`dist/index.js`, published as `agentic-toolbox` binary) reads your master agent/skill files (which contain a **superset** of all platform fields), then **transforms** them per target:
 
 - **For OpenCode**: Strips Claude-only fields (`tools`, `permissionMode`, `maxTurns`, `skills`, `mcpServers`, `hooks`, `memory`, `background`, `effort`, `isolation`, `initialPrompt`)
 - **For Claude**: Strips OpenCode-only fields (`permission`, `mode`, `temperature`, `steps`, `disable`, `prompt`, `hidden`, `top_p`, `reasoningEffort`, `textVerbosity`)
@@ -308,16 +304,16 @@ This means you maintain **one master file** per agent/skill, and get platform-op
 
 ### Sync not working
 
-1. Verify `agentic-toolkit.json` exists in project root
+1. Verify `agentic-toolbox.json` exists in project root
 2. Check the toolkit is installed:
    ```bash
-   ls node_modules/@riteshjain/agentic-toolkit/dist/index.js
-   npx agentic-toolkit --config ./agentic-toolkit.json
+   ls node_modules/agentic-toolbox/dist/index.js
+   npx agentic-toolbox --config ./agentic-toolbox.json
    ```
 
 ### Wrong target directory
 
-Check your `agentic-toolkit.json` `targets` value, or let auto-discovery work by removing the config file.
+Check your `agentic-toolbox.json` `targets` value, or let auto-discovery work by removing the config file.
 
 ---
 

@@ -1,10 +1,10 @@
 {
   "name": "agentic-toolbox",
-  "version": "0.1.8",
+  "version": "0.3.0",
   "description": "Cross-platform AI agent & skill sync engine for Claude Code and OpenCode",
   "type": "module",
   "bin": {
-    "agentic-toolkit": "./dist/index.js"
+    "agentic-toolbox": "./dist/index.js"
   },
   "exports": {
     ".": {
@@ -22,8 +22,8 @@
     "skills/"
   ],
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "tsc && tsc-alias",
+    "dev": "npm run build && node dist/index.js",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build",
     "test": "echo \"No tests yet\" && exit 0"
@@ -48,8 +48,13 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "dependencies": {
+    "yaml": "^2.5.0"
+  },
   "devDependencies": {
-    "typescript": "^5.4.0",
-    "@types/node": "^20.11.0"
+    "@types/node": "^20.11.0",
+    "agentic-toolbox": "0.1.8",
+    "tsc-alias": "^1.9.9",
+    "typescript": "^7.0.2"
   }
 }

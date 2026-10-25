@@ -8,12 +8,12 @@ This file contains instructions for AI models working on this repository. Human-
 
 You are an expert Senior Principal Software Architect and DevOps Automation Engineer. Your job is to maintain this AI Agent and Skill Management Toolkit by:
 
-1. Building and optimizing the synchronization engine (`src/index.ts` → published as `agentic-toolkit` binary)
+1. Building and optimizing the synchronization engine (`src/index.ts` → published as `agentic-toolbox` binary)
 2. Creating new agent definitions in `agents/`
 3. Creating new skill definitions in `skills/`
 4. Ensuring cross-platform compatibility between Claude and OpenCode
 
-This package is consumed via npm (GitHub URL). The binary name is `agentic-toolkit`.
+This package is consumed via npm (npm registry). The binary name is `agentic-toolbox`.
 
 ---
 
@@ -22,6 +22,7 @@ This package is consumed via npm (GitHub URL). The binary name is `agentic-toolk
 | Resource | Purpose |
 | -------- | ------- |
 | `README.md` | Project overview, features, setup |
+| `HANDOFF.md` | Complete context transfer for new AI sessions |
 | `docs/index.md` | Master documentation index & status tracker |
 | `docs/architecture.md` | System design |
 | `docs/roadmap.md` | Task tracking, completed work |
@@ -36,6 +37,7 @@ This package is consumed via npm (GitHub URL). The binary name is `agentic-toolk
 
 | File | Purpose | When to Read |
 |------|---------|--------------|
+| `HANDOFF.md` | **Complete context transfer** — project state, decisions, initialization steps | **First** — for new AI sessions |
 | `docs/index.md` | **Master documentation index** — complete map of all docs, status, and navigation | **First** — gives you the full map of all documentation |
 | `docs/architecture.md` | System design: sync engine, transform logic, CLI, project-level merge, data flow, distribution models | When working on sync engine, transform logic, or data flow |
 | `docs/roadmap.md` | Development phases, prioritized task lists (Up Next, Backlog, Deferred, Completed) | Before starting any task — check current goal and priorities |
@@ -199,7 +201,7 @@ This syncs the toolkit contents to the parent project's target directory.
 
 Users run:
 ```bash
-agentic-toolkit
+agentic-toolbox
 # or via npm script
 npm run agent:sync
 ```
@@ -208,16 +210,16 @@ npm run agent:sync
 
 ## Engine Reference
 
-The `dist/index.js` engine (published as `agentic-toolkit` binary) supports these CLI flags:
+The `dist/index.js` engine (published as `agentic-toolbox` binary) supports these CLI flags:
 
 | Flag | Description |
 |------|-------------|
-| `--config <path>` | Use a custom config file (default: `agentic-toolkit.json`) |
+| `--config <path>` | Use a custom config file (default: `agentic-toolbox.json`) |
 | `--dry-run` | Preview what would be synced without making changes |
 | `--verbose` | Enable verbose output |
 | `--help` | Show help message |
 
-### Configuration File (`agentic-toolkit.json`)
+### Configuration File (`agentic-toolbox.json`)
 
 ```json
 {
@@ -236,7 +238,7 @@ The `dist/index.js` engine (published as `agentic-toolkit` binary) supports thes
 When asked to optimize the synchronization engine (`dist/index.js`):
 
 - [ ] Async execution for large asset blocks
-- [ ] Schema validation for `agentic-toolkit.json`
+- [ ] Schema validation for `agentic-toolbox.json`
 - [ ] Colorized terminal output (ANSI codes)
 - [ ] Dry-run mode for testing
 - [ ] Verbose logging option
