@@ -1,15 +1,5 @@
 // Field stripper for frontmatter
-import type { Target } from '@/types/index.js';
-
-// Local types
-interface FrontmatterData {
-  [key: string]: unknown;
-}
-
-interface StripFields {
-  opencode: string[];
-  claude: string[];
-}
+import type { FrontmatterData } from '@/types/index.js';
 
 export function stripFields(frontmatter: FrontmatterData, fieldsToStrip: string[]): FrontmatterData {
   const result: FrontmatterData = { ...frontmatter };
@@ -21,8 +11,4 @@ export function stripFields(frontmatter: FrontmatterData, fieldsToStrip: string[
   }
 
   return result;
-}
-
-export function getStripFields(target: 'opencode' | 'claude' | 'agents', stripFields: StripFields): string[] {
-  return stripFields[target as keyof StripFields] || [];
 }

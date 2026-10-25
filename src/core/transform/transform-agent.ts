@@ -1,35 +1,13 @@
 // Main transform function - ties parser, stripper, reassembler together
 import { parseFrontmatter } from './parser.js';
-import { stripFields, getStripFields } from './stripper.js';
+import { stripFields } from './stripper.js';
 import { reassembleContent } from './reassembler.js';
-import type { Target } from '@/types/index.js';
+import { Target, TransformOptions, ParsedContent, getStripFields } from '@/types/index.js';
 
-// Transform types - module-specific
-interface TransformOptions {
-  target: Target;
-  stripFields: string[];
-  preserveComments?: boolean;
-}
-
-interface StripFields {
-  opencode: string[];
-  claude: string[];
-}
-
-interface FrontmatterData {
-  [key: string]: unknown;
-}
-
-interface ParsedContent {
-  frontmatter: FrontmatterData;
-  body: string;
-  hasFrontmatter: boolean;
-}
-
-export function transformAgentContent(content: string, target: TransformOptions['target']): string {
+export function transformAgentContent(content: string, target: Target): string {
   const options: TransformOptions = {
     target,
-    stripFields: getStripFields(target, STRIP_FIELDS),
+    stripFields: getStripFields(target),
     preserveComments: false,
   };
 
@@ -47,33 +25,3 @@ export function transformAgentContent(content: string, target: TransformOptions[
 
   return reassembleContent(transformed, content);
 }
-
-// STRIP_FIELDS moved here from constants.ts for better organization
-const STRIP_FIELDS: StripFields = {
-  opencode: [
-    'tools',
-    'disallowedTools',
-    'permissionMode',
-    'maxTurns',
-    'skills',
-    'mcpServers',
-    'hooks',
-    'memory',
-    'background',
-    'effort',
-    'isolation',
-    'initialPrompt',
-  ],
-  claude: [
-    'permission',
-    'mode',
-    'temperature',
-    'steps',
-    'disable',
-    'prompt',
-    'hidden',
-    'top_p',
-    'reasoningEffort',
-    'textVerbosity',
-  ],
-};

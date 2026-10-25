@@ -2,16 +2,7 @@
 import { parse, stringify } from 'yaml';
 import { ParseError, ParseErrorCode } from '@/utils/errors/classes.js';
 
-// Local types
-interface FrontmatterData {
-  [key: string]: unknown;
-}
-
-interface ParsedContent {
-  frontmatter: FrontmatterData;
-  body: string;
-  hasFrontmatter: boolean;
-}
+import type { FrontmatterData, ParsedContent } from '@/types/index.js';
 
 const FRONTMATTER_REGEX = /^(---\n)([\s\S]*?)(\n---)/;
 
