@@ -34,12 +34,4 @@
 
 ---
 
-### 📊 Velocity Tracking
-
-| Sprint | Planned | Completed | Carryover | Notes |
-|--------|---------|-----------|-----------|-------|
-| v0.4.x MVP Consolidation | 8 | 0 | 8 | Active |
-
----
-
 *Completed sprints (v0.1.x–v0.3.x) are documented in [CHANGELOG.md](../CHANGELOG.md).*
