@@ -97,7 +97,7 @@ Work through items **one at a time**, in order. For each item:
 ## 3. CLI Architecture Improvements
 | # | Item | Description | Status | Notes |
 | --- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------ |
-| CLI1 | Strategy pattern for arg parser | Replace hardcoded `parseFlags` in `src/cli/args/parser.ts` with strategy pattern for extensibility. | TODO | Open/Closed Principle violation. |
+| CLI1 | Strategy pattern for arg parser | Replace hardcoded `parseFlags` in `src/cli/args/parser.ts` with strategy pattern for extensibility. | IN PROGRESS | Open/Closed Principle violation. |
 | CLI2 | Extract CLI arg types per command | Create `SyncArgs`, `InitArgs`, `ValidateArgs`, `DiffArgs` in `types/cli.ts`. | DONE | Completed as part of T5/T6. |
 | CLI3 | Input sanitization utilities | Add `sanitizePath()`, `validateTarget()`, `sanitizeConfigPath()`. | TODO | No input sanitization currently. |
 | CLI4 | Logger dependency injection | `ConsoleLogger` should accept `WritableStream` instead of hardcoding `process.stdout`. | TODO | Enables testing with `MemoryStream`. |
