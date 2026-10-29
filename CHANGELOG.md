@@ -4,18 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [0.5.1] - 2026-10-29
 
 ### Added
-- **CLI Flag Parsing Strategy Pattern**: Extracted flag parsing into dedicated strategies (`FlagStrategy`) supporting boolean, string, and string arrays (`CLI1`)
-- **Input Sanitization**: Added path traversal protections (`sanitizePath`, `sanitizeConfigPath`) and target validation utilities (`validateTarget`, `validateTargets`) (`CLI3`)
-- **Logger Dependency Injection**: Added stream injection options (`stream`, `errorStream`) to `ConsoleLogger` for testability (`CLI4`)
-- **Help Text Formatting Unification**: Added dynamic column alignment (`formatFlags`, `formatCommands`) and stream injection support for CLI help text (`CLI5`)
+- **Postbuild Hook for Asset Copying**: Added `postbuild` lifecycle script that automatically copies `agents/` and `skills/` directories to `dist/` after build
+- **Assets in Dist for Distribution**: Agents and skills directories are now copied to `dist/` during build, ensuring they're available when the package is consumed as a dependency
+
+### Changed
+- **Build Pipeline**: Refactored build pipeline to use `postbuild` lifecycle hook (`postbuild` → `copy-assets`) for automatic asset copying
+- **Package Contents**: Removed root-level `agents/` and `skills/` from published package; now only `dist/` (with `agents/` and `skills/` inside) is published
+- **Build Pipeline**: Refactored build pipeline to use `postbuild` lifecycle hook (`postbuild` → `copy-assets`) for automatic asset copying
 
 ### Fixed
-- **Short Flag Array Parsing**: Fixed bug where short flags (e.g., `-t`) did not parse comma-separated string arrays
+- **Toolkit Directory Resolution**: Fixed `getToolkitDir()` to correctly resolve to `dist/` when installed as a dependency (goes up 3 levels from `dist/utils/fs`)
 
-## [0.5.0] - 2026-10-25
+## [0.5.0] - 2026-10-29
 
 ### Added
 - **Command-Specific Argument Types**: Defined dedicated interfaces (`SyncArgs`, `InitArgs`, `ValidateArgs`, `DiffArgs`) extending `BaseCommandArgs`

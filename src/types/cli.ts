@@ -7,6 +7,7 @@ export interface BaseCommandArgs {
   configPath?: string;
   verbose?: boolean;
   quiet?: boolean;
+  noColor?: boolean;
 }
 
 /** Arguments for 'agentic-toolbox sync' */

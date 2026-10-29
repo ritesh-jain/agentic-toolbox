@@ -1,58 +1,31 @@
-// Help text templates and formatting utilities
+// Help text templates
 import { FlagDefinition, SubcommandDefinition } from '@/types/index.js';
 import { flags } from '../args/flags.js';
 import { subcommands } from '../args/subcommands.js';
 
-/**
- * Formats a single flag definition with its long and optional short alias.
- */
-export function getFlagDisplay(flag: FlagDefinition): string {
-  return `--${flag.name}${flag.alias ? `, -${flag.alias}` : ''}`;
-}
-
-/**
- * Formats a list of flags with dynamic column padding based on the longest flag display.
- */
-export function formatFlags(flagList: FlagDefinition[], minPadding: number = 2): string {
-  if (flagList.length === 0) return '';
-  const displays = flagList.map(f => getFlagDisplay(f));
-  const maxLen = Math.max(...displays.map(d => d.length));
-  const colWidth = maxLen + minPadding;
-
-  return flagList
-    .map((flag, idx) => `  ${displays[idx].padEnd(colWidth)} ${flag.description}`)
-    .join('\n');
-}
-
-/**
- * Formats a list of subcommands with dynamic column padding based on the longest command name.
- */
-export function formatCommands(cmdList: SubcommandDefinition[], minPadding: number = 2): string {
-  if (cmdList.length === 0) return '';
-  const maxLen = Math.max(...cmdList.map(c => c.name.length));
-  const colWidth = maxLen + minPadding;
-
-  return cmdList
-    .map(cmd => `  ${cmd.name.padEnd(colWidth)} ${cmd.description}`)
-    .join('\n');
-}
-
 export function generateGlobalHelp(): string {
-  const flagsHelp = formatFlags(flags);
-  const commandsHelp = formatCommands(subcommands);
+  const globalFlags = flags.filter(f => !['config', 'dryRun', 'verbose', 'help', 'version'].includes(f.name));
 
-  return `
+  let help = `
 Agentic Toolbox - Cross-platform AI agent & skill sync engine
 
 Usage:
   agentic-toolbox [options] [command] [command-options]
 
 Global Options:
-${flagsHelp}
+`;
 
-Commands:
-${commandsHelp}
+  for (const flag of flags) {
+    const alias = flag.alias ? `, -${flag.alias}` : '';
+    help += `  --${flag.name}${alias.padEnd(20)} ${flag.description}\n`;
+  }
 
+  help += `\nCommands:\n`;
+  for (const cmd of subcommands) {
+    help += `  ${cmd.name.padEnd(12)} ${cmd.description}\n`;
+  }
+
+  help += `
 Examples:
   agentic-toolbox                    # Sync to all configured targets
   agentic-toolbox sync               # Explicit sync command
@@ -82,6 +55,8 @@ Auto-discovery (when config file is missing):
   .clauderc        -> targets .claude/
   (default)        -> targets .agents/
 `;
+
+  return help;
 }
 
 export function generateCommandHelp(commandName: string): string {
@@ -90,23 +65,32 @@ export function generateCommandHelp(commandName: string): string {
     return `Unknown command: ${commandName}`;
   }
 
-  // Combine command flags with relevant global flags not already present
-  const commandFlagNames = new Set(cmd.flags.map(f => f.name));
-  const globalFlagsToShow = ['config', 'verbose', 'help']
-    .filter(name => !commandFlagNames.has(name))
-    .map(name => flags.find(f => f.name === name))
-    .filter((f): f is FlagDefinition => f !== undefined);
-
-  const allCmdFlags = [...cmd.flags, ...globalFlagsToShow];
-  const optionsHelp = formatFlags(allCmdFlags);
-
-  return `
+  let help = `
 agentic-toolbox ${cmd.name} - ${cmd.description}
 
 Usage:
   agentic-toolbox ${cmd.name} [options]
 
 Options:
-${optionsHelp}
 `;
+
+  // Command-specific flags
+  for (const flag of cmd.flags) {
+    const alias = flag.alias ? `, -${flag.alias}` : '';
+    help += `  --${flag.name}${alias.padEnd(20)} ${flag.description}\n`;
+  }
+
+  // Add global flags that aren't already defined in command flags
+  const commandFlagNames = new Set(cmd.flags.map(f => f.name));
+  const globalFlagsToShow = ['config', 'verbose', 'help'].filter(name => !commandFlagNames.has(name));
+  
+  for (const flagName of globalFlagsToShow) {
+    const flag = flags.find(f => f.name === flagName);
+    if (flag) {
+      const alias = flag.alias ? `, -${flag.alias}` : '';
+      help += `  --${flag.name}${alias.padEnd(20)} ${flag.description}\n`;
+    }
+  }
+
+  return help;
 }

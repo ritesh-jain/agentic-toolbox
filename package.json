@@ -1,6 +1,6 @@
 {
   "name": "agentic-toolbox",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Cross-platform AI agent & skill sync engine for Claude Code and OpenCode",
   "type": "module",
   "bin": {
@@ -17,12 +17,12 @@
   "files": [
     "dist/",
     "AGENTS.md",
-    "README.md",
-    "agents/",
-    "skills/"
+    "README.md"
   ],
   "scripts": {
-    "build": "tsc && tsc-alias",
+    "build": "npm run clean && tsc && tsc-alias",
+    "postbuild": "npm run copy-assets",
+    "copy-assets": "cp -r agents skills dist/",
     "dev": "npm run build && node dist/index.js",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build",

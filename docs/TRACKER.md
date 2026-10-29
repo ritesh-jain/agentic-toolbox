@@ -99,9 +99,9 @@ Work through items **one at a time**, in order. For each item:
 | --- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------ |
 | CLI1 | Strategy pattern for arg parser | Replace hardcoded `parseFlags` in `src/cli/args/parser.ts` with strategy pattern for extensibility. | DONE | Completed. Implemented FlagStrategy with boolean, string, and string[] strategies; fixed short flag array parsing. |
 | CLI2 | Extract CLI arg types per command | Create `SyncArgs`, `InitArgs`, `ValidateArgs`, `DiffArgs` in `types/cli.ts`. | DONE | Completed as part of T5/T6. |
-| CLI3 | Input sanitization utilities | Add `sanitizePath()`, `validateTarget()`, `sanitizeConfigPath()`. | DONE | Completed. Added sanitizePath/sanitizeConfigPath in utils/fs/sanitization.ts and validateTarget/validateTargets in types/targets.ts. |
-| CLI4 | Logger dependency injection | `ConsoleLogger` should accept `WritableStream` instead of hardcoding `process.stdout`. | DONE | Completed. Implemented LoggerOptions with dual streams (stream/errorStream) in ConsoleLogger. |
-| CLI5 | Help text generation | Move help templates to unified location for reuse. | DONE | Completed. Unified formatFlags/formatCommands with dynamic alignment in templates.ts, stream support in printHelp. |
+| CLI3 | Input sanitization utilities | Add `sanitizePath()`, `validateTarget()`, `sanitizeConfigPath()`. | TODO | No input sanitization currently. |
+| CLI4 | Logger dependency injection | `ConsoleLogger` should accept `WritableStream` instead of hardcoding `process.stdout`. | TODO | Enables testing with `MemoryStream`. |
+| CLI5 | Help text generation | Move help templates to unified location for reuse. | TODO | Templates duplicated in `templates.ts`. |
 
 ---
 ## 4. Error Handling & Validation Improvements
@@ -246,13 +246,12 @@ Work through items **one at a time**, in order. For each item:
 
 ---
 ## 11. Sprint History
-| Sprint | Goal | Status | Key Deliverables |
-|--------|------|--------|------------------|
 | v0.1.x | npm Publishing | DONE | Package on npm, CI/CD, manual release flow |
 | v0.2.x | Bootstrapping & Core Hardening | DONE | Self-hosting, YAML parser, config validation, structured errors |
 | v0.3.x | Architecture Restructure | DONE | Modular src/, subcommands, YAML parser, config validation, path aliases |
 | v0.4.x | MVP Consolidation | DONE | Smart defaults, init interactive, validation errors, sync reliability |
 | v0.5.0 | Constants & Types Consolidation | DONE | Target definitions & types consolidation, strict CLI typing, eliminated shared/ |
+| v0.5.1 | Build System & Packaging Improvements | DONE | postbuild hook, assets in dist/, removed root agents/skills from package |
 | v0.6.0 | CLI Architecture & Core Hardening | IN PROGRESS | Strategy parser, input sanitization, error architecture, incremental sync |
 
 ---
