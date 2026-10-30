@@ -1,6 +1,6 @@
 {
   "name": "agentic-toolbox",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Cross-platform AI agent & skill sync engine for Claude Code and OpenCode",
   "type": "module",
   "bin": {

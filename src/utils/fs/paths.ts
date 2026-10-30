@@ -47,9 +47,9 @@ export function getParentProjectRoot(): string {
 export function getToolkitDir(): string {
   // When installed as a dependency:
   // __dirname = node_modules/agentic-toolbox/dist/utils/fs
-  // agents/ and skills/ are at package root (node_modules/agentic-toolbox/)
-  // Need to go up 3 levels: dist/utils/fs -> dist/utils -> dist -> package root
-  return path.join(__dirname, '..', '..', '..');
+  // agents/ and skills/ are in dist/ (node_modules/agentic-toolbox/dist/)
+  // Need to go up 2 levels: dist/utils/fs -> dist/utils -> dist
+  return path.join(__dirname, '..', '..');
 }
 
 export function getToolkitAgentsDir(): string {
