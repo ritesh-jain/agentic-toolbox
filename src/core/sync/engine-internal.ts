@@ -37,7 +37,6 @@ export async function syncToTargetImpl(
       // First sync toolkit agents
       if (fs.existsSync(toolkitAgentsDir)) {
         const agentFiles = fs.readdirSync(toolkitAgentsDir).filter(f => f.endsWith('.md'));
-        log(`    Found ${agentFiles.length} agent(s) in toolkit: ${agentFiles.join(', ')}`, options.verbose);
         for (const file of agentFiles) {
           const srcPath = path.join(toolkitAgentsDir, file);
           const destPath = path.join(targetDir, 'agents', file);
@@ -46,8 +45,9 @@ export async function syncToTargetImpl(
             ? transformAgentContent(content, targetName)
             : content;
           fs.writeFileSync(destPath, transformed);
+          const agentName = file.replace(/\.md$/, '');
           filesSynced.push(`agents/${file}`);
-          log(`    Copied agent: ${file}`, options.verbose);
+          log(`[OK]   '${agentName}' Agent Synced to ${targetConfig.directory}`, true);
         }
       } else {
         log(`    Toolkit agents directory not found: ${toolkitAgentsDir}`, options.verbose);
@@ -56,7 +56,6 @@ export async function syncToTargetImpl(
       // Then merge project agents (overwrites toolkit agents with same name)
       if (fs.existsSync(projectAgentsDir)) {
         const agentFiles = fs.readdirSync(projectAgentsDir).filter(f => f.endsWith('.md'));
-        log(`    Found ${agentFiles.length} agent(s) in project: ${agentFiles.join(', ')}`, options.verbose);
         for (const file of agentFiles) {
           const srcPath = path.join(projectAgentsDir, file);
           const destPath = path.join(targetDir, 'agents', file);
@@ -65,8 +64,9 @@ export async function syncToTargetImpl(
             ? transformAgentContent(content, targetName)
             : content;
           fs.writeFileSync(destPath, transformed);
+          const agentName = file.replace(/\.md$/, '');
           filesSynced.push(`agents/${file}`);
-          log(`    Merged project agent: ${file}`, options.verbose);
+          log(`[OK]   '${agentName}' Agent Synced to ${targetConfig.directory}`, true);
         }
       } else {
         log(`    Project agents directory not found: ${projectAgentsDir}`, options.verbose);
@@ -78,10 +78,14 @@ export async function syncToTargetImpl(
       // First sync toolkit skills
       if (fs.existsSync(toolkitSkillsDir)) {
         const skillDirs = fs.readdirSync(toolkitSkillsDir).filter(f => fs.statSync(path.join(toolkitSkillsDir, f)).isDirectory());
-        log(`    Found ${skillDirs.length} skill(s) in toolkit: ${skillDirs.join(', ')}`, options.verbose);
-        await copyDirectoryRecursive(toolkitSkillsDir, path.join(targetDir, 'skills'));
-        filesSynced.push('skills/');
-        log(`    Copied skills from toolkit`, options.verbose);
+        for (const skillDir of skillDirs) {
+          await copyDirectoryRecursive(
+            path.join(toolkitSkillsDir, skillDir),
+            path.join(targetDir, 'skills', skillDir)
+          );
+          filesSynced.push(`skills/${skillDir}/`);
+          log(`[OK]   '${skillDir}' Skill Synced to ${targetConfig.directory}`, true);
+        }
       } else {
         log(`    Toolkit skills directory not found: ${toolkitSkillsDir}`, options.verbose);
       }
@@ -89,10 +93,14 @@ export async function syncToTargetImpl(
       // Then merge project skills (overwrites toolkit skills)
       if (fs.existsSync(projectSkillsDir)) {
         const skillDirs = fs.readdirSync(projectSkillsDir).filter(f => fs.statSync(path.join(projectSkillsDir, f)).isDirectory());
-        log(`    Found ${skillDirs.length} skill(s) in project: ${skillDirs.join(', ')}`, options.verbose);
-        await copyDirectoryRecursive(projectSkillsDir, path.join(targetDir, 'skills'));
-        filesSynced.push('skills/');
-        log(`    Merged project skills`, options.verbose);
+        for (const skillDir of skillDirs) {
+          await copyDirectoryRecursive(
+            path.join(projectSkillsDir, skillDir),
+            path.join(targetDir, 'skills', skillDir)
+          );
+          filesSynced.push(`skills/${skillDir}/`);
+          log(`[OK]   '${skillDir}' Skill Synced to ${targetConfig.directory}`, true);
+        }
       } else {
         log(`    Project skills directory not found: ${projectSkillsDir}`, options.verbose);
       }
