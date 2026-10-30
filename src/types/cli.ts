@@ -7,6 +7,7 @@ export interface BaseCommandArgs {
   configPath?: string;
   verbose?: boolean;
   quiet?: boolean;
+  noColor?: boolean;
 }
 
 /** Arguments for 'agentic-toolbox sync' */
@@ -50,6 +51,21 @@ export interface FlagDefinition {
   description: string;
   type: 'boolean' | 'string' | 'string[]';
   default?: unknown;
+}
+
+export interface FlagParseResult {
+  value: unknown;
+  nextIndex: number;
+}
+
+export interface FlagStrategy {
+  parse(
+    flagDef: FlagDefinition,
+    rawFlag: string,
+    argv: string[],
+    currentIndex: number,
+    currentValue?: unknown
+  ): FlagParseResult;
 }
 
 export interface SubcommandDefinition {

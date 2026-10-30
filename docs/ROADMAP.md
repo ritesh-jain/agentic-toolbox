@@ -5,11 +5,14 @@
 
 ---
 
-## 🎯 Current Sprint: CLI & UX Polish (v0.5.x)
+## 🎯 Current Sprint: CLI Architecture & Core Hardening (v0.6.x)
 
-*Target: Enhanced developer experience and CLI polish*
+*Target: CLI strategy pattern, input sanitization, error architecture, incremental sync, and test coverage*
 
 ### Core Functionality
+- [ ] Argument parsing strategy pattern (`FlagStrategy`)
+- [ ] Input sanitization utilities (`sanitizePath`, `validateTarget`)
+- [ ] Logger stream dependency injection
 - [ ] Verbose logging levels (`--verbose`, `--quiet`)
 - [ ] `--diff` flag for preview (unified diff) — *foundation exists*
 - [ ] Shell completion scripts (bash, zsh, fish)
@@ -59,16 +62,16 @@
 
 | # | Task | Module | Priority | Est. Effort | Target |
 |---|------|--------|----------|-------------|--------|
-| 1 | Verbose/quiet logging levels | `cli/run-cli.ts` | 🟡 High | Low | v0.5.x |
-| 2 | `--diff` flag (unified diff) | `cli/commands/diff.ts` | 🟡 High | Medium | v0.5.x |
-| 3 | Shell completions | `cli/` | 🟢 Medium | Medium | v0.5.x |
-| 4 | Vitest setup | `package.json` + `vitest.config.ts` | 🔴 Critical | Medium | v0.5.x |
-| 5 | Unit tests — transform | `core/transform/*.test.ts` | 🔴 Critical | Medium | v0.5.x |
-| 6 | Unit tests — config | `core/config/*.test.ts` | 🔴 Critical | Low | v0.5.x |
-| 7 | Unit tests — sync | `core/sync/*.test.ts` | 🔴 Critical | High | v0.5.x |
-| 8 | Unit tests — CLI args | `cli/args/*.test.ts` | 🔴 Critical | Low | v0.5.x |
-| 9 | Integration tests | `sync.integration.test.ts` | 🟡 High | Medium | v0.5.x |
+| 1 | Verbose/quiet logging levels | `cli/run-cli.ts` | 🟡 High | Low | v0.6.x |
+| 2 | `--diff` flag (unified diff) | `cli/commands/diff.ts` | 🟡 High | Medium | v0.6.x |
+| 3 | Shell completions | `cli/` | 🟢 Medium | Medium | v0.6.x |
+| 4 | Vitest setup | `package.json` + `vitest.config.ts` | 🔴 Critical | Medium | v0.6.x |
+| 5 | Unit tests — transform | `core/transform/*.test.ts` | 🔴 Critical | Medium | v0.6.x |
+| 6 | Unit tests — config | `core/config/*.test.ts` | 🔴 Critical | Low | v0.6.x |
+| 7 | Unit tests — sync | `core/sync/*.test.ts` | 🔴 Critical | High | v0.6.x |
+| 8 | Unit tests — CLI args | `cli/args/*.test.ts` | 🔴 Critical | Low | v0.6.x |
+| 9 | Integration tests | `sync.integration.test.ts` | 🟡 High | Medium | v0.6.x |
 
 ---
 
-*Completed work (v0.1.x–v0.4.x) is documented in [CHANGELOG.md](../CHANGELOG.md).*
+*Completed work (v0.1.x–v0.5.0) is documented in [CHANGELOG.md](../CHANGELOG.md).*

@@ -2,6 +2,7 @@
 import { CliArgs, FlagDefinition, SubcommandDefinition } from '@/types/index.js';
 import { flags } from './flags.js';
 import { subcommands } from './subcommands.js';
+import { getFlagStrategy } from './strategies.js';
 
 function kebabToCamel(str: string): string {
   return str.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
@@ -28,23 +29,10 @@ function parseFlags(argv: string[], startIndex: number, allFlags: FlagDefinition
       }
 
       const targetName = flagDef.name === 'config' ? 'configPath' : flagDef.name;
-
-      if (flagDef.type === 'boolean') {
-        args[targetName] = true;
-      } else if (flagDef.type === 'string') {
-        i++;
-        if (i >= argv.length) {
-          throw new Error(`Flag --${flagName} requires a value`);
-        }
-        args[targetName] = argv[i];
-      } else if (flagDef.type === 'string[]') {
-        i++;
-        if (i >= argv.length) {
-          throw new Error(`Flag --${flagName} requires a value`);
-        }
-        const values = argv[i].split(',').map(v => v.trim());
-        args[targetName] = values;
-      }
+      const strategy = getFlagStrategy(flagDef.type);
+      const result = strategy.parse(flagDef, `--${flagName}`, argv, i, args[targetName]);
+      args[targetName] = result.value;
+      i = result.nextIndex;
     } else if (arg.startsWith('-') && arg.length === 2) {
       // Short flag
       const shortFlag = arg[1];
@@ -55,16 +43,10 @@ function parseFlags(argv: string[], startIndex: number, allFlags: FlagDefinition
       }
 
       const targetName = flagDef.name === 'config' ? 'configPath' : flagDef.name;
-
-      if (flagDef.type === 'boolean') {
-        args[targetName] = true;
-      } else {
-        i++;
-        if (i >= argv.length) {
-          throw new Error(`Flag -${shortFlag} requires a value`);
-        }
-        args[targetName] = argv[i];
-      }
+      const strategy = getFlagStrategy(flagDef.type);
+      const result = strategy.parse(flagDef, `-${shortFlag}`, argv, i, args[targetName]);
+      args[targetName] = result.value;
+      i = result.nextIndex;
     } else {
       // Positional argument
       if (!args.command) {

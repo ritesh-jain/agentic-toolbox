@@ -97,7 +97,7 @@ Work through items **one at a time**, in order. For each item:
 ## 3. CLI Architecture Improvements
 | # | Item | Description | Status | Notes |
 | --- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------ |
-| CLI1 | Strategy pattern for arg parser | Replace hardcoded `parseFlags` in `src/cli/args/parser.ts` with strategy pattern for extensibility. | IN PROGRESS | Open/Closed Principle violation. |
+| CLI1 | Strategy pattern for arg parser | Replace hardcoded `parseFlags` in `src/cli/args/parser.ts` with strategy pattern for extensibility. | DONE | Completed. Implemented FlagStrategy with boolean, string, and string[] strategies; fixed short flag array parsing. |
 | CLI2 | Extract CLI arg types per command | Create `SyncArgs`, `InitArgs`, `ValidateArgs`, `DiffArgs` in `types/cli.ts`. | DONE | Completed as part of T5/T6. |
 | CLI3 | Input sanitization utilities | Add `sanitizePath()`, `validateTarget()`, `sanitizeConfigPath()`. | TODO | No input sanitization currently. |
 | CLI4 | Logger dependency injection | `ConsoleLogger` should accept `WritableStream` instead of hardcoding `process.stdout`. | TODO | Enables testing with `MemoryStream`. |
@@ -194,7 +194,7 @@ Work through items **one at a time**, in order. For each item:
 | F5 | Web UI / Dashboard | Optional local dashboard for managing agents/skills. | Post-v1.0. |
 | F6 | Watch mode (`--watch`) | Auto re-sync on file changes. | Low priority. |
 | F7 | Schema migration | Handle config version upgrades. | Low priority. |
-| F8 | Shell completions | Bash/zsh/fish completion scripts. | v0.5.x. |
+| F8 | Shell completions | Bash/zsh/fish completion scripts. | v0.6.x. |
 | F9 | Structured logging (JSON) | `--json` flag for machine-readable output. | Medium priority. |
 | F10 | Manifest-based incremental sync | Track file hashes, only sync changed files. | High priority, v0.4.x. |
 
@@ -214,19 +214,19 @@ Work through items **one at a time**, in order. For each item:
 | CR10 | `require()` in ESM codebase | Multiple files | Low | TD1, TD5, TD6. |
 
 ---
-## 9. Next Iteration Scratchpad (v0.5.x CLI & UX Polish)
+## 9. Next Iteration Scratchpad (v0.6.0 CLI Architecture & Core Hardening)
 | # | Item | Description | Target |
 | --- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | M1 | Task 4: Sync reliability verification | Verify all targets, field transformation, dry-run, diff, incremental | Current |
 | M2 | Task 5: Error handling consistency | Consistent messages, structured errors, correlation IDs | Current |
 | M3 | Task 6: Help text improvements | Clear init + sync workflow, better examples | Current |
-| M4 | Task 7: Unit tests | Vitest setup, transform/config/sync/cli tests | Next |
-| M5 | Task 8: Integration tests | Temp directories, multi-target, manifest | Next |
+| M4 | Task 7: Unit tests | Vitest setup, transform/config/sync/cli tests | v0.6.0 |
+| M5 | Task 8: Integration tests | Temp directories, multi-target, manifest | v0.6.0 |
 | M6 | Constants consolidation | Localized by feature | DONE |
 | M7 | Type consolidation | `types/` cleanup, single source of truth | DONE |
-| M8 | CLI argument parser refactor | Strategy pattern, per-command arg types | v0.4.2 |
-| M9 | Error message constants | In respective error/validation modules | v0.4.2 |
-| M10 | Input sanitization | Validation utilities | v0.4.2 |
+| M8 | CLI argument parser refactor | Strategy pattern, per-command arg types | v0.6.0 |
+| M9 | Error message constants | In respective error/validation modules | v0.6.0 |
+| M10 | Input sanitization | Validation utilities | v0.6.0 |
 
 ---
 ## 10. Decisions Log (for this project)
@@ -245,14 +245,14 @@ Work through items **one at a time**, in order. For each item:
 | D11 | Feature-bound constants | Rejected monolithic constants file; constants stay co-located with their feature modules | 2026-10-25 |
 
 ---
-## 10. Completed Sprint History
-| Sprint | Goal | Status | Key Deliverables |
-|--------|------|--------|------------------|
+## 11. Sprint History
 | v0.1.x | npm Publishing | DONE | Package on npm, CI/CD, manual release flow |
 | v0.2.x | Bootstrapping & Core Hardening | DONE | Self-hosting, YAML parser, config validation, structured errors |
 | v0.3.x | Architecture Restructure | DONE | Modular src/, subcommands, YAML parser, config validation, path aliases |
 | v0.4.x | MVP Consolidation | DONE | Smart defaults, init interactive, validation errors, sync reliability |
-| v0.5.x | CLI & UX Polish | IN PROGRESS | Colorized output, verbose/quiet modes, diff flag, shell completions |
+| v0.5.0 | Constants & Types Consolidation | DONE | Target definitions & types consolidation, strict CLI typing, eliminated shared/ |
+| v0.5.1 | Build System & Packaging Improvements | DONE | postbuild hook, assets in dist/, removed root agents/skills from package |
+| v0.6.0 | CLI Architecture & Core Hardening | IN PROGRESS | Strategy parser, input sanitization, error architecture, incremental sync |
 
 ---
-*Completed work (v0.1.x–v0.4.x) is documented in [CHANGELOG.md](../CHANGELOG.md).*
+*Completed work (v0.1.x–v0.5.0) is documented in [CHANGELOG.md](../CHANGELOG.md).*
